@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Mobilblogg!</string>
+    <string name="app_name">MobilBlogg</string>
+<color name="bgcolor">#B0D4DA</color>
+<string name="username">Användarnamn:</string>
+<string name="password">Lösenord:</string>
+<string name="login">Logga in</string>
+<color name="textcolor">#333333</color>
+<string name="loginButtonHandler">loginClickHandler</string>
+<string name="loginViewName">Logga in</string>
+<string name="mainMenuMyBlogg">Min blogg</string>
+<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
+<string name="mainMenuMyStartPage">Min startsida</string>
+<string name="mainMenuStartPage">Förstasidan</string>
+<string name="please_wait">Please wait...</string>
+<string name="empty">Tom</string>
+</resources>
