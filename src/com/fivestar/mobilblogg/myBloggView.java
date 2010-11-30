@@ -18,8 +18,10 @@ public class myBloggView extends Activity {
 	ListView list;
 	ProgressDialog dialog;
 	Thread myBloggThread;
-	String[] items;
+	String[] imgs;
+	String[] headlines;
 
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -51,12 +53,13 @@ public class myBloggView extends Activity {
 
 							try {
 								JSONArray json = new JSONArray(jsonresponse);
-								items = new String[json.length()];
+								imgs = new String[json.length()];
+								headlines = new String[json.length()];
 								for(int i=0; i<json.length();i++) {
-									items[i] = (String)json.getJSONObject(i).get("picture_small");
-									System.out.println(json.getJSONObject(i).get("picture_small"));
+									imgs[i] = (String)json.getJSONObject(i).get("picture_small");
+									headlines[i] = (String)json.getJSONObject(i).get("caption");
 								}
-								fillList(items);
+								fillList(imgs,headlines);
 							} catch (JSONException j) {
 								System.out.println("JSON error:" + j.toString());
 							}						
@@ -72,9 +75,9 @@ public class myBloggView extends Activity {
 		myBloggThread.start();
 	}
 	
-	public void fillList(String[] items) {
+	public void fillList(String[] imgs, String[] headlines) {
 		System.out.println("fillstart");
-        imgAdapter = new ImageAdapter(this, items);
+        imgAdapter = new ImageAdapter(this, imgs, headlines);
 		list.setAdapter(imgAdapter);
 		System.out.println("fillend nbr:"+imgAdapter.getCount());
 	}

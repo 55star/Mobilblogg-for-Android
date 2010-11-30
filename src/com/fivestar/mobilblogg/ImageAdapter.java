@@ -12,19 +12,21 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
     
     private Activity activity;
-    private String[] data;
+    private String[] images;
+    private String[] captions;
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader; 
     
-    public ImageAdapter(Activity a, String[] d) {
+    public ImageAdapter(Activity a, String[] i, String[] c) {
         activity = a;
-        data=d;
+        images = i;
+        captions = c;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader=new ImageLoader(activity.getApplicationContext());
     }
 
     public int getCount() {
-        return data.length;
+        return images.length;
     }
 
     public Object getItem(int position) {
@@ -53,9 +55,9 @@ public class ImageAdapter extends BaseAdapter {
         else
             holder=(ViewHolder)vi.getTag();
         
-        holder.text.setText("item "+position);
-        holder.image.setTag(data[position]);
-        imageLoader.DisplayImage(data[position], activity, holder.image);
+        holder.text.setText(captions[position]);
+        holder.image.setTag(images[position]);
+        imageLoader.DisplayImage(images[position], activity, holder.image);
         return vi;
     }
 }
