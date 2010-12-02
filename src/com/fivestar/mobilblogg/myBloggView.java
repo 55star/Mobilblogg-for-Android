@@ -20,6 +20,8 @@ public class myBloggView extends Activity {
 	Thread myBloggThread;
 	String[] imgs;
 	String[] headlines;
+	String[] texts;
+	MobilbloggApp app;
 
 	
 	/* (non-Javadoc)
@@ -36,6 +38,8 @@ public class myBloggView extends Activity {
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 
+		app = ((MobilbloggApp)getApplicationContext());
+		
 		final Activity activity = this;
 
 		dialog.show();
@@ -43,7 +47,7 @@ public class myBloggView extends Activity {
 			public void run() {
 
 				Communicator com = new Communicator();
-				final String jsonresponse = com.getBlogg("fivestar");				
+				final String jsonresponse = com.getBlogg(app.getUserName());				
 
 				Runnable action = new Runnable() {
 					public void run() {
@@ -55,14 +59,16 @@ public class myBloggView extends Activity {
 								JSONArray json = new JSONArray(jsonresponse);
 								imgs = new String[json.length()];
 								headlines = new String[json.length()];
+								texts = new String[json.length()];
 								for(int i=0; i<json.length();i++) {
 									imgs[i] = (String)json.getJSONObject(i).get("picture_small");
 									headlines[i] = (String)json.getJSONObject(i).get("caption");
+									texts[i] = (String)json.getJSONObject(i).get("body");
 								}
-								fillList(imgs,headlines);
+								fillList(imgs,headlines,texts);
 							} catch (JSONException j) {
 								System.out.println("JSON error:" + j.toString());
-							}						
+							}
 						} else {
 							System.out.println("myBlogg failure");
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
@@ -75,9 +81,9 @@ public class myBloggView extends Activity {
 		myBloggThread.start();
 	}
 	
-	public void fillList(String[] imgs, String[] headlines) {
+	public void fillList(String[] imgs, String[] headlines, String[] texts) {
 		System.out.println("fillstart");
-        imgAdapter = new ImageAdapter(this, imgs, headlines);
+        imgAdapter = new ImageAdapter(this, imgs, headlines, texts);
 		list.setAdapter(imgAdapter);
 		System.out.println("fillend nbr:"+imgAdapter.getCount());
 	}

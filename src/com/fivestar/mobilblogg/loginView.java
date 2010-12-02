@@ -14,6 +14,7 @@ public class loginView extends Activity {
 	private EditText passWordText;
 	private ProgressDialog dialog;
 	private Thread loginThread;
+	private MobilbloggApp app;
 
 	/*
 	 * (non-Javadoc)
@@ -30,6 +31,7 @@ public class loginView extends Activity {
 		dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
+		app = ((MobilbloggApp)getApplicationContext());
 	}
 
 	public void loginClickHandler(View view) {
@@ -51,6 +53,8 @@ public class loginView extends Activity {
 
 						if (loginStatus == 1) {
 							System.out.println("Login successful!");
+							app.setUserName(userName);
+							app.setLoggedInStatus(true);
 							Intent myIntent = new Intent(activity,
 									mainMenuView.class);
 							startActivityForResult(myIntent, 0);
