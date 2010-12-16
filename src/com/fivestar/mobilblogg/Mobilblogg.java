@@ -13,6 +13,7 @@ public class Mobilblogg extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MobilbloggApp app = ((MobilbloggApp)getApplicationContext());
+		app.startServices();
 		if(!app.getLoggedInStatus()) {
 			Intent intent = new Intent(this,loginView.class);
 			startActivity(intent);

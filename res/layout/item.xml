@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent" android:layout_height="wrap_content">
-	<ImageView android:id="@+id/image" android:layout_width="80dip"
-		android:layout_height="80dip" android:src="@drawable/stub"
-		android:scaleType="centerInside" />
-	<TextView android:id="@+id/headline" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_weight="1"
-		android:layout_gravity="left|center_vertical" android:textSize="10dip"
-		android:layout_marginLeft="10dip" />
-	<TextView android:id="@+id/text" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_weight="1"
-		android:layout_gravity="left|center_vertical" android:textSize="8dip"
-		android:layout_marginLeft="10dip" />
-		
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@color/colorwhite">
+
+	<RelativeLayout android:id="@+id/date_layout"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:minHeight="25dip" android:background="#ff999999"
+		android:clickable="false" android:paddingLeft="5dip">
+
+		<TextView android:id="@+id/dateheader" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:singleLine="true"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:clickable="false" android:textSize="16dip" android:text="24 december 2010"
+			android:layout_alignParentTop="true" />
+		<TableLayout android:layout_below="@+id/dateheader"
+			android:layout_width="wrap_content" android:layout_height="wrap_content">
+			<TableRow>
+				<ImageView android:id="@+id/image" android:layout_width="80dip"
+					android:layout_height="80dip" android:src="@drawable/stub"
+					android:scaleType="centerInside" android:layout_margin="3dip" />
+				<TableLayout>
+					<TableRow>
+						<TextView android:id="@+id/headline"
+							android:layout_width="fill_parent" android:layout_height="wrap_content"
+							android:layout_weight="1" android:layout_gravity="left|center_vertical"
+							android:textSize="20dip" android:text="Rubrik" android:textColor="@color/colorblack" />
+					</TableRow>
+					<TableRow>
+						<TextView android:id="@+id/text" android:layout_width="fill_parent"
+							android:layout_height="wrap_content" android:layout_weight="1"
+							android:layout_gravity="left|center_vertical" android:textSize="16dip"
+							android:text="Text text massor av text" android:textColor="@color/colorblack" />
+					</TableRow>
+				</TableLayout>
+			</TableRow>
+		</TableLayout>
+	</RelativeLayout>
 </LinearLayout>

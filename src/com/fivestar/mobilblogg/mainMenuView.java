@@ -23,11 +23,13 @@ public class mainMenuView extends Activity {
 		switch(view.getId()) {
 		case R.id.Button01:
 			System.out.println("Goto my blogg");
-			Intent myIntent = new Intent(view.getContext(), myBloggView.class);
-			startActivityForResult(myIntent, 0);
+			Intent mbIntent = new Intent(view.getContext(), myBloggView.class);
+			startActivityForResult(mbIntent, 0);
 			break;
 		case R.id.Button02:
 			System.out.println("Goto my start page");
+			Intent spIntent = new Intent(view.getContext(), StartPageView.class);
+			startActivityForResult(spIntent, 0);
 			break;
 		case R.id.Button03:
 			System.out.println("Goto start page");

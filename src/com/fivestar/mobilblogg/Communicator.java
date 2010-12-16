@@ -3,9 +3,6 @@ package com.fivestar.mobilblogg;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +40,8 @@ public class Communicator extends Thread {
 		HttpPost postMethod = new HttpPost(url);
 		
 		try {
-			hashedPassword = SHA1(getSalt(userName)+passWord);
+			hashedPassword = Utils.SHA1(getSalt(userName)+passWord);
 		} catch (Exception e) {}
-
-		System.out.println("hashpwd:"+hashedPassword);
 		
 		if(hashedPassword.length() > 10) {
 			try {
@@ -76,7 +71,6 @@ public class Communicator extends Thread {
 			}  
 		}
 		
-		System.out.println("Resp:"+jsonresponse);
 		try {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
@@ -91,7 +85,6 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		String salt = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
@@ -99,14 +92,12 @@ public class Communicator extends Thread {
 			System.out.println("Request failed:"+t.toString());
 			return null;
 		}
-		System.out.println("Resp:"+jsonresponse);
 		try {
 			JSONArray json = new JSONArray(jsonresponse);
 			salt = json.getJSONObject(0).optString("salt");
 		} catch (JSONException j) {
 			System.out.println("JSON error:" + j.toString());
 		}
-		System.out.println("salt:"+salt);
 		return salt;
 	}	
 
@@ -125,30 +116,18 @@ public class Communicator extends Thread {
 		return jsonresponse;
 	}	
 
-	
-	
-	private static String convertToHex(byte[] data) { 
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < data.length; i++) { 
-            int halfbyte = (data[i] >>> 4) & 0x0F;
-            int two_halfs = 0;
-            do { 
-                if ((0 <= halfbyte) && (halfbyte <= 9)) 
-                    buf.append((char) ('0' + halfbyte));
-                else 
-                    buf.append((char) ('a' + (halfbyte - 10)));
-                halfbyte = data[i] & 0x0F;
-            } while(two_halfs++ < 1);
-        } 
-        return buf.toString();
-    } 
- 
-	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException  { 
-		MessageDigest md;
-		md = MessageDigest.getInstance("SHA-1");
-		byte[] sha1hash = new byte[40];
-		md.update(text.getBytes("iso-8859-1"), 0, text.length());
-		sha1hash = md.digest();
-		return convertToHex(sha1hash);
-	}
+	public String getStartPage() {
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listStartpage";
+		String jsonresponse = "";
+		HttpGet getMethod = new HttpGet(url);
+		System.out.println("URL:"+url);
+		try {
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			jsonresponse = client.execute(getMethod, responseHandler);
+		} catch (Throwable t) {
+			System.out.println("Request failed:"+t.toString());
+			return null;
+		}
+		return jsonresponse;
+	}	
 }

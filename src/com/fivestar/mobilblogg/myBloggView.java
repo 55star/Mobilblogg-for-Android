@@ -46,8 +46,7 @@ public class myBloggView extends Activity {
 		myBloggThread = new Thread() {
 			public void run() {
 
-				Communicator com = new Communicator();
-				final String jsonresponse = com.getBlogg(app.getUserName());				
+				final String jsonresponse = app.com.getBlogg(app.getUserName());				
 
 				Runnable action = new Runnable() {
 					public void run() {

@@ -15,4 +15,6 @@
 <string name="mainMenuStartPage">Förstasidan</string>
 <string name="please_wait">Please wait...</string>
 <string name="empty">Tom</string>
+<color name="colorwhite">#FFFFFF</color>
+<color name="colorblack">#000000</color>
 </resources>

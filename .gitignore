@@ -1,2 +1,2 @@
-*.class
+bin/com/fivestar/mobilblogg/*.class
 *.apk
