@@ -43,7 +43,6 @@ public class loginView extends Activity {
 		dialog.show();
 		loginThread = new Thread() {
 			public void run() {
-				System.out.println("app.com"+app.com);
 				final int loginStatus = app.com.doLogin(userName, passWord);
 
 				Runnable action = new Runnable() {

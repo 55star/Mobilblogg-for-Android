@@ -1,36 +1,68 @@
 package com.fivestar.mobilblogg;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
-
+import android.os.Environment;
 
 public class Communicator extends Thread {
-
+	private static final String TAG = "Communicator";
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
 	private String api  = "api_v2.2.t";
 	private DefaultHttpClient client;
-	
+
 	public Communicator() {
-		client = new DefaultHttpClient();
+		HttpParams params = new BasicHttpParams();
+		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+		HttpProtocolParams.setUseExpectContinue(params, true);
+
+		SchemeRegistry schReg = new SchemeRegistry();
+		schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		schReg.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 443));
+		ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
+
+		client = new DefaultHttpClient(conMgr, params);
+	} 
+
+	public void shutdownHttpClient() {
+		if(client!=null && client.getConnectionManager()!= null) {
+			client.getConnectionManager().shutdown();
+		}
 	}
-	
+
 	public int doLogin(String userName, String passWord) {
 		String url = protocoll+host+"/o.o.i.s";
 		String jsonresponse = "";
@@ -38,11 +70,11 @@ public class Communicator extends Thread {
 		int loginStatus = -1;
 
 		HttpPost postMethod = new HttpPost(url);
-		
+
 		try {
 			hashedPassword = Utils.SHA1(getSalt(userName)+passWord);
 		} catch (Exception e) {}
-		
+
 		if(hashedPassword.length() > 10) {
 			try {
 				BufferedReader in = null;
@@ -55,22 +87,22 @@ public class Communicator extends Thread {
 
 				HttpResponse response = client.execute(postMethod);
 				in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-	 
-				StringBuffer sb = new StringBuffer("");
-	            String line = "";
-	            while ((line = in.readLine()) != null) {
-	                sb.append(line);
-	            }
-	            in.close();
-	            jsonresponse = sb.toString();
-				
+
+				StringBuilder sb = new StringBuilder();
+				String line = "";
+				while ((line = in.readLine()) != null) {
+					sb.append(line);
+				}
+				in.close();
+				jsonresponse = sb.toString();
+
 			} catch (ClientProtocolException e) {  
 				// TODO Auto-generated catch block  
 			} catch (IOException e) {  
 				// TODO Auto-generated catch block  
 			}  
 		}
-		
+
 		try {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
@@ -79,7 +111,7 @@ public class Communicator extends Thread {
 		}
 		return loginStatus;
 	}	
-	
+
 	public String getSalt(String userName) {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=getSalt&user="+userName;
 		String jsonresponse = "";
@@ -130,4 +162,56 @@ public class Communicator extends Thread {
 		}
 		return jsonresponse;
 	}	
+
+	public String doUpload(String username, String secret, String caption, String text) throws Throwable {
+		
+		File f = new File(Environment.getExternalStorageDirectory()+"/Mobilblogg/latest/0.jpg");
+		
+		try {
+			String url = protocoll+host+"/o.o.i.s";
+			HttpPost postMethod = new HttpPost(url);
+			System.out.println("REQUEST FOR: "+url);
+			System.out.println("Secret="+secret+" text="+text+" path="+"/files/"+username);
+
+			FileBody bin = new FileBody(f);			
+			StringBody sb1 = new StringBody("ladda_upp");
+			StringBody sb2 = new StringBody(caption);
+			StringBody sb3 = new StringBody(text);
+			StringBody sb4 = new StringBody(secret);
+			StringBody sb5 = new StringBody("private");
+			StringBody sb6 = new StringBody("upload");
+			StringBody sb7 = new StringBody("/files/"+username);
+			StringBody sb8 = new StringBody(api);
+
+			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			multipartContent.addPart("file", bin);
+			multipartContent.addPart("wtd", sb1);
+			multipartContent.addPart("header", sb2);
+			multipartContent.addPart("text", sb3);
+			multipartContent.addPart("secretword", sb4);
+			multipartContent.addPart("rights", sb5);
+			multipartContent.addPart("func", sb6);
+			multipartContent.addPart("path", sb7);
+			multipartContent.addPart("template", sb8);
+			
+			
+			postMethod.setEntity(multipartContent);
+			HttpResponse resp = client.execute(postMethod);
+			
+			InputStream is = resp.getEntity().getContent();
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			StringBuilder total = new StringBuilder();
+			String line;
+			while ((line = r.readLine()) != null) {
+			    total.append(line);
+			}
+			is.close();
+			
+			System.out.println("RESPONSE: "+total.toString());
+			
+			return total.toString();
+		} catch (Throwable e) {
+			throw e;
+		}
+	}
 }

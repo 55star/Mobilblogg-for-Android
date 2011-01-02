@@ -7,7 +7,7 @@
 		android:onClick="@string/mainMenuButtonHandler" android:layout_width="fill_parent" android:layout_marginBottom="10px" android:layout_marginTop="10px" android:textSize="20dip"></Button>
 	<Button android:id="@+id/Button02" android:layout_height="wrap_content" android:text="@string/mainMenuMyStartPage"
 		android:onClick="@string/mainMenuButtonHandler" android:layout_width="fill_parent" android:layout_marginBottom="10px" android:textSize="20dip"></Button>
-	<Button android:id="@+id/Button03" android:layout_height="wrap_content" android:text="@string/mainMenuStartPage"
+	<Button android:id="@+id/Button03" android:layout_height="wrap_content" android:text="@string/mainMenuUploadPage"
 		android:onClick="@string/mainMenuButtonHandler" android:layout_width="fill_parent" android:textSize="20dip"></Button>
 		
 </LinearLayout>

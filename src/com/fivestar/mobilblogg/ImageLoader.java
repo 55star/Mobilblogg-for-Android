@@ -26,13 +26,12 @@ public class ImageLoader {
 	public ImageLoader(Context context) {
 		// Make the background thread low priority. This way it will not affect
 		// the UI performance
-//		photoLoaderThread.setPriority(Thread.NORM_PRIORITY - 1);
+		photoLoaderThread.setPriority(Thread.NORM_PRIORITY - 1);
 
 		// Find the dir to save cached images
 		if (android.os.Environment.getExternalStorageState().equals(
 				android.os.Environment.MEDIA_MOUNTED))
-			cacheDir = new File(android.os.Environment
-					.getExternalStorageDirectory(), "Mobilbloggcache");
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory()+"/Mobilblogg", "cache");
 		else
 			cacheDir = context.getCacheDir();
 		if (!cacheDir.exists())

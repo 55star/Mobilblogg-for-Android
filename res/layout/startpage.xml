@@ -17,14 +17,17 @@
 			<TextView android:id="@+id/headline" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"
 				android:layout_gravity="center|top" android:textSize="20dip"
-				android:text="Rubrik" android:textStyle="bold" android:textColor="@color/textcolor" />
+				android:text="" android:textStyle="bold" android:textColor="@color/textcolor" />
 			<ImageView android:id="@+id/ImageView01" android:minWidth="300px"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal|top" android:scaleType="center" />
+			<TextView android:id="@+id/date" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_gravity="left|top"
+				android:textSize="12dip" android:textColor="@color/datetextcolor" />
 			<TextView android:id="@+id/text" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"
 				android:layout_gravity="left|top" android:textSize="16dip"
-				android:text="Text text massor av text" android:textColor="@color/textcolor" />
+				android:text="" android:textColor="@color/textcolor" />
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -33,6 +33,7 @@ public class StartPageView extends Activity {
 	ImageView imgView;
 	TextView headlineView;
 	TextView textView;
+	TextView dateView;
 	Activity activity;
 
 	/* (non-Javadoc)
@@ -43,9 +44,12 @@ public class StartPageView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startpage);
 
+		this.setTitle("Min startsida");
+		
 		imgView = (ImageView)findViewById(R.id.ImageView01);
 		headlineView = (TextView)findViewById(R.id.headline);
-		textView = (TextView)findViewById(R.id.text);		
+		textView = (TextView)findViewById(R.id.text);
+		dateView = (TextView)findViewById(R.id.date);
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 
 		dialog = new ProgressDialog(StartPageView.this);
@@ -99,7 +103,7 @@ public class StartPageView extends Activity {
 
 	public void fillList(Context c, PostInfo p) {
 		final PostInfo pi = p;
-
+		
 		gallery.setAdapter(new AddImgAdp(c, this, pi));
 
 		gallery.setOnItemClickListener(new OnItemClickListener() {
@@ -110,10 +114,12 @@ public class StartPageView extends Activity {
 				imgView.setScaleType(ImageView.ScaleType.FIT_XY);
 
 				headlineView.setText(pi.headline[position]);
+				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
 				textView.setText(Html.fromHtml(pi.text[position]));
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
+	//	gallery.postInvalidate();
 	}
 
 	@Override
@@ -153,7 +159,6 @@ public class StartPageView extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView imgView = new ImageView(cont);
 
-			//		imgView.setImageResource(Imgid[position]);
 			imageLoader.DisplayImage(pi.img[position], activity, imgView);
 			imgView.setLayoutParams(new Gallery.LayoutParams(150, 120));
 			imgView.setScaleType(ImageView.ScaleType.FIT_XY);

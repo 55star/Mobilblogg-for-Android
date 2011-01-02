@@ -32,7 +32,9 @@ public class mainMenuView extends Activity {
 			startActivityForResult(spIntent, 0);
 			break;
 		case R.id.Button03:
-			System.out.println("Goto start page");
+			System.out.println("Goto cemera");
+			Intent cIntent = new Intent(view.getContext(), CameraView.class);
+			startActivityForResult(cIntent, 0);
 			break;
 		}
 	}
