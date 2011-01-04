@@ -1,2 +1,5 @@
 *.class
 *.apk
+*.ap_
+gen/
+META-INF/
