@@ -13,6 +13,7 @@
 	<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
 	<string name="mainMenuMyStartPage">Min startsida</string>
 	<string name="mainMenuStartPage">Förstasidan</string>
+	<string name="mainMenuUser">Blogg</string>
 	<string name="please_wait">Vänligen vänta...</string>
 	<string name="empty">Tom</string>
 	<color name="colorwhite">#FFFFFF</color>
@@ -28,5 +29,4 @@
 	<string name="mainMenuUploadPage">Ta bild och blogga</string>
 	<string name="secretWord">Hemligt ord</string>
 	<string name="rights">Ska synas för</string>
-
 </resources>
