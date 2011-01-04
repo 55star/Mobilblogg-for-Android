@@ -8,6 +8,7 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.Html;
@@ -23,10 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class myBloggView extends Activity {
+public class BloggView extends Activity {
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	PostInfo pi;
+	String username;
 	MobilbloggApp app;
 
 	Gallery gallery;
@@ -43,6 +45,8 @@ public class myBloggView extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myblogg);
+
+		username = getIntent().getStringExtra("username");
 		
 		imgView = (ImageView)findViewById(R.id.ImageView01);
 		headlineView = (TextView)findViewById(R.id.headline);
@@ -50,22 +54,22 @@ public class myBloggView extends Activity {
 		dateView = (TextView)findViewById(R.id.date);
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 
-		dialog = new ProgressDialog(myBloggView.this);
+		dialog = new ProgressDialog(BloggView.this);
 		dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 
 		app = ((MobilbloggApp)getApplicationContext());
 
-		this.setTitle(app.getUserName());
+		this.setTitle(username);
 		
 		activity = this;
-
+		
 		dialog.show();
 		myBloggThread = new Thread() {
 			public void run() {
 
-				final String jsonresponse = app.com.getBlogg(app.getUserName());				
+				final String jsonresponse = app.com.getBlogg(username);				
 
 				Runnable action = new Runnable() {
 					public void run() {
@@ -120,7 +124,7 @@ public class myBloggView extends Activity {
 			}
 		});
 	}
-
+		
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

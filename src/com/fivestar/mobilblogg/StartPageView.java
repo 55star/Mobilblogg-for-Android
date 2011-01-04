@@ -8,6 +8,7 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,6 +28,7 @@ public class StartPageView extends Activity {
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	PostInfo pi;
+	String username;
 	MobilbloggApp app;
 
 	Gallery gallery;
@@ -45,6 +47,7 @@ public class StartPageView extends Activity {
 		setContentView(R.layout.startpage);
 
 		this.setTitle("Min startsida");
+
 		
 		imgView = (ImageView)findViewById(R.id.ImageView01);
 		headlineView = (TextView)findViewById(R.id.headline);
@@ -58,7 +61,8 @@ public class StartPageView extends Activity {
 		dialog.setCancelable(false);
 
 		app = ((MobilbloggApp)getApplicationContext());
-
+		username = app.getUserName();
+		
 		activity = this;
 
 		dialog.show();
@@ -115,12 +119,26 @@ public class StartPageView extends Activity {
 
 				headlineView.setText(pi.headline[position]);
 				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
+				username = pi.user[position];
 				textView.setText(Html.fromHtml(pi.text[position]));
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
 	//	gallery.postInvalidate();
 	}
+	
+	public void startPageClickHandler(View view) {
+		switch(view.getId()) {
+		case R.id.bloggButton:
+			System.out.println("Goto "+username+"s blogg");
+			
+			Intent intent = new Intent(view.getContext(), BloggView.class);
+			intent.putExtra("username", username);
+			startActivityForResult(intent, 0);
+			break;
+		}
+	}
+
 
 	@Override
 	public void onDestroy() {

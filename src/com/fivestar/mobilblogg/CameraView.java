@@ -59,7 +59,7 @@ public class CameraView extends Activity implements SurfaceHolder.Callback {
 
 				mCamera.startPreview();
 
-				Intent composeIntent = new Intent(mContext, composeView.class);
+				Intent composeIntent = new Intent(mContext, ComposeView.class);
 				startActivityForResult(composeIntent, 0);
 //				finish();
 			}

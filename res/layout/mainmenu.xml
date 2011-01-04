@@ -15,16 +15,4 @@
 	<Button android:id="@+id/Button03" android:layout_height="wrap_content"
 		android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
 		android:layout_width="fill_parent" android:textSize="20dip"></Button>
-
-	<RelativeLayout android:id="@+id/RelativeLayout01"
-		android:layout_width="wrap_content" android:layout_height="wrap_content">
-	
-		<EditText android:id="@+id/bloggname" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:singleLine="true"></EditText>
-		<Button android:id="@+id/Button04" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:textSize="20dip"
-			android:text="@string/mainMenuUser" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_toRightOf="@id/bloggname"
-			android:layout_alignBaseline="@id/bloggname" />
-	</RelativeLayout>
 </LinearLayout>

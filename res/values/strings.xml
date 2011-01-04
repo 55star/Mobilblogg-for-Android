@@ -29,4 +29,6 @@
 	<string name="mainMenuUploadPage">Ta bild och blogga</string>
 	<string name="secretWord">Hemligt ord</string>
 	<string name="rights">Ska synas för</string>
+	<string name="startPageButtonHandler">startPageClickHandler</string>
+	<string name="blogg">Till blogg</string>
 </resources>

@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class composeView extends Activity implements AdapterView.OnItemSelectedListener {
+public class ComposeView extends Activity implements AdapterView.OnItemSelectedListener {
 
 	private static final String TAG = "Upload";
 	private EditText captionText;
@@ -47,7 +47,7 @@ public class composeView extends Activity implements AdapterView.OnItemSelectedL
 		secretText = (EditText) findViewById(R.id.secretText);
 		image = (ImageView) findViewById(R.id.image);
 		rights = (Spinner) findViewById(R.id.rights);
-		dialog = new ProgressDialog(composeView.this);
+		dialog = new ProgressDialog(ComposeView.this);
 		dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
