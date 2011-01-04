@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:background="@color/colorwhite">
+
+	<ScrollView android:id="@+id/scroll01" android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<LinearLayout android:id="@+id/LinearLayout02"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:orientation="vertical" android:padding="10dip">
+
+			<ImageView android:id="@+id/image" android:layout_width="120dip"
+				android:layout_height="120dip" android:src="@drawable/stub"
+				android:scaleType="centerInside" android:layout_margin="3dip" />
+
+			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/headline"
+				android:textColor="@color/textcolor" android:textSize="20dip"></TextView>
+			<EditText android:id="@+id/captionText"
+				android:layout_height="wrap_content" android:singleLine="true"
+				android:layout_width="fill_parent"></EditText>
+
+			<TextView android:id="@+id/TextView02" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/body"
+				android:textColor="@color/textcolor" android:textSize="20dip"></TextView>
+			<EditText android:id="@+id/bodyText" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:inputType="textMultiLine"></EditText>
+
+			<TextView android:id="@+id/TextView03" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/rights"
+				android:textColor="@color/textcolor" android:textSize="20dip"></TextView>
+			<Spinner android:id="@+id/rights" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:drawSelectorOnTop="true"></Spinner>
+
+			<TextView android:id="@+id/TextView04" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/secretWord"
+				android:textColor="@color/textcolor" android:textSize="20dip"></TextView>
+			<EditText android:id="@+id/secretText"
+				android:layout_height="wrap_content" android:singleLine="true"
+				android:layout_width="fill_parent"></EditText>
+
+			<Button android:id="@+id/uploadButton" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/upload"
+				android:onClick="@string/composeButtonHandler" android:textSize="20dip"></Button>
+
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
