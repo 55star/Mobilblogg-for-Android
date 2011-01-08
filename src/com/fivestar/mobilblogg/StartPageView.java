@@ -132,9 +132,16 @@ public class StartPageView extends Activity {
 		case R.id.bloggButton:
 			System.out.println("Goto "+username+"s blogg");
 			
-			Intent intent = new Intent(view.getContext(), BloggView.class);
-			intent.putExtra("username", username);
-			startActivityForResult(intent, 0);
+			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
+			bloggIntent.putExtra("username", username);
+			startActivityForResult(bloggIntent, 0);
+			break;
+		case R.id.commentButton:
+			System.out.println("Goto comment(s)");
+			
+			Intent commentIntent = new Intent(view.getContext(), CommentView.class);
+			commentIntent.putExtra("imgid", "411384");
+			startActivityForResult(commentIntent, 0);
 			break;
 		}
 	}

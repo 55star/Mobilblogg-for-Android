@@ -23,17 +23,24 @@
 				android:layout_gravity="center_horizontal|top" android:scaleType="center" />
 			<TextView android:id="@+id/date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_gravity="left|top"
-				android:textSize="12dip" android:textColor="@color/datetextcolor" />
+				android:textSize="12dip" android:textColor="@color/colorgray" />
 			<TextView android:id="@+id/text" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"
 				android:layout_gravity="left|top" android:textSize="16dip"
 				android:text="" android:textColor="@color/textcolor" />
-				
-			<Button android:id="@+id/bloggButton"
-				android:layout_height="wrap_content" android:text="@string/blogg"
-				android:onClick="@string/startPageButtonHandler" android:layout_width="wrap_content"
-				android:textSize="20dip" android:layout_gravity="right|top"></Button>
 
+			<LinearLayout android:id="@+id/LinearLayout03"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:orientation="horizontal" android:padding="10dip">
+
+				<Button android:id="@+id/bloggButton" android:layout_height="wrap_content"
+					android:text="@string/blogg" android:onClick="@string/startPageButtonHandler"
+					android:layout_width="wrap_content" android:textSize="20dip"></Button>
+				<Button android:id="@+id/commentButton"
+					android:layout_height="wrap_content" android:text="@string/comment"
+					android:onClick="@string/startPageButtonHandler"
+					android:layout_width="wrap_content" android:textSize="20dip"></Button>
+			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

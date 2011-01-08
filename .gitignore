@@ -2,4 +2,6 @@
 *.apk
 *.ap_
 gen/
+bin/
 META-INF/
+mobilblogg_keystore

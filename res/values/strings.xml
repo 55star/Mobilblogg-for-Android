@@ -19,7 +19,7 @@
 	<color name="colorwhite">#FFFFFF</color>
 	<color name="colorblack">#000000</color>
 
-	<color name="datetextcolor">#C0C0C0</color>
+	<color name="colorgray">#C0C0C0</color>
 	<string name="takepicture">Ta bild</string>
 	<string name="cameraButtonHandler">cameraClickHandler</string>
 	<string name="headline">Rubrik</string>
@@ -31,4 +31,6 @@
 	<string name="rights">Ska synas för</string>
 	<string name="startPageButtonHandler">startPageClickHandler</string>
 	<string name="blogg">Till blogg</string>
+	<string name="comment">Kommentarer</string>
+
 </resources>

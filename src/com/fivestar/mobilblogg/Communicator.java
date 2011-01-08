@@ -40,7 +40,7 @@ public class Communicator extends Thread {
 	private static final String TAG = "Communicator";
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
-	private String api  = "api_v2.2.t";
+	private String api  = "api_android_1.0.t";
 	private DefaultHttpClient client;
 
 	public Communicator() {
@@ -163,10 +163,52 @@ public class Communicator extends Thread {
 		return jsonresponse;
 	}	
 
+	public String getComments(int imgid) {
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listComments&imgid="+imgid;
+		String jsonresponse = "";
+		HttpGet getMethod = new HttpGet(url);
+		System.out.println("URL:"+url);
+		try {
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			jsonresponse = client.execute(getMethod, responseHandler);
+		} catch (Throwable t) {
+			System.out.println("Request failed:"+t.toString());
+			return null;
+		}
+		return jsonresponse;
+	}	
+
+	public String getProfileAvatar(String userName) {
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=profile&user="+userName;
+		String jsonresponse = "";
+		String urlToAvatar = "";
+		HttpGet getMethod = new HttpGet(url);
+		System.out.println("URL:"+url);
+		try {
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			jsonresponse = client.execute(getMethod, responseHandler);
+
+			if (jsonresponse != null && jsonresponse.length()>0) {
+				try {
+					JSONArray json = new JSONArray(jsonresponse);
+					urlToAvatar = json.getJSONObject(0).get("avatar").toString();
+					System.out.println("avatar:"+urlToAvatar);
+				} catch (JSONException j) {
+					System.out.println("JSON error:" + j.toString());
+				}
+			}
+		} catch (Throwable t) {
+			System.out.println("Request failed:"+t.toString());
+			return null;
+		}
+		return urlToAvatar;
+	}	
+
+
 	public String doUpload(String username, String secret, String caption, String text) throws Throwable {
-		
+
 		File f = new File(Environment.getExternalStorageDirectory()+"/Mobilblogg/latest/0.jpg");
-		
+
 		try {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
@@ -193,22 +235,22 @@ public class Communicator extends Thread {
 			multipartContent.addPart("func", sb6);
 			multipartContent.addPart("path", sb7);
 			multipartContent.addPart("template", sb8);
-			
-			
+
+
 			postMethod.setEntity(multipartContent);
 			HttpResponse resp = client.execute(postMethod);
-			
+
 			InputStream is = resp.getEntity().getContent();
 			BufferedReader r = new BufferedReader(new InputStreamReader(is));
 			StringBuilder total = new StringBuilder();
 			String line;
 			while ((line = r.readLine()) != null) {
-			    total.append(line);
+				total.append(line);
 			}
 			is.close();
-			
+
 			System.out.println("RESPONSE: "+total.toString());
-			
+
 			return total.toString();
 		} catch (Throwable e) {
 			throw e;
