@@ -29,6 +29,7 @@ public class StartPageView extends Activity {
 	Thread myBloggThread;
 	PostInfo pi;
 	String username;
+	String imgid;
 	MobilbloggApp app;
 
 	Gallery gallery;
@@ -48,7 +49,7 @@ public class StartPageView extends Activity {
 
 		this.setTitle("Min startsida");
 
-		
+
 		imgView = (ImageView)findViewById(R.id.ImageView01);
 		headlineView = (TextView)findViewById(R.id.headline);
 		textView = (TextView)findViewById(R.id.text);
@@ -62,7 +63,7 @@ public class StartPageView extends Activity {
 
 		app = ((MobilbloggApp)getApplicationContext());
 		username = app.getUserName();
-		
+
 		activity = this;
 
 		dialog.show();
@@ -82,12 +83,14 @@ public class StartPageView extends Activity {
 								pi = new PostInfo(len);
 								for(int i=0; i<len;i++) {
 									pi.img[i]      = json.getJSONObject(i).get("picture_large").toString();
-									pi.imgX[i]     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
-									pi.imgY[i]     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+									pi.imgX[i]     = json.getJSONObject(i).getInt("picture_large_x");
+									pi.imgY[i]     = json.getJSONObject(i).getInt("picture_large_y");
 									pi.headline[i] = json.getJSONObject(i).get("caption").toString();
 									pi.text[i]     = json.getJSONObject(i).get("body").toString();
 									pi.user[i]     = json.getJSONObject(i).get("user").toString();
 									pi.createdate[i] = json.getJSONObject(i).get("createdate").toString();
+									pi.imgid[i]    = json.getJSONObject(i).get("id").toString();
+									pi.numComment[i] = json.getJSONObject(i).getInt("nbr_comments");
 								}
 								fillList(app,pi);
 							} catch (JSONException j) {
@@ -107,7 +110,7 @@ public class StartPageView extends Activity {
 
 	public void fillList(Context c, PostInfo p) {
 		final PostInfo pi = p;
-		
+
 		gallery.setAdapter(new AddImgAdp(c, this, pi));
 
 		gallery.setOnItemClickListener(new OnItemClickListener() {
@@ -120,27 +123,28 @@ public class StartPageView extends Activity {
 				headlineView.setText(pi.headline[position]);
 				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
 				username = pi.user[position];
+				imgid = pi.imgid[position];
 				textView.setText(Html.fromHtml(pi.text[position]));
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
-	//	gallery.postInvalidate();
+		//	gallery.postInvalidate();
 	}
-	
+
 	public void startPageClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.bloggButton:
 			System.out.println("Goto "+username+"s blogg");
-			
+
 			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
 			bloggIntent.putExtra("username", username);
 			startActivityForResult(bloggIntent, 0);
 			break;
 		case R.id.commentButton:
 			System.out.println("Goto comment(s)");
-			
+
 			Intent commentIntent = new Intent(view.getContext(), CommentView.class);
-			commentIntent.putExtra("imgid", "411384");
+			commentIntent.putExtra("imgid", imgid);
 			startActivityForResult(commentIntent, 0);
 			break;
 		}

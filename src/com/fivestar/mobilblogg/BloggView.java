@@ -29,6 +29,7 @@ public class BloggView extends Activity {
 	Thread myBloggThread;
 	PostInfo pi;
 	String username;
+	String imgid;
 	MobilbloggApp app;
 
 	Gallery gallery;
@@ -88,6 +89,8 @@ public class BloggView extends Activity {
 									pi.text[i]     = json.getJSONObject(i).get("body").toString();
 									pi.user[i]     = json.getJSONObject(i).get("user").toString();
 									pi.createdate[i] = json.getJSONObject(i).get("createdate").toString();
+									pi.imgid[i]    = json.getJSONObject(i).get("id").toString();
+									pi.numComment[i] = json.getJSONObject(i).getInt("nbr_comments");
 								}
 								fillList(app,pi);
 							} catch (JSONException j) {
@@ -120,9 +123,30 @@ public class BloggView extends Activity {
 				headlineView.setText(pi.headline[position]);
 				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
 				textView.setText(Html.fromHtml(pi.text[position]));
+				username = pi.user[position];
+				imgid = pi.imgid[position];
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
+	}
+	
+	public void startPageClickHandler(View view) {
+		switch(view.getId()) {
+		case R.id.bloggButton:
+			System.out.println("Goto "+username+"s blogg");
+
+			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
+			bloggIntent.putExtra("username", username);
+			startActivityForResult(bloggIntent, 0);
+			break;
+		case R.id.commentButton:
+			System.out.println("Goto comment(s)");
+
+			Intent commentIntent = new Intent(view.getContext(), CommentView.class);
+			commentIntent.putExtra("imgid", imgid);
+			startActivityForResult(commentIntent, 0);
+			break;
+		}
 	}
 		
 	@Override

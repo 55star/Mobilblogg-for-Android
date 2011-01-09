@@ -12,6 +12,8 @@ public class PostInfo {
 	public int[] imgY;
 	public String[] user;
 	public String[] createdate;
+	public String[] imgid;
+	public int[] numComment;
 	public int length;
 
 	public PostInfo(int len) {
@@ -25,6 +27,8 @@ public class PostInfo {
 		text       = new String[len];
 		createdate = new String[len];
 		user       = new String[len];
+		imgid      = new String[len];
+		numComment = new int[len];
 		length     = len;
 	}
 }
