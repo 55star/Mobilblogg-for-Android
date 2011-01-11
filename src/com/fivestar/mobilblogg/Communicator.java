@@ -205,7 +205,7 @@ public class Communicator extends Thread {
 	}	
 
 
-	public String doUpload(String username, String secret, String caption, String text) throws Throwable {
+	public String doUpload(String username, String secret, String caption, String text, String showfor) throws Throwable {
 
 		File f = new File(Environment.getExternalStorageDirectory()+"/Mobilblogg/latest/0.jpg");
 
@@ -220,7 +220,7 @@ public class Communicator extends Thread {
 			StringBody sb2 = new StringBody(caption);
 			StringBody sb3 = new StringBody(text);
 			StringBody sb4 = new StringBody(secret);
-			StringBody sb5 = new StringBody("private");
+			StringBody sb5 = new StringBody(showfor);
 			StringBody sb6 = new StringBody("upload");
 			StringBody sb7 = new StringBody("/files/"+username);
 			StringBody sb8 = new StringBody(api);

@@ -32,7 +32,6 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	private String[] itemLabels = {"Alla","Alla, inte på förstasidan","Medlemmar","Mina vänner", "Mig"};
 	private String[] itemValues = {"","blog", "members","friends", "private"};
 
-	private int selectedRightsItem=0;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -57,6 +56,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemLabels);
 		aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		rights.setAdapter(aa);
+		rights.setSelection(0);
 		
 		// load image from sdcard
 		BitmapFactory.Options options = new BitmapFactory.Options();
@@ -65,8 +65,10 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		image.setImageBitmap(bm); 
 	}
 
-	public void onItemSelected(AdapterView<?> parent, View v, int position, long id){
-		selectedRightsItem = position;
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public void onNothingSelected(AdapterView<?> arg0) {
@@ -79,7 +81,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		final String secret = secretText.getText().toString();
 		final String caption = captionText.getText().toString();
 		final String body = bodyText.getText().toString();
-		final String rights = itemValues[selectedRightsItem];
+		final String showfor = itemValues[rights.getSelectedItemPosition()];
 		final Activity activity = this;
 
 		System.out.println("RIGHTS: "+rights);
@@ -90,7 +92,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				String resp = null;
 				final String jsonresponse;
 				try {
-					resp = app.com.doUpload(app.getUserName(), secret, caption, body);
+					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor);
 				} catch (Throwable e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
