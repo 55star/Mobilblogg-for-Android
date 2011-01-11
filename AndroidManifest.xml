@@ -20,7 +20,7 @@
 		</activity>
 		<activity android:name=".CameraView" android:label="@string/app_name">
 		</activity>
-		<activity android:name=".composeView" android:label="@string/app_name">
+		<activity android:name=".ComposeView" android:label="@string/app_name">
 		</activity>
 		<activity android:name=".CommentView" android:label="@string/app_name">
 		</activity>

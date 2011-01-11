@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ public class BloggView extends Activity {
 	TextView headlineView;
 	TextView textView;
 	TextView dateView;
+	Button commentButton;
 	Activity activity;
 
 	/* (non-Javadoc)
@@ -47,13 +49,13 @@ public class BloggView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myblogg);
 
-		username = getIntent().getStringExtra("username");
 		
 		imgView = (ImageView)findViewById(R.id.ImageView01);
 		headlineView = (TextView)findViewById(R.id.headline);
 		textView = (TextView)findViewById(R.id.text);
 		dateView = (TextView)findViewById(R.id.date);
 		gallery = (Gallery) findViewById(R.id.examplegallery);
+		commentButton = (Button)findViewById(R.id.commentButton);
 
 		dialog = new ProgressDialog(BloggView.this);
 		dialog.setMessage(getString(R.string.please_wait));
@@ -62,7 +64,9 @@ public class BloggView extends Activity {
 
 		app = ((MobilbloggApp)getApplicationContext());
 
-		this.setTitle(username);
+		username = getIntent().getStringExtra("username");
+
+		this.setTitle(username +"'s mobilblogg");
 		
 		activity = this;
 		
@@ -70,6 +74,7 @@ public class BloggView extends Activity {
 		myBloggThread = new Thread() {
 			public void run() {
 
+				System.out.println("USERNAME:"+username);
 				final String jsonresponse = app.com.getBlogg(username);				
 
 				Runnable action = new Runnable() {
@@ -112,7 +117,6 @@ public class BloggView extends Activity {
 		final PostInfo pi = p;
 		
 		gallery.setAdapter(new AddImgAdp(c, this, pi));
-
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView parent, View v, int position, long id) {				
 				app.imgLoader.DisplayImage(pi.img[position], activity, imgView);
@@ -125,6 +129,19 @@ public class BloggView extends Activity {
 				textView.setText(Html.fromHtml(pi.text[position]));
 				username = pi.user[position];
 				imgid = pi.imgid[position];
+				int num = pi.numComment[position];
+				if(num > 0) {
+					commentButton.setVisibility(commentButton.VISIBLE);
+					commentButton.setEnabled(true);
+					if(num == 1) {
+						commentButton.setText(num + " kommentar");
+					} else {
+						commentButton.setText(num + " kommentarer");
+					}
+				} else {
+					commentButton.setVisibility(commentButton.INVISIBLE);					
+					commentButton.setEnabled(false);
+				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});

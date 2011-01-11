@@ -35,11 +35,13 @@
 
 				<Button android:id="@+id/bloggButton" android:layout_height="wrap_content"
 					android:text="@string/blogg" android:onClick="@string/startPageButtonHandler"
-					android:layout_width="wrap_content" android:textSize="20dip"></Button>
+					android:layout_width="wrap_content" android:textSize="20dip"
+					android:visibility="invisible"></Button>
 				<Button android:id="@+id/commentButton"
 					android:layout_height="wrap_content" android:text="@string/comment"
 					android:onClick="@string/startPageButtonHandler"
-					android:layout_width="wrap_content" android:textSize="20dip"></Button>
+					android:layout_width="wrap_content" android:textSize="20dip"
+					android:visibility="invisible"></Button>
 			</LinearLayout>
 
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,8 @@ public class StartPageView extends Activity {
 	TextView headlineView;
 	TextView textView;
 	TextView dateView;
+	Button commentButton;
+	Button bloggButton;
 	Activity activity;
 
 	/* (non-Javadoc)
@@ -54,6 +57,8 @@ public class StartPageView extends Activity {
 		headlineView = (TextView)findViewById(R.id.headline);
 		textView = (TextView)findViewById(R.id.text);
 		dateView = (TextView)findViewById(R.id.date);
+		commentButton = (Button)findViewById(R.id.commentButton);
+		bloggButton = (Button)findViewById(R.id.bloggButton);
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 
 		dialog = new ProgressDialog(StartPageView.this);
@@ -69,7 +74,6 @@ public class StartPageView extends Activity {
 		dialog.show();
 		myBloggThread = new Thread() {
 			public void run() {
-
 				final String jsonresponse = app.com.getStartPage();				
 
 				Runnable action = new Runnable() {
@@ -112,7 +116,6 @@ public class StartPageView extends Activity {
 		final PostInfo pi = p;
 
 		gallery.setAdapter(new AddImgAdp(c, this, pi));
-
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView parent, View v, int position, long id) {				
 				app.imgLoader.DisplayImage(pi.img[position], activity, imgView);
@@ -125,6 +128,24 @@ public class StartPageView extends Activity {
 				username = pi.user[position];
 				imgid = pi.imgid[position];
 				textView.setText(Html.fromHtml(pi.text[position]));
+				
+				if(!username.equals(app.getUserName())) {
+					bloggButton.setVisibility(bloggButton.VISIBLE);
+				}
+				
+				int num = pi.numComment[position];
+				if(num > 0) {
+					commentButton.setVisibility(commentButton.VISIBLE);
+					commentButton.setEnabled(true);
+					if(num == 1) {
+						commentButton.setText(num + " kommentar");
+					} else {
+						commentButton.setText(num + " kommentarer");
+					}
+				} else {
+					commentButton.setText("Inga kommentarer");
+					commentButton.setEnabled(false);
+				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
@@ -192,7 +213,7 @@ public class StartPageView extends Activity {
 			imgView.setLayoutParams(new Gallery.LayoutParams(150, 120));
 			imgView.setScaleType(ImageView.ScaleType.FIT_XY);
 			imgView.setBackgroundResource(GalItemBg);
-
+			
 			return imgView;
 		}
 	}

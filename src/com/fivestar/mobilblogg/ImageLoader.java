@@ -210,7 +210,6 @@ public class ImageLoader {
 				imageView.setImageBitmap(bitmap);
 			else
 				imageView.setImageResource(stub_id);
-			imageView.invalidate();
 		}
 	}
 

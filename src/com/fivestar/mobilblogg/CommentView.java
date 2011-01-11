@@ -59,9 +59,14 @@ public class CommentView extends ListActivity  {
 									ci.username[i]   = json.getJSONObject(i).get("author").toString();
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
 									ci.createdate[i] = json.getJSONObject(i).get("createdate").toString();
-									ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
+									
+									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
+										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
+									} else {
+										ci.username[i] = ci.username[i].replaceAll(" (ej inloggad)", "");
+										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif"; // TODO, don't hardcode!
+									}
 								}
-								System.out.println("SET ADAPTER");
 								adapter = new CommentViewAdapter(activity, ci);
 								activity.setListAdapter(adapter);
 							} catch (JSONException j) {
