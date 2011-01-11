@@ -124,14 +124,14 @@ public class BloggView extends Activity {
 				imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX[position], pi.imgY[position]));
 				imgView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-				headlineView.setText(pi.headline[position]);
+				headlineView.setText(Html.fromHtml(pi.headline[position]));
 				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
 				textView.setText(Html.fromHtml(pi.text[position]));
 				username = pi.user[position];
 				imgid = pi.imgid[position];
 				int num = pi.numComment[position];
 				if(num > 0) {
-					commentButton.setVisibility(commentButton.VISIBLE);
+					commentButton.setVisibility(View.VISIBLE);
 					commentButton.setEnabled(true);
 					if(num == 1) {
 						commentButton.setText(num + " kommentar");
@@ -139,7 +139,7 @@ public class BloggView extends Activity {
 						commentButton.setText(num + " kommentarer");
 					}
 				} else {
-					commentButton.setVisibility(commentButton.INVISIBLE);					
+					commentButton.setVisibility(View.INVISIBLE);					
 					commentButton.setEnabled(false);
 				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);

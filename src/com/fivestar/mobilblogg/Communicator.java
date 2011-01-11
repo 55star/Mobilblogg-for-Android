@@ -37,7 +37,6 @@ import org.json.JSONException;
 import android.os.Environment;
 
 public class Communicator extends Thread {
-	private static final String TAG = "Communicator";
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
 	private String api  = "api_android_1.0.t";
@@ -212,8 +211,6 @@ public class Communicator extends Thread {
 		try {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
-			System.out.println("REQUEST FOR: "+url);
-			System.out.println("Secret="+secret+" text="+text+" path="+"/files/"+username);
 
 			FileBody bin = new FileBody(f);			
 			StringBody sb1 = new StringBody("ladda_upp");

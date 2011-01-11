@@ -83,8 +83,6 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		final String body = bodyText.getText().toString();
 		final String showfor = itemValues[rights.getSelectedItemPosition()];
 		final Activity activity = this;
-
-		System.out.println("RIGHTS: "+rights);
 		
 		dialog.show();
 		composeThread = new Thread() {
