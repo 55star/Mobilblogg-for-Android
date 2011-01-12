@@ -11,7 +11,7 @@ import android.view.View;
 public class mainMenuView extends Activity {
 
 	private MobilbloggApp app;
-	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -40,6 +40,15 @@ public class mainMenuView extends Activity {
 			Intent cIntent = new Intent(view.getContext(), CameraView.class);
 			startActivityForResult(cIntent, 0);
 			break;
+		case R.id.Button04:
+			System.out.println("Logout");
+	/*
+			app.com.shutdownHttpClient();
+			app.setUserName("");
+			app.imgLoader.clearCache();
+			app.setLoggedInStatus(false);
+			moveTaskToBack();
+	*/		break;
 		}
 	}
 }

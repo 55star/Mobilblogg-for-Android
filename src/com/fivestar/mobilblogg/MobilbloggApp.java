@@ -2,8 +2,8 @@ package com.fivestar.mobilblogg;
 
 import android.app.Application;
 
-public class MobilbloggApp extends Application{
-	private String userName;
+public class MobilbloggApp extends Application {
+	private String userName = "";
 	private boolean loggedInStatus = false;
 	private String latestImg;
 	public Communicator com;

@@ -14,6 +14,8 @@
 	<string name="mainMenuMyStartPage">Min startsida</string>
 	<string name="mainMenuStartPage">Förstasidan</string>
 	<string name="mainMenuUser">Blogg</string>
+	<string name="mainMenuLogout">Logga ut</string>
+	
 	<string name="please_wait">Vänligen vänta...</string>
 	<string name="empty">Tom</string>
 	<color name="colorwhite">#FFFFFF</color>

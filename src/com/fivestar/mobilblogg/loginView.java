@@ -54,13 +54,12 @@ public class loginView extends Activity {
 							System.out.println("Login successful!");
 							app.setUserName(userName);
 							app.setLoggedInStatus(true);
-							Intent myIntent = new Intent(activity,
-									mainMenuView.class);
+							Intent myIntent = new Intent(activity, mainMenuView.class);
 							startActivityForResult(myIntent, 0);
 							finish();
 						} else {
 							System.out.println("Login failure");
-							Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
 						}
 					}
 				};
