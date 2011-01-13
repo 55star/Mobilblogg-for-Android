@@ -42,13 +42,11 @@ public class mainMenuView extends Activity {
 			break;
 		case R.id.Button04:
 			System.out.println("Logout");
-	/*
 			app.com.shutdownHttpClient();
 			app.setUserName("");
-			app.imgLoader.clearCache();
 			app.setLoggedInStatus(false);
-			moveTaskToBack();
-	*/		break;
+			finish();
+			break;
 		}
 	}
 }
