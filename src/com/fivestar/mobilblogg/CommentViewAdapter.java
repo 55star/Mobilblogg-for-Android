@@ -1,25 +1,30 @@
 package com.fivestar.mobilblogg;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CommentViewAdapter extends BaseAdapter {
 
-	private Activity context;
 	private CommentInfo ci;
-	public ImageLoader imageLoader; 
+	private Activity context;
+	public AsyncImageLoader imageLoader; 
+	public MobilbloggApp app;
 
-	public CommentViewAdapter(Activity a, CommentInfo comInfo) {
+	
+	public CommentViewAdapter(Activity a, CommentInfo comInfo, MobilbloggApp mba) {
 		super();
 		context = a;
+		app = mba;
 		ci = comInfo;
-		imageLoader = new ImageLoader(context.getApplicationContext());
+		imageLoader = app.asyncImageLoader;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -29,12 +34,20 @@ public class CommentViewAdapter extends BaseAdapter {
 			LayoutInflater inflater = context.getLayoutInflater();
 			row = inflater.inflate(R.layout.item, null);
 		}
-		ImageView avatar = (ImageView)row.findViewById(R.id.avatar);
+		final ImageView avatar = (ImageView)row.findViewById(R.id.avatar);
 		TextView  comment = (TextView)row.findViewById(R.id.comment);
 		TextView  username = (TextView)row.findViewById(R.id.username);
 		TextView  date = (TextView)row.findViewById(R.id.date);
 
-		imageLoader.DisplayImage(ci.avatar[position], context, avatar);
+//		imageLoader.DisplayImage(ci.avatar[position], context, avatar);
+
+		Drawable cachedImage = app.asyncImageLoader.loadDrawable(ci.avatar[position], new ImageCallback() {
+		    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+		        avatar.setImageDrawable(imageDrawable);
+		    }
+		});
+	    avatar.setImageDrawable(cachedImage);
+		
 		comment.setText(Html.fromHtml(ci.comment[position]));
 		username.setText(ci.username[position]);
 		date.setText(ci.createdate[position]);

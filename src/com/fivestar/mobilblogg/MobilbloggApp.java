@@ -7,7 +7,7 @@ public class MobilbloggApp extends Application {
 	private boolean loggedInStatus = false;
 	private String latestImg;
 	public Communicator com;
-	public ImageLoader imgLoader;
+	public AsyncImageLoader asyncImageLoader;
 	
 	
 	public String getUserName(){
@@ -45,9 +45,7 @@ public class MobilbloggApp extends Application {
 	}
 	
 	private void startImageLoader() {
-		imgLoader = new ImageLoader(this);
-		//clear cache on startup
-		imgLoader.clearCache();
+		asyncImageLoader = new AsyncImageLoader();
 	}
 	
 	private void startHttpEngine() {

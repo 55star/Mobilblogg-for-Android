@@ -3,6 +3,9 @@
  */
 package com.fivestar.mobilblogg;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.Activity;
@@ -10,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -48,7 +52,7 @@ public class StartPageView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.startpage);
+		setContentView(R.layout.blogg);
 
 		this.setTitle("Min startsida");
 
@@ -84,19 +88,24 @@ public class StartPageView extends Activity {
 							try {
 								JSONArray json = new JSONArray(jsonresponse);
 								int len = json.length();
-								pi = new PostInfo(len);
+								List<PostInfo> piList = new ArrayList<PostInfo>();
 								for(int i=0; i<len;i++) {
-									pi.img[i]      = json.getJSONObject(i).get("picture_large").toString();
-									pi.imgX[i]     = json.getJSONObject(i).getInt("picture_large_x");
-									pi.imgY[i]     = json.getJSONObject(i).getInt("picture_large_y");
-									pi.headline[i] = json.getJSONObject(i).get("caption").toString();
-									pi.text[i]     = json.getJSONObject(i).get("body").toString();
-									pi.user[i]     = json.getJSONObject(i).get("user").toString();
-									pi.createdate[i] = json.getJSONObject(i).get("createdate").toString();
-									pi.imgid[i]    = json.getJSONObject(i).get("id").toString();
-									pi.numComment[i] = json.getJSONObject(i).getInt("nbr_comments");
+									PostInfo pi = new PostInfo();
+									pi.img      = json.getJSONObject(i).get("picture_large").toString();
+									pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
+									pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+									pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
+									pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
+									pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
+									pi.headline = json.getJSONObject(i).get("caption").toString();
+									pi.text     = json.getJSONObject(i).get("body").toString();
+									pi.user     = json.getJSONObject(i).get("user").toString();
+									pi.createdate = json.getJSONObject(i).get("createdate").toString();
+									pi.imgid    = json.getJSONObject(i).get("id").toString();
+									pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+									piList.add(pi);
 								}
-								fillList(app,pi);
+								fillList(app,piList);
 							} catch (JSONException j) {
 								System.out.println("JSON error:" + j.toString());
 							}
@@ -112,22 +121,27 @@ public class StartPageView extends Activity {
 		myBloggThread.start();
 	}
 
-	public void fillList(Context c, PostInfo p) {
-		final PostInfo pi = p;
-
-		gallery.setAdapter(new AddImgAdp(c, this, pi));
+	public void fillList(Context c, List<PostInfo> p) {
+		final List<PostInfo> piList = p;
+		gallery.setAdapter(new PostInfoAdapter(activity, piList, app));
 		gallery.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView parent, View v, int position, long id) {				
-				app.imgLoader.DisplayImage(pi.img[position], activity, imgView);
+			public void onItemClick(AdapterView parent, View v, int position, long id) {
+				final PostInfo pi = piList.get(position);
 
-				imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX[position], pi.imgY[position]));
-				imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-
-				headlineView.setText(Html.fromHtml(pi.headline[position]));
-				dateView.setText(Utils.prettyDate(pi.createdate[position]) + " av " + pi.user[position]);
-				username = pi.user[position];
-				imgid = pi.imgid[position];
-				textView.setText(Html.fromHtml(pi.text[position]));
+				Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
+				    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+				        imgView.setImageDrawable(imageDrawable);
+						imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
+						imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+				    }
+				});
+			    imgView.setImageDrawable(cachedImage);
+				
+				headlineView.setText(Html.fromHtml(pi.headline));
+				dateView.setText(Utils.prettyDate(pi.createdate) + " av " + pi.user);
+				textView.setText(Html.fromHtml(pi.text));
+				username = pi.user;
+				imgid = pi.imgid;
 				
 				if(!username.equals(app.getUserName())) {
 					bloggButton.setVisibility(View.VISIBLE);
@@ -137,7 +151,7 @@ public class StartPageView extends Activity {
 					bloggButton.setEnabled(false);
 				}
 				
-				int num = pi.numComment[position];
+				int num = pi.numComment;
 				if(num > 0) {
 					commentButton.setVisibility(View.VISIBLE);
 					commentButton.setEnabled(true);
@@ -180,45 +194,4 @@ public class StartPageView extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 	}	
-
-	public class AddImgAdp extends BaseAdapter {
-		int GalItemBg;
-		private Context cont;
-		private Activity activity;
-		private PostInfo pi;
-		private ImageLoader imageLoader;
-
-		public AddImgAdp(Context c, Activity a, PostInfo p) {
-			cont = c;
-			activity = a;
-			pi = p;
-			imageLoader=app.imgLoader;
-			TypedArray typArray = obtainStyledAttributes(R.styleable.GalleryTheme);
-			GalItemBg = typArray.getResourceId(R.styleable.GalleryTheme_android_galleryItemBackground, 0);
-			typArray.recycle();
-		}
-
-		public int getCount() {
-			return pi.length;
-		}
-
-		public Object getItem(int position) {
-			return position;
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView imgView = new ImageView(cont);
-
-			imageLoader.DisplayImage(pi.img[position], activity, imgView);
-			imgView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-			imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-			imgView.setBackgroundResource(GalItemBg);
-			
-			return imgView;
-		}
-	}
 }

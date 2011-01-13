@@ -67,7 +67,7 @@ public class CommentView extends ListActivity  {
 										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif"; // TODO, don't hardcode!
 									}
 								}
-								adapter = new CommentViewAdapter(activity, ci);
+								adapter = new CommentViewAdapter(activity, ci, app);
 								activity.setListAdapter(adapter);
 							} catch (JSONException j) {
 								System.out.println("JSON error:" + j.toString());
