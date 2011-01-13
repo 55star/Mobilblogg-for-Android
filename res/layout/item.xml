@@ -11,20 +11,19 @@
 
 		<ImageView android:id="@+id/avatar" android:layout_width="80dip"
 			android:layout_height="80dip" android:src="@drawable/stub"
-			android:scaleType="centerInside" />
+			android:scaleType="fitXY" />
 		<TextView android:id="@+id/username" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_gravity="left|center_vertical"
-			android:textSize="16dip" android:text="" android:textColor="@color/colorblack" />
+			android:textSize="12dip" android:textColor="@color/colorblack" />
 		<TextView android:id="@+id/date" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:layout_weight="1"
-			android:layout_gravity="left|center_vertical" android:textSize="16dip"
-			android:text="" android:textColor="@color/colorgray" />
+			android:layout_gravity="left|center_vertical" android:textSize="12dip"
+			android:textColor="@color/colorgray" />
 	</LinearLayout>
 
 	<TextView android:id="@+id/comment" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_gravity="top|left"
-		android:textSize="16dip"
-		android:text=""
-		android:textColor="@color/colorblack" android:layout_margin="2dip"/>
+		android:textSize="16dip" android:textColor="@color/colorblack"
+		android:layout_margin="4dip" />
 
 </LinearLayout>

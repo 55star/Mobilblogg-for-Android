@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,7 +13,6 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 
 public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
-	private final static String TAG = "PostInfoAdapter";
 	MobilbloggApp app;
 	int galleryItemBg;
 	List<PostInfo> listInfo;
@@ -34,8 +31,6 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Activity activity = (Activity) getContext();
-		LayoutInflater inflater = activity.getLayoutInflater();
 		PostInfo pi = getItem(position);	
 		
 		// Load the image and set it on the ImageView

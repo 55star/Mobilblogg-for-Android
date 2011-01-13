@@ -60,10 +60,15 @@ public class CommentView extends ListActivity  {
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
 									ci.createdate[i] = json.getJSONObject(i).get("createdate").toString();
 									
+									System.out.println("USERNAME:"+ci.username[i]);
+									
 									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
+										System.out.println("Get avatar for "+ci.username[i]);										
 										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
 									} else {
-										ci.username[i] = ci.username[i].replaceAll(" (ej inloggad)", "");
+										System.out.println("No avatar for "+ci.username[i]);										
+										ci.username[i] = ci.username[i].replace(" (ej inloggad)", "");
+										System.out.println("Replaced ej inloggad: "+ci.username[i]);										
 										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif"; // TODO, don't hardcode!
 									}
 								}
