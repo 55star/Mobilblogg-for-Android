@@ -34,5 +34,6 @@
 	<string name="startPageButtonHandler">startPageClickHandler</string>
 	<string name="blogg">Till blogg</string>
 	<string name="comment">Kommentarer</string>
+	<string name="blogornot">Vill du blogga den här bilden?</string>
 
 </resources>

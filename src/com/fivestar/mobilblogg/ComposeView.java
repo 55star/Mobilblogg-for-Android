@@ -29,6 +29,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	private ProgressDialog dialog;
 	private Thread composeThread;
 	private MobilbloggApp app;
+	private String filePath;
 	private String[] itemLabels = {"Alla","Alla, inte på förstasidan","Medlemmar","Mina vänner", "Mig"};
 	private String[] itemValues = {"","blog", "members","friends", "private"};
 
@@ -51,7 +52,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 		app = ((MobilbloggApp)getApplicationContext());
-
+		filePath = getIntent().getStringExtra("filepath");
 		rights.setOnItemSelectedListener(this);
 		ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemLabels);
 		aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,7 +62,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		// load image from sdcard
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 2;
-		Bitmap bm = BitmapFactory.decodeFile("/sdcard/Mobilblogg/latest/0.jpg", options);
+		Bitmap bm = BitmapFactory.decodeFile(filePath, options);
 		image.setImageBitmap(bm); 
 	}
 

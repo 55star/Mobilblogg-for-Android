@@ -1,130 +1,118 @@
 package com.fivestar.mobilblogg;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
 
-public class CameraView extends Activity implements SurfaceHolder.Callback {
-	static final int FOTO_MODE = 0;
-	private static final String TAG = "Camera";
-	Camera mCamera;
-	boolean mPreviewRunning = false;
+public class CameraView extends Activity {
+	private static final String TAG = "CameraView";
+	CameraPreview preview;
+	Button buttonClick;
+	Dialog dialog;
+	String filePath;
 	private Context mContext = this;
 
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
-
-//		Bundle extras = getIntent().getExtras();
-
-		getWindow().setFormat(PixelFormat.TRANSLUCENT);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.camera);
-		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
-		mSurfaceHolder = mSurfaceView.getHolder();
-		mSurfaceHolder.addCallback(this);
-		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	}
-
-	public void cameraClickHandler(View view) {
-		if(view.getId() == R.id.camera_button) {
-			AutoFocusCallBackImpl autoFocusCallBack = new AutoFocusCallBackImpl();
-			mCamera.autoFocus(autoFocusCallBack);
-		}
-	}
-
+	/** Called when the activity is first created. */
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.camera);
+
+		preview = new CameraPreview(this);
+		((FrameLayout) findViewById(R.id.preview)).addView(preview);
+
+		buttonClick = (Button) findViewById(R.id.buttonClick);
+		buttonClick.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+			}
+		});
+				
+		// Setup Dialog
+		dialog = new Dialog(mContext);
+		dialog.setContentView(R.layout.cameradialog);
+		dialog.setTitle("Vill du blogga den här bilden?");
+		dialog.setCancelable(true);
+
+		Button yesButton = (Button) dialog.findViewById(R.id.Button01);
+		yesButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Log.i(TAG, "Yes click in dialog");
+				dialog.dismiss();
+				
+				Intent composeIntent = new Intent(mContext, ComposeView.class);
+				composeIntent.putExtra("filepath", filePath);
+				startActivityForResult(composeIntent, 0);
+				finish();
+
+			}
+		});
+		Button noButton = (Button) dialog.findViewById(R.id.Button02);
+		noButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Log.i(TAG, "No click in dialog");
+				dialog.dismiss();
+				finish();
+			}
+		});
+
+		Log.d(TAG, "onCreate'd");
 	}
 
-	Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-		public void onPictureTaken(byte[] imageData, Camera c) {
-
-			if (imageData != null) {
-				int jpegcomp = 80;
-				String filename = "0";
-				Utils.StoreByteImage(mContext, imageData, jpegcomp, filename);
-
-				mCamera.startPreview();
-
-				Intent composeIntent = new Intent(mContext, ComposeView.class);
-				startActivityForResult(composeIntent, 0);
-//				finish();
-			}
+	// Called when shutter is opened
+	ShutterCallback shutterCallback = new ShutterCallback() { // <6>
+		public void onShutter() {
+			Log.d(TAG, "onShutter'd");
 		}
 	};
 
-	protected void onResume() {
-		Log.e(TAG, "onResume");
-		super.onResume();
-	}
-
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-
-	protected void onStop() {
-		Log.e(TAG, "onStop");
-		super.onStop();
-	}
-
-	public void surfaceCreated(SurfaceHolder holder) {
-		Log.e(TAG, "surfaceCreated");
-		mCamera = Camera.open();
-
-	}
-
-	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		Log.e(TAG, "surfaceChanged");
-
-		// XXX stopPreview() will crash if preview is not running
-		if (mPreviewRunning) {
-			mCamera.stopPreview();
+	// Handles data for raw picture
+	PictureCallback rawCallback = new PictureCallback() { // <7>
+		public void onPictureTaken(byte[] data, Camera camera) {
+			Log.d(TAG, "onPictureTaken - raw");
 		}
+	};
 
-		Camera.Parameters p = mCamera.getParameters();
-		p.setPreviewSize(w, h);
-		mCamera.setParameters(p);
-		try {
-			mCamera.setPreviewDisplay(holder);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	// Handles data for jpeg picture
+	PictureCallback jpegCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			FileOutputStream outStream = null;
+			try {
+				// Write to SD Card
+				filePath = String.format("/sdcard/Mobilblogg/latest/%d.jpg", System.currentTimeMillis());
+				outStream = new FileOutputStream(filePath);
+				outStream.write(data);
+				outStream.close();
+				Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length + "to " + filePath);
+
+				dialog.show();
+//
+//				Intent composeIntent = new Intent(mContext, ComposeView.class);
+//				startActivityForResult(composeIntent, 0);
+//				finish();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+			}
+			Log.d(TAG, "onPictureTaken - jpeg");
 		}
-		mCamera.startPreview();
-		mPreviewRunning = true;
-	}
-
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		Log.e(TAG, "surfaceDestroyed");
-		mCamera.stopPreview();
-		mPreviewRunning = false;
-		mCamera.release();
-	}
-
-	private SurfaceView mSurfaceView;
-	private SurfaceHolder mSurfaceHolder;
-
-	private class AutoFocusCallBackImpl implements Camera.AutoFocusCallback {
-		public void onAutoFocus(boolean success, Camera camera) {
-			Log.i(TAG, "Inside autofocus callback. autofocused="+success);
-			//play the autofocus sound
-			//MediaPlayer.create(mContext, R.raw.auto_focus).start();
-			mCamera.takePicture(null, mPictureCallback, mPictureCallback);
-		}
-	}
+	};
 }
-
-
