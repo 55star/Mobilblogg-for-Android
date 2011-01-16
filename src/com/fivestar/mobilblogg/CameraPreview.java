@@ -12,48 +12,48 @@ import android.view.SurfaceView;
 class CameraPreview extends SurfaceView implements SurfaceHolder.Callback { // <1>
 	private static final String TAG = "CameraPreview";
 
-	SurfaceHolder mHolder;  // <2>
-	public Camera camera; // <3>
+	SurfaceHolder mHolder;
+	public Camera camera;
 
 	CameraPreview(Context context) {
 		super(context);
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
-		mHolder = getHolder();  // <4>
-		mHolder.addCallback(this);  // <5>
-		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS); // <6>
+		mHolder = getHolder(); 
+		mHolder.addCallback(this);
+		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS); 
 	}
 
 	// Called once the holder is ready
-	public void surfaceCreated(SurfaceHolder holder) {  // <7>
+	public void surfaceCreated(SurfaceHolder holder) { 
 		// The Surface has been created, acquire the camera and tell it where
 		// to draw.
-		camera = Camera.open(); // <8>
+		camera = Camera.open();
 		try {
-			camera.setPreviewDisplay(holder);  // <9>
+			camera.setPreviewDisplay(holder);
 
-			camera.setPreviewCallback(new PreviewCallback() { // <10>
+			camera.setPreviewCallback(new PreviewCallback() { 
 				// Called for each frame previewed
-				public void onPreviewFrame(byte[] data, Camera camera) {  // <11>
+				public void onPreviewFrame(byte[] data, Camera camera) { 
 				//	Log.d(TAG, "onPreviewFrame called at: " + System.currentTimeMillis());
-					CameraPreview.this.invalidate();  // <12>
+					CameraPreview.this.invalidate(); 
 				}
 			});
-		} catch (IOException e) { // <13>
+		} catch (IOException e) { 
 			e.printStackTrace();
 		}
 	}
 
 	// Called when the holder is destroyed
-	public void surfaceDestroyed(SurfaceHolder holder) {  // <14>
+	public void surfaceDestroyed(SurfaceHolder holder) { 
 		camera.release();
 		//camera.stopPreview();
 		camera = null;
 	}
 
 	// Called when holder has changed
-	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) { // <15>
+	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
 		camera.startPreview();
 	}
 
