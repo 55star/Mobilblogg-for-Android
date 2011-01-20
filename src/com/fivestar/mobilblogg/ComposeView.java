@@ -91,7 +91,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				String resp = null;
 				final String jsonresponse;
 				try {
-					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor);
+					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, filePath);
 				} catch (Throwable e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

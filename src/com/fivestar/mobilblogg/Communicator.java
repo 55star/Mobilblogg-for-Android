@@ -34,7 +34,6 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
-import android.os.Environment;
 
 public class Communicator extends Thread {
 	private String protocoll = "http://";
@@ -162,6 +161,21 @@ public class Communicator extends Thread {
 		return jsonresponse;
 	}	
 
+	public String getFirstPage() {
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listFirstpage";
+		String jsonresponse = "";
+		HttpGet getMethod = new HttpGet(url);
+		System.out.println("URL:"+url);
+		try {
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			jsonresponse = client.execute(getMethod, responseHandler);
+		} catch (Throwable t) {
+			System.out.println("Request failed:"+t.toString());
+			return null;
+		}
+		return jsonresponse;
+	}		
+	
 	public String getComments(int imgid) {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listComments&imgid="+imgid;
 		String jsonresponse = "";
@@ -204,9 +218,9 @@ public class Communicator extends Thread {
 	}	
 
 
-	public String doUpload(String username, String secret, String caption, String text, String showfor) throws Throwable {
+	public String doUpload(String username, String secret, String caption, String text, String showfor, String filePath) throws Throwable {
 
-		File f = new File(Environment.getExternalStorageDirectory()+"/Mobilblogg/latest/0.jpg");
+		File f = new File(filePath);
 
 		try {
 			String url = protocoll+host+"/o.o.i.s";

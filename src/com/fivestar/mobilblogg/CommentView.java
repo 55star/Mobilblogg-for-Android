@@ -78,7 +78,6 @@ public class CommentView extends ListActivity  {
 								System.out.println("JSON error:" + j.toString());
 							}
 						} else {
-							System.out.println("StartPage failure");
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
 						}
 					}

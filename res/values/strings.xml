@@ -12,9 +12,9 @@
 	<string name="mainMenuMyBlogg">Min blogg</string>
 	<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
 	<string name="mainMenuMyStartPage">Min startsida</string>
-	<string name="mainMenuStartPage">Förstasidan</string>
 	<string name="mainMenuUser">Blogg</string>
 	<string name="mainMenuLogout">Logga ut</string>
+	<string name="mainMenuFirstPage">Förstasidan</string>
 	
 	<string name="please_wait">Vänligen vänta...</string>
 	<string name="empty">Tom</string>

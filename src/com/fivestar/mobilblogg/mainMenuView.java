@@ -35,11 +35,19 @@ public class mainMenuView extends Activity {
 			Intent spIntent = new Intent(view.getContext(), StartPageView.class);
 			startActivityForResult(spIntent, 0);
 			break;
+			
+		case R.id.Button05:
+			System.out.println("Goto firstpage");
+			Intent fpIntent = new Intent(view.getContext(), FirstPageView.class);
+			startActivityForResult(fpIntent, 0);
+			break;
+
 		case R.id.Button03:
 			System.out.println("Goto camera");
 			Intent cIntent = new Intent(view.getContext(), CameraView.class);
 			startActivityForResult(cIntent, 0);
 			break;
+
 		case R.id.Button04:
 			System.out.println("Logout");
 			app.com.shutdownHttpClient();
