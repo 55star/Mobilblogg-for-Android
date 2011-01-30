@@ -2,28 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/LinearLayout01" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:orientation="horizontal"
-	android:background="@color/colorwhite">
+	android:background="@color/colorwhite" android:layout_margin="5dip">
 
+	<ImageView android:id="@+id/avatar" android:layout_width="80dip"
+		android:layout_height="80dip" android:src="@drawable/stub"
+		android:scaleType="fitXY" />
 	<LinearLayout android:id="@+id/LinearLayout02"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:orientation="vertical" android:background="@color/colorwhite"
-		android:layout_margin="5dip">
+		android:orientation="vertical" android:background="@color/colorwhite">
 
-		<ImageView android:id="@+id/avatar" android:layout_width="80dip"
-			android:layout_height="80dip" android:src="@drawable/stub"
-			android:scaleType="fitXY" />
-		<TextView android:id="@+id/username" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_gravity="left|center_vertical"
-			android:textSize="12dip" android:textColor="@color/colorblack" />
-		<TextView android:id="@+id/date" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="1"
-			android:layout_gravity="left|center_vertical" android:textSize="12dip"
-			android:textColor="@color/colorgray" />
+		<LinearLayout android:id="@+id/LinearLayout03"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:orientation="horizontal" android:background="@color/colorwhite"
+			android:layout_margin="5dip">
+
+			<TextView android:id="@+id/username" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:textSize="14dip" android:textColor="@color/colorblack"
+				android:text="user" android:textStyle="bold" android:layout_marginRight="3dip"/>
+			<TextView android:id="@+id/date" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:textSize="14dip"
+				android:textColor="@color/colorblack" android:text="date" />
+		</LinearLayout>
+		<TextView android:id="@+id/comment" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_gravity="top|left"
+			android:textSize="16dip" android:textColor="@color/colorblack"
+			android:text="kommentar" android:layout_marginLeft="5dip" android:layout_marginRight="5dip"/>
 	</LinearLayout>
-
-	<TextView android:id="@+id/comment" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_gravity="top|left"
-		android:textSize="16dip" android:textColor="@color/colorblack"
-		android:layout_margin="4dip" />
 
 </LinearLayout>

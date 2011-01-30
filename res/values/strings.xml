@@ -2,7 +2,6 @@
 <resources>
 	<string name="hello">Hello World, Mobilblogg!</string>
 	<string name="app_name">MobilBlogg</string>
-	<color name="bgcolor">#B0D4DA</color>
 	<string name="username">Användarnamn:</string>
 	<string name="password">Lösenord:</string>
 	<string name="login">Logga in</string>
@@ -11,24 +10,28 @@
 	<string name="loginViewName">Logga in</string>
 	<string name="mainMenuMyBlogg">Min blogg</string>
 	<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
-	<string name="mainMenuMyStartPage">Min startsida</string>
+	<string name="mainMenuMyStartPage">Mina vänner</string>
 	<string name="mainMenuUser">Blogg</string>
 	<string name="mainMenuLogout">Logga ut</string>
 	<string name="mainMenuFirstPage">Förstasidan</string>
-	
+
 	<string name="please_wait">Vänligen vänta...</string>
 	<string name="empty">Tom</string>
+	<color name="bgcolor">#B0D4DA</color>
+
 	<color name="colorwhite">#FFFFFF</color>
 	<color name="colorblack">#000000</color>
-
+	<color name="colorbg">#E7E7E7</color>
 	<color name="colorgray">#C0C0C0</color>
+	<color name="colorbutton">#8C8D8C</color>
+	
 	<string name="takepicture">Ta bild</string>
 	<string name="cameraButtonHandler">cameraClickHandler</string>
 	<string name="headline">Rubrik</string>
 	<string name="body">Text</string>
 	<string name="composeButtonHandler">composeClickHandler</string>
 	<string name="upload">Ladda upp</string>
-	<string name="mainMenuUploadPage">Ta bild och blogga</string>
+	<string name="mainMenuUploadPage">Blogga</string>
 	<string name="secretWord">Hemligt ord</string>
 	<string name="rights">Ska synas för</string>
 	<string name="startPageButtonHandler">startPageClickHandler</string>

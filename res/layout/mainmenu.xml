@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@color/bgcolor"
-	android:padding="10px">
+	android:padding="5dip">
 
 	<Button android:id="@+id/Button01" android:layout_height="wrap_content"
+		android:layout_width="140dip" android:drawableTop="@drawable/comment"
 		android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler"
-		android:layout_width="fill_parent" android:layout_marginBottom="10px"
-		android:layout_marginTop="10px" android:textSize="20dip"></Button>
+		android:textSize="16dip" />
+
 	<Button android:id="@+id/Button02" android:layout_height="wrap_content"
+		android:layout_width="140dip" android:drawableTop="@drawable/comment"
 		android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
-		android:layout_width="fill_parent" android:layout_marginBottom="10px"
-		android:textSize="20dip"></Button>
+		android:textSize="16dip" android:layout_toRightOf="@+id/Button01" />
+
 	<Button android:id="@+id/Button05" android:layout_height="wrap_content"
+		android:layout_width="140dip" android:drawableTop="@drawable/home"
 		android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
-		android:layout_width="fill_parent" android:textSize="20dip"
-		android:layout_marginBottom="10px"></Button>
+		android:textSize="16dip" android:layout_below="@+id/Button01" />
 
 	<Button android:id="@+id/Button03" android:layout_height="wrap_content"
+		android:layout_width="140dip" android:drawableTop="@drawable/cam"
 		android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
-		android:layout_width="fill_parent" android:textSize="20dip"></Button>
-
+		android:textSize="16dip" android:layout_below="@+id/Button02" android:layout_toRightOf="@+id/Button05" />
 
 	<Button android:id="@+id/Button04" android:layout_height="wrap_content"
+		android:layout_width="140dip" android:drawableTop="@drawable/comment"
 		android:text="@string/mainMenuLogout" android:onClick="@string/mainMenuButtonHandler"
-		android:layout_width="fill_parent" android:textSize="20dip"
-		android:layout_marginTop="40dip"></Button>
+		android:textSize="16dip" android:layout_centerHorizontal="true" android:layout_below="@+id/Button03" />
 
-</LinearLayout>
+</RelativeLayout>

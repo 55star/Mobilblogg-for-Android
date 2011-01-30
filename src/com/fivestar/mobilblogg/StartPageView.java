@@ -8,10 +8,15 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import android.R.color;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
@@ -19,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -60,6 +66,10 @@ public class StartPageView extends Activity {
 		dateView = (TextView)findViewById(R.id.date);
 		commentButton = (Button)findViewById(R.id.commentButton);
 		bloggButton = (Button)findViewById(R.id.bloggButton);
+		// change bgcolor
+		PorterDuffColorFilter filter = new PorterDuffColorFilter(0x8C8D8C00, PorterDuff.Mode.MULTIPLY);  
+		bloggButton.getBackground().setColorFilter(filter);  
+
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 
 		dialog = new ProgressDialog(StartPageView.this);
@@ -126,20 +136,20 @@ public class StartPageView extends Activity {
 				final PostInfo pi = piList.get(position);
 
 				Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
-				    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-				        imgView.setImageDrawable(imageDrawable);
+					public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+						imgView.setImageDrawable(imageDrawable);
 						imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
 						imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-				    }
+					}
 				});
-			    imgView.setImageDrawable(cachedImage);
-				
+				imgView.setImageDrawable(cachedImage);
+
 				headlineView.setText(Html.fromHtml(pi.headline));
 				dateView.setText(Utils.prettyDate(pi.createdate) + " av " + pi.user);
 				textView.setText(Html.fromHtml(pi.text));
 				username = pi.user;
 				imgid = pi.imgid;
-				
+
 				if(!username.equals(app.getUserName())) {
 					bloggButton.setVisibility(View.VISIBLE);
 					bloggButton.setEnabled(true);
@@ -147,20 +157,15 @@ public class StartPageView extends Activity {
 					bloggButton.setVisibility(View.INVISIBLE);
 					bloggButton.setEnabled(false);
 				}
-				
 				int num = pi.numComment;
-				if(num > 0) {
+				if(num > 0) { 
 					commentButton.setVisibility(View.VISIBLE);
 					commentButton.setEnabled(true);
-					if(num == 1) {
-						commentButton.setText(num + " kommentar");
-					} else {
-						commentButton.setText(num + " kommentarer");
-					}
 				} else {
 					commentButton.setVisibility(View.INVISIBLE);
 					commentButton.setEnabled(false);
 				}
+				commentButton.setText(num+"");
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
