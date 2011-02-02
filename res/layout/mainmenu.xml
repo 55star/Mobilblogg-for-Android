@@ -10,7 +10,7 @@
 		android:textSize="16dip" />
 
 	<Button android:id="@+id/Button02" android:layout_height="wrap_content"
-		android:layout_width="140dip" android:drawableTop="@drawable/comment"
+		android:layout_width="140dip" android:drawableTop="@drawable/friends"
 		android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
 		android:textSize="16dip" android:layout_toRightOf="@+id/Button01" />
 
