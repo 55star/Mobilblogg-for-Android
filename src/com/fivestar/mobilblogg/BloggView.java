@@ -57,7 +57,7 @@ public class BloggView extends Activity {
 		commentButton = (Button)findViewById(R.id.commentButton);
 
 		dialog = new ProgressDialog(BloggView.this);
-		dialog.setMessage(getString(R.string.please_wait));
+		//dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 

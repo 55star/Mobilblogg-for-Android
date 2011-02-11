@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -88,18 +89,23 @@ public class FirstPageView extends Activity {
 								List<PostInfo> piList = new ArrayList<PostInfo>();
 								for(int i=0; i<len;i++) {
 									PostInfo pi = new PostInfo();
-									pi.img      = json.getJSONObject(i).get("picture_large").toString();
-									pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
-									pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
-									pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
-									pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
-									pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
-									pi.headline = json.getJSONObject(i).get("caption").toString();
-									pi.text     = json.getJSONObject(i).get("body").toString();
-									pi.user     = json.getJSONObject(i).get("user").toString();
-									pi.createdate = json.getJSONObject(i).get("createdate").toString();
-									pi.imgid    = json.getJSONObject(i).get("id").toString();
-									pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+									try {
+										pi.img      = json.getJSONObject(i).get("picture_large").toString();
+										pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
+										pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
+										pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+										pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
+										pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
+										pi.headline = json.getJSONObject(i).get("caption").toString();
+										pi.text     = json.getJSONObject(i).get("body").toString();
+										pi.user     = json.getJSONObject(i).get("user").toString();
+										pi.createdate = json.getJSONObject(i).get("createdate").toString();
+										pi.imgid    = json.getJSONObject(i).get("id").toString();
+										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+									}	catch (NumberFormatException ne) {
+										Log.e("FirstpageView","File not found i image");
+										continue;
+									}
 									piList.add(pi);
 								}
 								fillList(app,piList);
@@ -125,20 +131,20 @@ public class FirstPageView extends Activity {
 				final PostInfo pi = piList.get(position);
 
 				Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
-				    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-				        imgView.setImageDrawable(imageDrawable);
+					public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+						imgView.setImageDrawable(imageDrawable);
 						imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
 						imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-				    }
+					}
 				});
-			    imgView.setImageDrawable(cachedImage);
-				
+				imgView.setImageDrawable(cachedImage);
+
 				headlineView.setText(Html.fromHtml(pi.headline));
 				dateView.setText(Utils.prettyDate(pi.createdate) + " av " + pi.user);
 				textView.setText(Html.fromHtml(pi.text));
 				username = pi.user;
 				imgid = pi.imgid;
-				
+
 				if(!username.equals(app.getUserName())) {
 					bloggButton.setVisibility(View.VISIBLE);
 					bloggButton.setEnabled(true);
@@ -146,7 +152,7 @@ public class FirstPageView extends Activity {
 					bloggButton.setVisibility(View.INVISIBLE);
 					bloggButton.setEnabled(false);
 				}
-				
+
 				int num = pi.numComment;
 				if(num > 0) {
 					commentButton.setVisibility(View.VISIBLE);

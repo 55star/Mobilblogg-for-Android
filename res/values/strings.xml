@@ -5,6 +5,7 @@
 	<string name="username">Användarnamn:</string>
 	<string name="password">Lösenord:</string>
 	<string name="login">Logga in</string>
+	<string name="remember_me">Kom ihåg mig</string>
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
 	<string name="loginViewName">Logga in</string>
@@ -23,6 +24,8 @@
 	<color name="colorblack">#000000</color>
 	<color name="colorbg">#E7E7E7</color>
 	<color name="colorgray">#C0C0C0</color>
+	<color name="colordarkgray">#454545</color>
+	<color name="colorlightgray">#7b7b7b</color>
 	<color name="colorbutton">#8C8D8C</color>
 	
 	<string name="takepicture">Ta bild</string>

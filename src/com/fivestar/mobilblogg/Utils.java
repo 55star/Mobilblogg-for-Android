@@ -2,6 +2,7 @@ package com.fivestar.mobilblogg;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,8 +19,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.util.Log;
 
 public class Utils {
+
+	final static String TAG = "Utils";
 	
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size=1024;
@@ -50,7 +54,7 @@ public class Utils {
 		} 
 		return buf.toString();
 	} 
-	
+
 	public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException  { 
 		MessageDigest md;
 		md = MessageDigest.getInstance("SHA-1");
@@ -82,7 +86,7 @@ public class Utils {
 		}
 		FileOutputStream fileOutputStream = null;
 		String fileName = expName;
-		
+
 		try {
 
 			BitmapFactory.Options options = new BitmapFactory.Options();
@@ -109,4 +113,63 @@ public class Utils {
 
 		return true;
 	}
+
+	public static void saveCredentials(Context c, String userName, String passWord) {
+		String FILENAME = "mb_cred";
+		String delimiter = "|";
+		String string = userName + delimiter + passWord;
+
+		FileOutputStream fos = null;
+		try {
+			fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(fos != null) {
+			try {
+				fos.write(string.getBytes());
+				fos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void removeSavedCredentials(Context c) {
+		File dir = c.getFilesDir();
+		File file = new File(dir, "mb_cred");
+		boolean deleted = file.delete();
+	}
+	
+	public static String getSavedCredentials(Context c) {
+		String FILENAME = "mb_cred";
+		int ch;
+		StringBuffer strContent = new StringBuffer("");
+
+		FileInputStream fin;
+		try {
+			fin = c.openFileInput(FILENAME);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		if(fin != null) {
+			try {
+				while((ch = fin.read()) > -1) {
+					strContent.append((char)ch);
+				}
+				fin.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			return strContent.toString();
+		}
+		return null;
+	}
+
 }

@@ -4,6 +4,7 @@
 package com.fivestar.mobilblogg;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +54,7 @@ public class mainMenuView extends Activity {
 			app.com.shutdownHttpClient();
 			app.setUserName("");
 			app.setLoggedInStatus(false);
+			Utils.removeSavedCredentials((Context)this);
 			finish();
 			break;
 		}

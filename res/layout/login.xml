@@ -23,8 +23,16 @@
 		android:layout_width="fill_parent" android:inputType="textPassword"
 		android:singleLine="true"></EditText>
 
-	<Button android:id="@+id/Button01" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="@string/login"
-		android:onClick="@string/loginButtonHandler" android:textSize="20dip"></Button>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="horizontal" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:background="@color/bgcolor">
 
+		<Button android:id="@+id/Button01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/login"
+			android:onClick="@string/loginButtonHandler" android:textSize="20dip"></Button>
+
+		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" android:layout_marginLeft="15dip" android:text="@string/remember_me"
+			android:textColor="@color/textcolor" android:textSize="16dip" />
+	</LinearLayout>
 </LinearLayout>

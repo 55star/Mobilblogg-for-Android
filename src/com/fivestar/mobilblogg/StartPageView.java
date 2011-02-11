@@ -9,22 +9,18 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.R.color;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -33,6 +29,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class StartPageView extends Activity {
+
+	final String TAG = "StartPageView";
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	PostInfo pi;
@@ -66,9 +64,6 @@ public class StartPageView extends Activity {
 		dateView = (TextView)findViewById(R.id.date);
 		commentButton = (Button)findViewById(R.id.commentButton);
 		bloggButton = (Button)findViewById(R.id.bloggButton);
-		// change bgcolor
-		PorterDuffColorFilter filter = new PorterDuffColorFilter(0x8C8D8C00, PorterDuff.Mode.MULTIPLY);  
-		bloggButton.getBackground().setColorFilter(filter);  
 
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 
@@ -97,20 +92,28 @@ public class StartPageView extends Activity {
 								int len = json.length();
 								List<PostInfo> piList = new ArrayList<PostInfo>();
 								for(int i=0; i<len;i++) {
-									PostInfo pi = new PostInfo();
-									pi.img      = json.getJSONObject(i).get("picture_large").toString();
-									pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
-									pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
-									pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
-									pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
-									pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
-									pi.headline = json.getJSONObject(i).get("caption").toString();
-									pi.text     = json.getJSONObject(i).get("body").toString();
-									pi.user     = json.getJSONObject(i).get("user").toString();
-									pi.createdate = json.getJSONObject(i).get("createdate").toString();
-									pi.imgid    = json.getJSONObject(i).get("id").toString();
-									pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+									try {
+										PostInfo pi = new PostInfo();
+										pi.img      = json.getJSONObject(i).get("picture_large").toString();
+										pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
+										pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+										pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
+										pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
+										pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
+										pi.headline = json.getJSONObject(i).get("caption").toString();
+										pi.text     = json.getJSONObject(i).get("body").toString();
+										pi.user     = json.getJSONObject(i).get("user").toString();
+										pi.createdate = json.getJSONObject(i).get("createdate").toString();
+										pi.imgid    = json.getJSONObject(i).get("id").toString();
+										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+									}	catch (NumberFormatException ne) {
+										Log.e("StartPageView","File not found i image");
+										continue;
+									} catch (JSONException j) {
+										Log.e(TAG,"JSON error:" + j.toString());
+									}
 									piList.add(pi);
+
 								}
 								fillList(app,piList);
 							} catch (JSONException j) {
