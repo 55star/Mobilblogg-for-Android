@@ -140,7 +140,7 @@ public class FirstPageView extends Activity {
 				imgView.setImageDrawable(cachedImage);
 
 				headlineView.setText(Html.fromHtml(pi.headline));
-				dateView.setText(Utils.prettyDate(pi.createdate) + " av " + pi.user);
+				dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
 				textView.setText(Html.fromHtml(pi.text));
 				username = pi.user;
 				imgid = pi.imgid;

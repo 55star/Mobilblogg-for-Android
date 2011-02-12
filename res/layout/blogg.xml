@@ -23,7 +23,7 @@
 				android:layout_gravity="center_horizontal|top" android:scaleType="center" />
 			<TextView android:id="@+id/date" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_gravity="left|top"
-				android:textSize="12dip" android:textColor="@color/colorgray" />
+				android:textSize="12dip" android:textColor="@color/colorblack" />
 			<TextView android:id="@+id/text" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:layout_weight="1"
 				android:layout_gravity="left|top" android:textSize="16dip"

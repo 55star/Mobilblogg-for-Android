@@ -11,9 +11,13 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import org.apache.james.mime4j.field.datetime.DateTime;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,7 +28,7 @@ import android.util.Log;
 public class Utils {
 
 	final static String TAG = "Utils";
-	
+
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size=1024;
 		try {
@@ -62,20 +66,6 @@ public class Utils {
 		md.update(text.getBytes("iso-8859-1"), 0, text.length());
 		sha1hash = md.digest();
 		return convertToHex(sha1hash);
-	}
-
-	public static String prettyDate(String d) {
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-		Date myDate = null;
-		try {
-			myDate = formatter.parse(d);
-		} catch (java.text.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return d;
-		}
-		System.out.println("Time: " + d);
-		return (DateFormat.getDateInstance().format(myDate));
 	}
 
 	public static boolean StoreByteImage(Context mContext, byte[] imageData, int quality, String expName) {
@@ -140,9 +130,9 @@ public class Utils {
 	public static void removeSavedCredentials(Context c) {
 		File dir = c.getFilesDir();
 		File file = new File(dir, "mb_cred");
-		boolean deleted = file.delete();
+		file.delete();
 	}
-	
+
 	public static String getSavedCredentials(Context c) {
 		String FILENAME = "mb_cred";
 		int ch;
@@ -172,4 +162,39 @@ public class Utils {
 		return null;
 	}
 
+	public static String PrettyDate(String cmpDate){    
+		Log.i(TAG, "Make " + cmpDate + " pretty");
+
+		Calendar calNow = Calendar.getInstance();
+		Calendar calCmp = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		try {
+			calCmp.setTime(df.parse(cmpDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		long milliseconds1 = calCmp.getTimeInMillis();
+		long milliseconds2 = calNow.getTimeInMillis();
+		long diff = milliseconds2 - milliseconds1;
+		long diffSeconds = diff / 1000;
+		long diffMinutes = diff / (60 * 1000);
+		long diffHours = diff / (60 * 60 * 1000);
+
+		if(diffSeconds < 60) {
+			return diffSeconds + " sekunder sen";
+		}
+		if(diffMinutes < 60) {
+			return diffMinutes + " minuter sen";
+		}
+		if(diffHours < 24) {
+			return diffHours + " timmar sen";
+		}
+		return calCmp.get(Calendar.DATE) + " " 
+		+ calCmp.get(Calendar.MONTH) + " " 
+		+ calCmp.get(Calendar.HOUR) + ":" 
+		+ calCmp.get(Calendar.MINUTE) + " " 
+		+ calCmp.get(Calendar.YEAR);
+	}
 }
