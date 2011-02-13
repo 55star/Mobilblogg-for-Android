@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class BloggView extends Activity {
+	final String TAG = "StartPageView";
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	PostInfo pi;
@@ -39,6 +41,7 @@ public class BloggView extends Activity {
 	TextView textView;
 	TextView dateView;
 	Button commentButton;
+	Button bloggButton;
 	Activity activity;
 
 	/* (non-Javadoc)
@@ -55,7 +58,7 @@ public class BloggView extends Activity {
 		dateView = (TextView)findViewById(R.id.date);
 		gallery = (Gallery) findViewById(R.id.examplegallery);
 		commentButton = (Button)findViewById(R.id.commentButton);
-
+		bloggButton = (Button)findViewById(R.id.bloggButton);
 		dialog = new ProgressDialog(BloggView.this);
 		//dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
@@ -66,9 +69,9 @@ public class BloggView extends Activity {
 		username = getIntent().getStringExtra("username");
 
 		this.setTitle(username +"'s mobilblogg");
-		
+
 		activity = this;
-		
+
 		dialog.show();
 		myBloggThread = new Thread() {
 			public void run() {
@@ -86,27 +89,36 @@ public class BloggView extends Activity {
 								int len = json.length();
 								List<PostInfo> piList = new ArrayList<PostInfo>();
 								for(int i=0; i<len;i++) {
-									PostInfo pi = new PostInfo();
-									pi.img      = json.getJSONObject(i).get("picture_large").toString();
-									pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
-									pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
-									pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
-									pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
-									pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
-									pi.headline = json.getJSONObject(i).get("caption").toString();
-									pi.text     = json.getJSONObject(i).get("body").toString();
-									pi.user     = json.getJSONObject(i).get("user").toString();
-									pi.createdate = json.getJSONObject(i).get("createdate").toString();
-									pi.imgid    = json.getJSONObject(i).get("id").toString();
-									pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
-									piList.add(pi);
+									try {
+
+										PostInfo pi = new PostInfo();
+										pi.img      = json.getJSONObject(i).get("picture_large").toString();
+										pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
+										pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+										pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
+										pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
+										pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
+										pi.headline = json.getJSONObject(i).get("caption").toString();
+										pi.text     = json.getJSONObject(i).get("body").toString();
+										pi.user     = json.getJSONObject(i).get("user").toString();
+										pi.createdate = json.getJSONObject(i).get("createdate").toString();
+										pi.imgid    = json.getJSONObject(i).get("id").toString();
+										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+										piList.add(pi);
+									}
+									catch (NumberFormatException ne) {
+										Log.e(TAG,"File not found i image");
+										continue;
+									} catch (JSONException j) {
+										Log.e(TAG,"JSON error:" + j.toString());
+									}
 								}
 								fillList(app,piList);
 							} catch (JSONException j) {
-								System.out.println("JSON error:" + j.toString());
+								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							System.out.println("StartPage failure");
+							Log.e(TAG,"StartPage failure");
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -125,37 +137,43 @@ public class BloggView extends Activity {
 				final PostInfo pi = piList.get(position);
 
 				Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
-				    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-				        imgView.setImageDrawable(imageDrawable);
+					public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+						imgView.setImageDrawable(imageDrawable);
 						imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
 						imgView.setScaleType(ImageView.ScaleType.FIT_XY);
-				    }
+					}
 				});
-			    imgView.setImageDrawable(cachedImage);
-				
+				imgView.setImageDrawable(cachedImage);
+
 				headlineView.setText(Html.fromHtml(pi.headline));
 				dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
 				textView.setText(Html.fromHtml(pi.text));
 				username = pi.user;
 				imgid = pi.imgid;
-				int num = pi.numComment;
-				if(num > 0) {
-					commentButton.setVisibility(View.VISIBLE);
-					commentButton.setEnabled(true);
-					if(num == 1) {
-						commentButton.setText(num + " kommentar");
-					} else {
-						commentButton.setText(num + " kommentarer");
-					}
+				bloggButton.setVisibility(View.VISIBLE);
+				commentButton.setVisibility(View.VISIBLE);
+
+				bloggButton.setText(username + "'s blogg");
+				if(!username.equals(app.getUserName())) {
+					bloggButton.setEnabled(true);
 				} else {
-					commentButton.setVisibility(View.INVISIBLE);					
+					bloggButton.setEnabled(false);
+				}
+				int num = pi.numComment;
+				commentButton.setEnabled(true);
+				if(num == 1) {
+					commentButton.setText(num + " kommentar");
+				} else {
+					commentButton.setText(num + " kommentarer");
+				}
+				if(num == 0) {
 					commentButton.setEnabled(false);
 				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
 	}
-	
+
 	public void startPageClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.bloggButton:
@@ -174,7 +192,7 @@ public class BloggView extends Activity {
 			break;
 		}
 	}
-		
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

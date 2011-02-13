@@ -58,10 +58,8 @@ public class CommentView extends ListActivity  {
 								for(int i=0; i<len;i++) {
 									ci.username[i]   = json.getJSONObject(i).get("author").toString();
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
-									ci.createdate[i] = json.getJSONObject(i).get("createdate").toString();
-									
-									System.out.println("USERNAME:"+ci.username[i]);
-									
+									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
+																	
 									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
 										System.out.println("Get avatar for "+ci.username[i]);										
 										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);

@@ -106,21 +106,20 @@ public class StartPageView extends Activity {
 										pi.createdate = json.getJSONObject(i).get("createdate").toString();
 										pi.imgid    = json.getJSONObject(i).get("id").toString();
 										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+										piList.add(pi);
 									}	catch (NumberFormatException ne) {
-										Log.e("StartPageView","File not found i image");
+										Log.e(TAG,"File not found i image (pos "+i+")");
 										continue;
 									} catch (JSONException j) {
 										Log.e(TAG,"JSON error:" + j.toString());
 									}
-									piList.add(pi);
-
 								}
 								fillList(app,piList);
 							} catch (JSONException j) {
-								System.out.println("JSON error:" + j.toString());
+								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							System.out.println("StartPage failure");
+							Log.e(TAG,"StartPage failure");
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -153,22 +152,22 @@ public class StartPageView extends Activity {
 				username = pi.user;
 				imgid = pi.imgid;
 
-				if(!username.equals(app.getUserName())) {
-					bloggButton.setVisibility(View.VISIBLE);
-					bloggButton.setEnabled(true);
-				} else {
-					bloggButton.setVisibility(View.INVISIBLE);
-					bloggButton.setEnabled(false);
-				}
+				bloggButton.setVisibility(View.VISIBLE);
+				commentButton.setVisibility(View.VISIBLE);
+
+				bloggButton.setEnabled(true);
+				bloggButton.setText(username + "'s blogg");
+
 				int num = pi.numComment;
-				if(num > 0) { 
-					commentButton.setVisibility(View.VISIBLE);
-					commentButton.setEnabled(true);
+				commentButton.setEnabled(true);
+				if(num == 1) {
+					commentButton.setText(num + " kommentar");
 				} else {
-					commentButton.setVisibility(View.INVISIBLE);
+					commentButton.setText(num + " kommentarer");
+				}
+				if(num == 0) {
 					commentButton.setEnabled(false);
 				}
-				commentButton.setText(num+"");
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});

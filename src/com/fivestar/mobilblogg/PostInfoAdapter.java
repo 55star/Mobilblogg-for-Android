@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 
 public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
+	final String TAG = "PostInfoAdapter";
 	MobilbloggApp app;
 	int galleryItemBg;
 	List<PostInfo> listInfo;
@@ -32,7 +34,9 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		PostInfo pi = getItem(position);	
-		
+		if(pi == null) {
+			Log.w(TAG,"getItem == null @ position " + position);
+		}
 		// Load the image and set it on the ImageView
 		final ImageView imageView = new ImageView((Context)app);
 		Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.thumb, new ImageCallback() {

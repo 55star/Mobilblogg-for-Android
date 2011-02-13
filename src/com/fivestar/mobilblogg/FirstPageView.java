@@ -28,6 +28,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class FirstPageView extends Activity {
+	final String TAG = "FirstPageView";
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	PostInfo pi;
@@ -102,15 +103,17 @@ public class FirstPageView extends Activity {
 										pi.createdate = json.getJSONObject(i).get("createdate").toString();
 										pi.imgid    = json.getJSONObject(i).get("id").toString();
 										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
-									}	catch (NumberFormatException ne) {
-										Log.e("FirstpageView","File not found i image");
+										piList.add(pi);
+									} catch (NumberFormatException ne) {
+										Log.e(TAG,"File not found i image");
 										continue;
+									} catch (JSONException j) {
+										Log.e(TAG,"JSON error:" + j.toString());
 									}
-									piList.add(pi);
 								}
 								fillList(app,piList);
 							} catch (JSONException j) {
-								System.out.println("JSON error:" + j.toString());
+								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
@@ -145,31 +148,25 @@ public class FirstPageView extends Activity {
 				username = pi.user;
 				imgid = pi.imgid;
 
-				if(!username.equals(app.getUserName())) {
-					bloggButton.setVisibility(View.VISIBLE);
-					bloggButton.setEnabled(true);
-				} else {
-					bloggButton.setVisibility(View.INVISIBLE);
-					bloggButton.setEnabled(false);
-				}
+				bloggButton.setVisibility(View.VISIBLE);
+				commentButton.setVisibility(View.VISIBLE);
+
+				bloggButton.setEnabled(true);
+				bloggButton.setText(username + "'s blogg");
 
 				int num = pi.numComment;
-				if(num > 0) {
-					commentButton.setVisibility(View.VISIBLE);
-					commentButton.setEnabled(true);
-					if(num == 1) {
-						commentButton.setText(num + " kommentar");
-					} else {
-						commentButton.setText(num + " kommentarer");
-					}
+				commentButton.setEnabled(true);
+				if(num == 1) {
+					commentButton.setText(num + " kommentar");
 				} else {
-					commentButton.setVisibility(View.INVISIBLE);
+					commentButton.setText(num + " kommentarer");
+				}
+				if(num == 0) {
 					commentButton.setEnabled(false);
 				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
-		//	gallery.postInvalidate();
 	}
 
 	public void startPageClickHandler(View view) {

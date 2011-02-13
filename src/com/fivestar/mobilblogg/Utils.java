@@ -169,6 +169,8 @@ public class Utils {
 		Calendar calCmp = Calendar.getInstance();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+		String month[] = {"jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"};
+		
 		try {
 			calCmp.setTime(df.parse(cmpDate));
 		} catch (ParseException e) {
@@ -192,7 +194,7 @@ public class Utils {
 			return diffHours + " timmar sen";
 		}
 		return calCmp.get(Calendar.DATE) + " " 
-		+ calCmp.get(Calendar.MONTH) + " " 
+		+ month[calCmp.get(Calendar.MONTH)] + " " 
 		+ calCmp.get(Calendar.HOUR) + ":" 
 		+ calCmp.get(Calendar.MINUTE) + " " 
 		+ calCmp.get(Calendar.YEAR);
