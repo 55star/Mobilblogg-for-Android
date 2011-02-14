@@ -6,32 +6,33 @@
 	<RelativeLayout android:orientation="vertical"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:background="@color/colorwhite" android:padding="20dip"
-		android:layout_gravity="center">
+		android:layout_gravity="center" android:gravity="center_horizontal">
 
 		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
-			android:layout_width="115dip" android:drawableTop="@drawable/comment"
-			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler" />
+			android:layout_width="120dip" android:drawableTop="@drawable/comment"
+			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler" android:layout_marginRight="10dip" />
 
 		<Button android:id="@+id/Button02" android:layout_height="wrap_content"
-			android:layout_width="115dip" android:drawableTop="@drawable/friends"
+			android:layout_width="120dip" android:drawableTop="@drawable/friends"
 			android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_toRightOf="@+id/Button01" />
+			android:layout_toRightOf="@+id/Button01" android:layout_marginLeft="10dip" />
 
 		<Button android:id="@+id/Button05" android:layout_height="wrap_content"
-			android:layout_width="115dip" android:drawableTop="@drawable/home"
+			android:layout_width="120dip" android:drawableTop="@drawable/home"
 			android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_below="@+id/Button01" />
+			android:layout_below="@+id/Button01" android:layout_marginTop="20dip" android:layout_marginRight="10dip" />
 
 		<Button android:id="@+id/Button03" android:layout_height="wrap_content"
-			android:layout_width="115dip" android:drawableTop="@drawable/cam"
+			android:layout_width="120dip" android:drawableTop="@drawable/cam"
 			android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_below="@+id/Button02" android:layout_toRightOf="@+id/Button05" />
+			android:layout_below="@+id/Button02" android:layout_toRightOf="@+id/Button05"
+			android:layout_marginLeft="10dip" android:layout_marginTop="20dip" />
 
 		<Button android:id="@+id/Button04" android:layout_height="wrap_content"
-			android:layout_width="115dip" android:drawableTop="@drawable/logout"
+			android:layout_width="120dip" android:drawableTop="@drawable/logout"
 			android:text="@string/mainMenuLogout" android:onClick="@string/mainMenuButtonHandler"
 			android:textSize="16dip" android:layout_centerHorizontal="true"
-			android:layout_below="@+id/Button03" android:layout_marginTop="50dip" />
+			android:layout_below="@+id/Button03" android:layout_marginTop="30dip" />
 
 	</RelativeLayout>
 </LinearLayout>

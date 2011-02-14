@@ -29,7 +29,7 @@
 
 		<Button android:id="@+id/Button01" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="@string/login"
-			android:onClick="@string/loginButtonHandler" android:textSize="20dip"></Button>
+			android:onClick="@string/loginButtonHandler" android:textSize="20dip" />
 
 		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" android:layout_marginLeft="15dip" android:text="@string/remember_me"

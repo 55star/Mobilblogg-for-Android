@@ -41,7 +41,7 @@ public class loginView extends Activity {
 		passWordText = (EditText) findViewById(R.id.EditText02);
 		rememberMe = (CheckBox) findViewById(R.id.check01);
 		dialog = new ProgressDialog(loginView.this);
-		//		dialog.setMessage(getString(R.string.please_wait));
+		dialog.setMessage(getString(R.string.logging_in));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 		app = ((MobilbloggApp)getApplicationContext());

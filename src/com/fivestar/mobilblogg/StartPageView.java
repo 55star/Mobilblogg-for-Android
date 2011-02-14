@@ -55,7 +55,7 @@ public class StartPageView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blogg);
 
-		this.setTitle("Min startsida");
+		this.setTitle("Mina vänner");
 
 
 		imgView = (ImageView)findViewById(R.id.ImageView01);

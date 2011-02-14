@@ -9,6 +9,7 @@
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
 	<string name="loginViewName">Logga in</string>
+	<string name="logging_in">Loggar in</string>
 	<string name="mainMenuMyBlogg">Min blogg</string>
 	<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
 	<string name="mainMenuMyStartPage">Mina vänner</string>
