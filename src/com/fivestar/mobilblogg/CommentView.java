@@ -7,11 +7,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class CommentView extends ListActivity  {
+public class CommentView extends ListActivity implements View.OnClickListener {
+	final String TAG = "CommentView";
 	ProgressDialog dialog;
 	Thread commentThread;
 	ListActivity activity;
@@ -19,7 +25,7 @@ public class CommentView extends ListActivity  {
 	int imgid = 0;
 	ListView list;
 	CommentViewAdapter adapter;
-	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -29,8 +35,14 @@ public class CommentView extends ListActivity  {
 		setContentView(R.layout.comment);
 		activity = this;
 		imgid = Integer.parseInt(getIntent().getStringExtra("imgid"));
-				
-		list = (ListView)findViewById(android.R.id.list);
+
+		Button b = new Button(this);
+		b.setPadding(0, 5, 5, 0);
+		b.setText("Skriv en kommentar");
+		b.setOnClickListener(this);
+
+		list = (ListView)findViewById(android.R.id.list);	
+		list.addFooterView(b);
 		dialog = new ProgressDialog(CommentView.this);
 		dialog.setMessage(getString(R.string.please_wait));
 		dialog.setIndeterminate(true);
@@ -39,7 +51,7 @@ public class CommentView extends ListActivity  {
 		app = ((MobilbloggApp)getApplicationContext());
 
 		this.setTitle("Kommentarer");
-		
+
 		dialog.show();
 		commentThread = new Thread() {
 			public void run() {
@@ -59,7 +71,7 @@ public class CommentView extends ListActivity  {
 									ci.username[i]   = json.getJSONObject(i).get("author").toString();
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
 									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
-																	
+
 									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
 										System.out.println("Get avatar for "+ci.username[i]);										
 										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
@@ -85,7 +97,15 @@ public class CommentView extends ListActivity  {
 		};
 		commentThread.start();
 	}
-			
+
+	public void onClick(View view) {
+		Log.i(TAG,"Write comment");
+
+		Intent writecommentIntent = new Intent(view.getContext(), WriteCommentView.class);
+		writecommentIntent.putExtra("imgid", ""+imgid);
+		startActivityForResult(writecommentIntent, 0);
+	}
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

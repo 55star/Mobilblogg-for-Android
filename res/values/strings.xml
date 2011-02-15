@@ -35,12 +35,16 @@
 	<string name="body">Text</string>
 	<string name="composeButtonHandler">composeClickHandler</string>
 	<string name="upload">Ladda upp</string>
+	<string name="send">Skicka</string>
 	<string name="mainMenuUploadPage">Blogga</string>
 	<string name="secretWord">Hemligt ord</string>
 	<string name="rights">Ska synas för</string>
 	<string name="startPageButtonHandler">startPageClickHandler</string>
 	<string name="blogg">Till blogg</string>
 	<string name="comment">Kommentarer</string>
+	<string name="writecomment">Skriv en kommentar</string>
+	<string name="writeCommentButtonHandler">writeCommentClickHandler</string>
+	<string name="commentButtonHandler">commentClickHandler</string>
 	<string name="blogornot">Vill du blogga den här bilden?</string>
 
 </resources>

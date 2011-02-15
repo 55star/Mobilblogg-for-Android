@@ -35,7 +35,10 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.util.Log;
+
 public class Communicator extends Thread {
+	final String TAG = "Communicator";
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
 	private String api  = "api_android_1.0.t";
@@ -146,6 +149,45 @@ public class Communicator extends Thread {
 		return jsonresponse;
 	}	
 
+	public String postComment(String imgid, String comment) {
+		try {
+			String url = protocoll+host+"/o.o.i.s";
+			HttpPost postMethod = new HttpPost(url);
+
+			StringBody sb1 = new StringBody("writeComment");
+			StringBody sb2 = new StringBody(imgid);
+			StringBody sb3 = new StringBody(comment);
+			StringBody sb4 = new StringBody("comment");
+			StringBody sb5 = new StringBody(api);
+
+			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			multipartContent.addPart("func", sb1);
+			multipartContent.addPart("imgid", sb2);
+			multipartContent.addPart("message", sb3);
+			multipartContent.addPart("wtd", sb4);
+			multipartContent.addPart("template", sb5);
+
+			postMethod.setEntity(multipartContent);
+			HttpResponse resp = client.execute(postMethod);
+
+			InputStream is = resp.getEntity().getContent();
+			BufferedReader r = new BufferedReader(new InputStreamReader(is));
+			StringBuilder total = new StringBuilder();
+			String line;
+			while ((line = r.readLine()) != null) {
+				total.append(line);
+			}
+			is.close();
+
+			Log.i(TAG,"postComment response: "+total.toString());
+
+			return total.toString();
+		} catch (Throwable e) {
+			return null;
+		}
+	}	
+
+	
 	public String getStartPage() {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listStartpage";
 		String jsonresponse = "";

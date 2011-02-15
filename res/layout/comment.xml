@@ -5,6 +5,6 @@
 	android:orientation="vertical" android:background="@color/colorwhite">
 
 	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"
-		android:layout_height="fill_parent"></ListView>
-		
+		android:layout_height="fill_parent" android:layout_marginBottom="10dip"/>
+
 </LinearLayout>

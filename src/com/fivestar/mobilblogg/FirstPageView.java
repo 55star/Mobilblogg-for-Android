@@ -161,9 +161,6 @@ public class FirstPageView extends Activity {
 				} else {
 					commentButton.setText(num + " kommentarer");
 				}
-				if(num == 0) {
-					commentButton.setEnabled(false);
-				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
 		});
