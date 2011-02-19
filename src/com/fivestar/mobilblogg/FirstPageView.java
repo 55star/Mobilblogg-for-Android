@@ -34,6 +34,7 @@ public class FirstPageView extends Activity {
 	PostInfo pi;
 	String username;
 	String imgid;
+	int nbrComments;
 	MobilbloggApp app;
 
 	Gallery gallery;
@@ -152,14 +153,18 @@ public class FirstPageView extends Activity {
 				commentButton.setVisibility(View.VISIBLE);
 
 				bloggButton.setEnabled(true);
-				bloggButton.setText(username + "'s blogg");
+				bloggButton.setText(username);
 
-				int num = pi.numComment;
+				nbrComments = pi.numComment;
 				commentButton.setEnabled(true);
-				if(num == 1) {
-					commentButton.setText(num + " kommentar");
-				} else {
-					commentButton.setText(num + " kommentarer");
+				if(nbrComments == 0) {
+					commentButton.setText("Kommentera");
+				}
+				if(nbrComments == 1) {
+					commentButton.setText(nbrComments + " kommentar");
+				}
+				if(nbrComments > 1) {
+					commentButton.setText(nbrComments + " kommentarer");
 				}
 				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
@@ -178,9 +183,15 @@ public class FirstPageView extends Activity {
 		case R.id.commentButton:
 			System.out.println("Goto comment(s)");
 
-			Intent commentIntent = new Intent(view.getContext(), CommentView.class);
-			commentIntent.putExtra("imgid", imgid);
-			startActivityForResult(commentIntent, 0);
+			if(nbrComments > 0) {
+				Intent commentIntent = new Intent(view.getContext(), CommentView.class);
+				commentIntent.putExtra("imgid", imgid);
+				startActivityForResult(commentIntent, 0);
+			} else {
+				Intent writeCommentIntent = new Intent(view.getContext(), WriteCommentView.class);
+				writeCommentIntent.putExtra("imgid", imgid);
+				startActivityForResult(writeCommentIntent, 0);			
+			}
 			break;
 		}
 	}

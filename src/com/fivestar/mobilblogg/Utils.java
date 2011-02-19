@@ -185,12 +185,18 @@ public class Utils {
 		long diffHours = diff / (60 * 60 * 1000);
 
 		if(diffSeconds < 60) {
+			if(diffSeconds < 0) {
+				return "0 sekunder sen";
+			}
 			return diffSeconds + " sekunder sen";
 		}
 		if(diffMinutes < 60) {
 			return diffMinutes + " minuter sen";
 		}
 		if(diffHours < 24) {
+			if(diffHours == 1) {
+				return diffHours + " timme sen";				
+			}
 			return diffHours + " timmar sen";
 		}
 		return calCmp.get(Calendar.DATE) + " " 

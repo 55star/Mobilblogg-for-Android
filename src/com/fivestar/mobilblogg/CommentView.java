@@ -5,6 +5,7 @@ package com.fivestar.mobilblogg;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,7 +37,8 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		imgid = Integer.parseInt(getIntent().getStringExtra("imgid"));
 
 		Button b = new Button(this);
-		b.setPadding(0, 5, 5, 0);
+		b.setPadding(0, 15, 0, 15);
+		b.setWidth(80);
 		b.setText("Skriv en kommentar");
 		b.setOnClickListener(this);
 

@@ -2,9 +2,13 @@
 <resources>
 	<string name="hello">Hello World, Mobilblogg!</string>
 	<string name="app_name">MobilBlogg</string>
+	<string name="start">Starta</string>
+	<string name="splashtop">Mobilblogg.nu för Android</string>
+	<string name="splashButtonHandler">splashClickHandler</string>
 	<string name="username">Användarnamn:</string>
 	<string name="password">Lösenord:</string>
 	<string name="login">Logga in</string>
+	<string name="mobilbloggintro">Mobilblogg.nu är en community och blogghotell för innehåll skapat med mobilen. Med app:en kan man komma åt nyckelfunktionerna på siten, som att skicka nya inlägg, kommentera mm. För att använda denna app krävs medlemskap på mobilblogg.nu. Det är gratis och registreringen tar bara någon minut, sen är du igång.</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
@@ -19,8 +23,8 @@
 
 	<string name="please_wait">Vänligen vänta...</string>
 	<string name="empty">Tom</string>
-	<color name="bgcolor">#B0D4DA</color>
-
+	
+	<color name="bgcolor">#6492A6</color>
 	<color name="colorwhite">#FFFFFF</color>
 	<color name="colorblack">#000000</color>
 	<color name="colorbg">#E7E7E7</color>
