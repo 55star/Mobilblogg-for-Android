@@ -41,10 +41,21 @@
 				android:layout_height="wrap_content" android:singleLine="true"
 				android:layout_width="fill_parent"></EditText>
 
-			<Button android:id="@+id/uploadButton" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/upload"
-				android:onClick="@string/composeButtonHandler" android:textSize="20dip"></Button>
+			<LinearLayout android:id="@+id/LinearLayout03"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:orientation="horizontal" android:gravity="center_horizontal"
+				android:layout_marginTop="10dip">
 
+				<Button android:id="@+id/uploadbutton" android:layout_width="120dip"
+					android:layout_height="wrap_content" android:text="@string/upload"
+					android:onClick="composeClickHandler"
+					android:layout_marginRight="25dip" />
+
+				<Button android:id="@+id/abortbutton" android:layout_width="120dip"
+					android:layout_height="wrap_content" android:text="@string/cancel"
+					android:onClick="composeClickHandler"
+					android:layout_marginLeft="25dip" />
+			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

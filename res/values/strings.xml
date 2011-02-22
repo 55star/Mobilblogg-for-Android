@@ -39,6 +39,7 @@
 	<string name="body">Text</string>
 	<string name="composeButtonHandler">composeClickHandler</string>
 	<string name="upload">Ladda upp</string>
+	<string name="cancel">Avbryt</string>
 	<string name="send">Skicka</string>
 	<string name="mainMenuUploadPage">Blogga</string>
 	<string name="secretWord">Hemligt ord</string>

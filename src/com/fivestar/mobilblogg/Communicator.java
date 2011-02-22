@@ -238,7 +238,7 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		String urlToAvatar = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
+		Log.d(TAG,"URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
@@ -247,13 +247,14 @@ public class Communicator extends Thread {
 				try {
 					JSONArray json = new JSONArray(jsonresponse);
 					urlToAvatar = json.getJSONObject(0).get("avatar").toString();
-					System.out.println("avatar:"+urlToAvatar);
+					Log.d(TAG,"avatar:"+urlToAvatar);
 				} catch (JSONException j) {
-					System.out.println("JSON error:" + j.toString());
+					Log.e(TAG,"JSON error:" + j.toString());
+					return null;
 				}
 			}
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
+			Log.e(TAG,"Request failed:"+t.toString());
 			return null;
 		}
 		return urlToAvatar;

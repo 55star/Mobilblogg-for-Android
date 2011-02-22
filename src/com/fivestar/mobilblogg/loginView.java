@@ -47,17 +47,6 @@ public class loginView extends Activity {
 		app = ((MobilbloggApp)getApplicationContext());
 		this.setTitle(R.string.login);
 		cntx = this;
-
-		String cred = Utils.getSavedCredentials(cntx);
-		if(cred != null && cred.indexOf('|') > -1) {
-			// Do autologin
-			Log.i(TAG, "do autologin");
-			userName = cred.substring(0, cred.indexOf('|'));
-			passWord = cred.substring(cred.indexOf('|')+1,cred.length());
-			Log.i(TAG, userName + " " + passWord);
-			doRemoteLogin(userName, passWord);
-			dialog.show();
-		}
 	}
 
 	final Runnable mUpdateResults = new Runnable() {
@@ -72,6 +61,7 @@ public class loginView extends Activity {
 				app.setUserName(userName);
 				app.setLoggedInStatus(true);
 				if(rememberMe.isChecked()) { 
+					Log.i(TAG, "Cred saved");
 					Utils.saveCredentials(cntx, userName, passWord);
 				}
 
@@ -80,7 +70,7 @@ public class loginView extends Activity {
 				finish();
 			} else {
 				Log.w(TAG,"Login failure");
-				Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Inloggningen misslyckades, felanvändarnamn eller lösenord", Toast.LENGTH_LONG).show();
 			}			
 		}
 	};

@@ -37,6 +37,15 @@ public class SplashView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* quit app, called from mainmenu */
+		String func = getIntent().getStringExtra("func");
+		if(func != null && func.equals("quit")) {
+			Utils.removeSavedCredentials((Context)this);
+			Log.i(TAG,"Cred erased, do finish();");
+			finish();
+		}
+		
 		app = ((MobilbloggApp)getApplicationContext());
 		app.startServices();
 		setContentView(R.layout.splash);
@@ -89,7 +98,7 @@ public class SplashView extends Activity {
 				finish();
 			} else {
 				Log.w(TAG,"Login failure");
-				Toast.makeText(activity, "Inloggningen misslyckades, felanvändarnamn eller lösenord", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
 			}			
 		}
 	};
@@ -107,6 +116,6 @@ public class SplashView extends Activity {
 
 	public void splashClickHandler(View view) {
 		Intent loginIntent = new Intent(view.getContext(), loginView.class);
-		startActivityForResult(loginIntent, 0);
+		startActivity(loginIntent);
 	}
 }

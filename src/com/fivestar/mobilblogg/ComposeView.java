@@ -58,7 +58,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		rights.setAdapter(aa);
 		rights.setSelection(0);
-		
+
 		// load image from sdcard
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 2;
@@ -69,74 +69,78 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void composeClickHandler(View view) {
+		if(view.getId() == R.id.abortbutton) {
+			Intent mbIntent = new Intent(view.getContext(), mainMenuView.class);
+			startActivityForResult(mbIntent, 0);
+		} else {
+			final String secret = secretText.getText().toString();
+			final String caption = captionText.getText().toString();
+			final String body = bodyText.getText().toString();
+			final String showfor = itemValues[rights.getSelectedItemPosition()];
+			final Activity activity = this;
 
-		final String secret = secretText.getText().toString();
-		final String caption = captionText.getText().toString();
-		final String body = bodyText.getText().toString();
-		final String showfor = itemValues[rights.getSelectedItemPosition()];
-		final Activity activity = this;
-		
-		dialog.show();
-		composeThread = new Thread() {
-			public void run() {
-				String resp = null;
-				final String jsonresponse;
-				try {
-					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, filePath);
-				} catch (Throwable e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if(resp != null) {
-					jsonresponse = resp;
-				} else {
-					Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
-				Runnable action = new Runnable() {
-					public void run() {
-						int uploadStatus = 0;
-
-						dialog.dismiss();
-								
-						if (jsonresponse != null && jsonresponse.length()>0) {
-							try {
-								JSONArray json = new JSONArray(jsonresponse);
-								uploadStatus = json.getJSONObject(0).optInt("imgid");
-
-							} catch (JSONException j) {
-								System.out.println("JSON error:" + j.toString());
-							}
-						} else {
-							System.out.println("Upload failure");
-							Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
-						}
-						
-						if (uploadStatus > 0) {
-							Log.e(TAG, "Upload successful!");
-							Toast.makeText(activity, "Inlägget skickat", Toast.LENGTH_SHORT).show();
-							Intent myIntent = new Intent(activity, mainMenuView.class);
-							startActivityForResult(myIntent, 0);
-							finish();
-						} else {
-							Log.e(TAG, "Upload failure");
-							Toast.makeText(activity, "Bloggningen misslyckades, fel hemligt ord?", Toast.LENGTH_LONG).show();
-						}
+			dialog.show();
+			composeThread = new Thread() {
+				public void run() {
+					String resp = null;
+					final String jsonresponse;
+					try {
+						resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, filePath);
+					} catch (Throwable e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				};
-				activity.runOnUiThread(action);
-			}
-		};
-		composeThread.start();
+					if(resp != null) {
+						jsonresponse = resp;
+					} else {
+						Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
+						return;
+					}
+
+					Runnable action = new Runnable() {
+						public void run() {
+							int uploadStatus = 0;
+
+							dialog.dismiss();
+
+							if (jsonresponse != null && jsonresponse.length()>0) {
+								try {
+									JSONArray json = new JSONArray(jsonresponse);
+									uploadStatus = json.getJSONObject(0).optInt("imgid");
+
+								} catch (JSONException j) {
+									System.out.println("JSON error:" + j.toString());
+								}
+							} else {
+								System.out.println("Upload failure");
+								Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
+							}
+
+							if (uploadStatus > 0) {
+								Log.e(TAG, "Upload successful!");
+								Toast.makeText(activity, "Inlägget skickat", Toast.LENGTH_SHORT).show();
+								Intent myIntent = new Intent(activity, mainMenuView.class);
+								startActivityForResult(myIntent, 0);
+								finish();
+							} else {
+								Log.e(TAG, "Upload failure");
+								Toast.makeText(activity, "Bloggningen misslyckades, fel hemligt ord?", Toast.LENGTH_LONG).show();
+							}
+						}
+					};
+					activity.runOnUiThread(action);
+				}
+			};
+			composeThread.start();
+		}
 	}
 }

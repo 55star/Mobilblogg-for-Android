@@ -133,33 +133,30 @@ public class Utils {
 		file.delete();
 	}
 
-	public static String getSavedCredentials(Context c) {
+	public static String getSavedCredentials(Context cntx) {
 		String FILENAME = "mb_cred";
 		int ch;
 		StringBuffer strContent = new StringBuffer("");
 
-		FileInputStream fin;
+		FileInputStream fin = null;
 		try {
-			fin = c.openFileInput(FILENAME);
-		} catch (FileNotFoundException e) {
+			fin = cntx.openFileInput(FILENAME);
+		} catch (FileNotFoundException fnfe) {
+			// TODO Auto-generated catch block
+			fnfe.printStackTrace();
+			return null;
+		}
+		try {
+			while((ch = fin.read()) > -1) {
+				strContent.append((char)ch);
+			}
+			fin.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-		if(fin != null) {
-			try {
-				while((ch = fin.read()) > -1) {
-					strContent.append((char)ch);
-				}
-				fin.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-			return strContent.toString();
-		}
-		return null;
+		return strContent.toString();
 	}
 
 	public static String PrettyDate(String cmpDate){    
@@ -170,7 +167,7 @@ public class Utils {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		String month[] = {"jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"};
-		
+
 		try {
 			calCmp.setTime(df.parse(cmpDate));
 		} catch (ParseException e) {
