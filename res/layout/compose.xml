@@ -34,13 +34,6 @@
 			<Spinner android:id="@+id/rights" android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:drawSelectorOnTop="true"></Spinner>
 
-			<TextView android:id="@+id/TextView04" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/secretWord"
-				android:textColor="@color/textcolor" android:textSize="16dip"></TextView>
-			<EditText android:id="@+id/secretText"
-				android:layout_height="wrap_content" android:singleLine="true"
-				android:layout_width="fill_parent"></EditText>
-
 			<LinearLayout android:id="@+id/LinearLayout03"
 				android:layout_width="fill_parent" android:layout_height="fill_parent"
 				android:orientation="horizontal" android:gravity="center_horizontal"

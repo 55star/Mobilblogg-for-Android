@@ -8,7 +8,7 @@
 	<string name="username">Användarnamn:</string>
 	<string name="password">Lösenord:</string>
 	<string name="login">Logga in</string>
-	<string name="mobilbloggintro">Mobilblogg.nu är en community och blogghotell för innehåll skapat med mobilen. Med app:en kan man komma åt nyckelfunktionerna på siten, som att skicka nya inlägg, kommentera mm. För att använda denna app krävs medlemskap på mobilblogg.nu. Det är gratis och registreringen tar bara någon minut, sen är du igång.</string>
+	<string name="mobilbloggintro">Mobilblogg.nu, här kan du skapa din egen mobilblogg och hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu och börja mobilblogga.</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>

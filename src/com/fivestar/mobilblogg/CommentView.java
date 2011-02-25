@@ -74,22 +74,19 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
 
 									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
-										System.out.println("Get avatar for "+ci.username[i]);										
 										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
 										if(ci.avatar[i] == null) {
 											ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif";
 										}
 									} else {
-										System.out.println("No avatar for "+ci.username[i]);										
 										ci.username[i] = ci.username[i].replace(" (ej inloggad)", "");
-										System.out.println("Replaced ej inloggad: "+ci.username[i]);										
 										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif"; // TODO, don't hardcode!
 									}
 								}
 								adapter = new CommentViewAdapter(activity, ci, app);
 								activity.setListAdapter(adapter);
 							} catch (JSONException j) {
-								System.out.println("JSON error:" + j.toString());
+								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();

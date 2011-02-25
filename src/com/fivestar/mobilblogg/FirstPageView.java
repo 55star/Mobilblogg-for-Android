@@ -84,7 +84,6 @@ public class FirstPageView extends Activity {
 						dialog.dismiss();
 
 						if (jsonresponse != null && jsonresponse.length()>0) {
-							System.out.println("RESPONSE:"+jsonresponse);
 							try {
 								JSONArray json = new JSONArray(jsonresponse);
 								int len = json.length();
@@ -174,15 +173,11 @@ public class FirstPageView extends Activity {
 	public void startPageClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.bloggButton:
-			System.out.println("Goto "+username+"s blogg");
-
 			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
 			bloggIntent.putExtra("username", username);
 			startActivityForResult(bloggIntent, 0);
 			break;
 		case R.id.commentButton:
-			System.out.println("Goto comment(s)");
-
 			if(nbrComments > 0) {
 				Intent commentIntent = new Intent(view.getContext(), CommentView.class);
 				commentIntent.putExtra("imgid", imgid);
@@ -195,7 +190,6 @@ public class FirstPageView extends Activity {
 			break;
 		}
 	}
-
 
 	@Override
 	public void onDestroy() {

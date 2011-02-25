@@ -35,38 +35,26 @@ public class mainMenuView extends Activity {
 	public void mainMenuClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.Button01:
-			System.out.println("Goto my blogg");
 			Intent mbIntent = new Intent(view.getContext(), BloggView.class);
 			mbIntent.putExtra("username", app.getUserName());
 			startActivityForResult(mbIntent, 0);
 			break;
 		case R.id.Button02:
-			System.out.println("Goto my start page");
 			Intent spIntent = new Intent(view.getContext(), StartPageView.class);
 			startActivityForResult(spIntent, 0);
 			break;
 
 		case R.id.Button05:
-			System.out.println("Goto firstpage");
 			Intent fpIntent = new Intent(view.getContext(), FirstPageView.class);
 			startActivityForResult(fpIntent, 0);
 			break;
 
 		case R.id.Button03:
-			System.out.println("Goto camera");
-			/* old stuff
-			Intent cIntent = new Intent(view.getContext(), CameraView.class);
-			startActivityForResult(cIntent, 0);
-			 */
-
 			Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-
-
 			break;
 
 		case R.id.Button04:
-			System.out.println("Logout");
 			app.com.shutdownHttpClient();
 			app.setUserName("");
 			app.setLoggedInStatus(false);

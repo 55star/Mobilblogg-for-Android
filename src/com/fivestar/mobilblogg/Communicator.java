@@ -108,7 +108,7 @@ public class Communicator extends Thread {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
 		} catch (JSONException j) {
-			System.out.println("JSON error:" + j.toString());
+			Log.e(TAG,"JSON error:" + j.toString());
 		}
 		return loginStatus;
 	}	
@@ -122,14 +122,13 @@ public class Communicator extends Thread {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
 			return null;
 		}
 		try {
 			JSONArray json = new JSONArray(jsonresponse);
 			salt = json.getJSONObject(0).optString("salt");
 		} catch (JSONException j) {
-			System.out.println("JSON error:" + j.toString());
+			return null;
 		}
 		return salt;
 	}	
@@ -138,12 +137,11 @@ public class Communicator extends Thread {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listBlogg&user="+userName;
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
+			Log.e(TAG,"Request failed:"+t.toString());
 			return null;
 		}
 		return jsonresponse;
@@ -187,17 +185,15 @@ public class Communicator extends Thread {
 		}
 	}	
 
-	
+
 	public String getStartPage() {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listStartpage";
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
 			return null;
 		}
 		return jsonresponse;
@@ -207,27 +203,23 @@ public class Communicator extends Thread {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listFirstpage";
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
 			return null;
 		}
 		return jsonresponse;
 	}		
-	
+
 	public String getComments(int imgid) {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listComments&imgid="+imgid;
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
-		System.out.println("URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			System.out.println("Request failed:"+t.toString());
 			return null;
 		}
 		return jsonresponse;
@@ -254,7 +246,6 @@ public class Communicator extends Thread {
 				}
 			}
 		} catch (Throwable t) {
-			Log.e(TAG,"Request failed:"+t.toString());
 			return null;
 		}
 		return urlToAvatar;
@@ -302,8 +293,6 @@ public class Communicator extends Thread {
 				total.append(line);
 			}
 			is.close();
-
-			System.out.println("RESPONSE: "+total.toString());
 
 			return total.toString();
 		} catch (Throwable e) {
