@@ -12,16 +12,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public class mainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
 	private static final String TAG = "MainMenu";
 	private MobilbloggApp app;
-
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -50,8 +52,27 @@ public class mainMenuView extends Activity {
 			break;
 
 		case R.id.Button03:
-			Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+			String path = Environment.getExternalStorageDirectory() + "/" + "Mobilblogg";
+			String name = String.format("%d.jpg", System.currentTimeMillis());
+			String filePath = path + "/" + name;
+
+			File fpath = new File(path);
+			fpath.mkdirs();
+			
+			File file = new File(path, name);
+			try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			app.filePath = filePath;
+			
+			Log.d(TAG, "Create file for picture " + filePath);
+
+			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(filePath)));
+			startActivityForResult(i, CAMERA_PIC_REQUEST);
 			break;
 
 		case R.id.Button04:
@@ -70,37 +91,25 @@ public class mainMenuView extends Activity {
 	/* back from camera */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 		if (requestCode == CAMERA_PIC_REQUEST) {  
-			Bitmap bmp = (Bitmap) data.getExtras().get("data");
+			File file = new File(app.filePath);
 
-			FileOutputStream outStream = null;
 			try {
-				// Write to SD Card
-				String path = Environment.getExternalStorageDirectory() + "/" + "Mobilblogg";
-				String name = String.format("%d.jpg", System.currentTimeMillis());
-				String filePath = path + "/" + name;
+				Uri u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
+							file.getAbsolutePath(), null, null));
 
-				Log.d(TAG, "jpegCallback: create: " + filePath);
-
-				File fpath = new File(path);
-				fpath.mkdirs();
-
-				File file = new File(path, name);
-				file.createNewFile();
-
-
-				outStream = new FileOutputStream(filePath);
-				bmp.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-				outStream.flush();
-				outStream.close();
-
+				Log.i(TAG,"file.getAbs(): "+file.getAbsolutePath());
+				Log.i(TAG,"filePath: "+app.filePath);
+				
 				Intent composeIntent = new Intent(this, ComposeView.class);
-				composeIntent.putExtra("filepath", filePath );
+				composeIntent.putExtra("filepath", app.filePath);
 				startActivityForResult(composeIntent, 0);
+
 			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(this, "Något blev fel", Toast.LENGTH_SHORT).show();
 			}
+
 		}  
 	}
 }

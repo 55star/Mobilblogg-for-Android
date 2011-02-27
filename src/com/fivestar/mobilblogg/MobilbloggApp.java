@@ -8,7 +8,7 @@ public class MobilbloggApp extends Application {
 	private String latestImg;
 	public Communicator com;
 	public AsyncImageLoader asyncImageLoader;
-	
+	public String filePath = null;
 	
 	public String getUserName(){
 		if(userName != null && loggedInStatus) {

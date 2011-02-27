@@ -8,7 +8,8 @@
 	<string name="username">Användarnamn:</string>
 	<string name="password">Lösenord:</string>
 	<string name="login">Logga in</string>
-	<string name="mobilbloggintro">Mobilblogg.nu, här kan du skapa din egen mobilblogg och hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu och börja mobilblogga.</string>
+
+	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera bilder och filmer tagna med mobiltelefonkamera på Internet. Samtidigt kan du hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu/</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>

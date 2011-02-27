@@ -196,10 +196,22 @@ public class Utils {
 			}
 			return diffHours + " timmar sen";
 		}
-		return calCmp.get(Calendar.DATE) + " " 
-		+ month[calCmp.get(Calendar.MONTH)] + " " 
-		+ calCmp.get(Calendar.HOUR) + ":" 
-		+ calCmp.get(Calendar.MINUTE) + " " 
-		+ calCmp.get(Calendar.YEAR);
+		String longdate = calCmp.get(Calendar.DATE) + " ";
+		longdate += month[calCmp.get(Calendar.MONTH)] + " ";
+		int hour = calCmp.get(Calendar.HOUR_OF_DAY);
+		if(hour < 10) {
+			longdate += "0" + hour + ":";
+		} else {
+			longdate += hour + ":";
+		}
+		int min = calCmp.get(Calendar.MINUTE);
+		if(min < 10) {
+			longdate += "0" + min + " ";
+		} else {
+			longdate += min + " ";
+		}
+		longdate += calCmp.get(Calendar.YEAR);
+		
+		return longdate;
 	}
 }
