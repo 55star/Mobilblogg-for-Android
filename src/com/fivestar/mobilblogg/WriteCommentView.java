@@ -86,19 +86,16 @@ public class WriteCommentView extends Activity {
 								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							Log.e(TAG,"PostComment failure");
 							Toast.makeText(activity, "Något blev fel", Toast.LENGTH_SHORT).show();
 						}
 
 						if (postStatus > 0) {
-							Log.e(TAG, "Comment sent!");
 							Toast.makeText(activity, "Kommentaren skickad", Toast.LENGTH_SHORT).show();
 							Intent commentIntent = new Intent(activity, CommentView.class);
 							commentIntent.putExtra("imgid", imgid);
 							startActivityForResult(commentIntent, 0);
 							finish();
 						} else {
-							Log.e(TAG,"PostComment failure");
 							Toast.makeText(activity, "Något blev fel", Toast.LENGTH_SHORT).show();
 						}
 					}

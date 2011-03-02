@@ -12,22 +12,15 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import org.apache.james.mime4j.field.datetime.DateTime;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
-import android.util.Log;
 
 public class Utils {
-
-	final static String TAG = "Utils";
 
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size=1024;
@@ -160,8 +153,6 @@ public class Utils {
 	}
 
 	public static String PrettyDate(String cmpDate){    
-		Log.i(TAG, "Make " + cmpDate + " pretty");
-
 		Calendar calNow = Calendar.getInstance();
 		Calendar calCmp = Calendar.getInstance();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

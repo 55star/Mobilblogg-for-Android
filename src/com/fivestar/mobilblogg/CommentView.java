@@ -34,6 +34,8 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment);
 		activity = this;
+		this.setTitle("Kommentarer");
+
 		imgid = Integer.parseInt(getIntent().getStringExtra("imgid"));
 
 		Button b = new Button(this);
@@ -50,8 +52,6 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		dialog.setCancelable(false);
 
 		app = ((MobilbloggApp)getApplicationContext());
-
-		this.setTitle("Kommentarer");
 
 		dialog.show();
 		commentThread = new Thread() {
@@ -73,14 +73,9 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
 									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
 
-									if(ci.username[i].indexOf("(ej inloggad)") == -1) {
-										ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
-										if(ci.avatar[i] == null) {
-											ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif";
-										}
-									} else {
-										ci.username[i] = ci.username[i].replace(" (ej inloggad)", "");
-										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif"; // TODO, don't hardcode!
+									ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
+									if(ci.avatar[i] == null) {
+										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif";
 									}
 								}
 								adapter = new CommentViewAdapter(activity, ci, app);
@@ -100,8 +95,6 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 	}
 
 	public void onClick(View view) {
-		Log.i(TAG,"Write comment");
-
 		Intent writecommentIntent = new Intent(view.getContext(), WriteCommentView.class);
 		writecommentIntent.putExtra("imgid", ""+imgid);
 		startActivityForResult(writecommentIntent, 0);

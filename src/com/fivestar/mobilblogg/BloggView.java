@@ -66,11 +66,8 @@ public class BloggView extends Activity {
 		dialog.setCancelable(false);
 
 		app = ((MobilbloggApp)getApplicationContext());
-
 		username = getIntent().getStringExtra("username");
-
 		this.setTitle(username +"'s mobilblogg");
-
 		activity = this;
 
 		dialog.show();
@@ -106,7 +103,6 @@ public class BloggView extends Activity {
 										piList.add(pi);
 									}
 									catch (NumberFormatException ne) {
-										Log.e(TAG,"File not found i image");
 										continue;
 									} catch (JSONException j) {
 										Log.e(TAG,"JSON error:" + j.toString());
@@ -117,7 +113,6 @@ public class BloggView extends Activity {
 								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							Log.e(TAG,"StartPage failure");
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
 						}
 					}
@@ -153,11 +148,8 @@ public class BloggView extends Activity {
 				commentButton.setVisibility(View.VISIBLE);
 
 				bloggButton.setText(username);
-				if(!username.equals(app.getUserName())) {
-					bloggButton.setEnabled(true);
-				} else {
-					bloggButton.setEnabled(false);
-				}
+				bloggButton.setEnabled(true);
+
 				nbrComments = pi.numComment;
 				commentButton.setEnabled(true);
 				if(nbrComments == 0) {

@@ -50,6 +50,8 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
+		this.setTitle(R.string.mainMenuUploadPage);
+		
 		captionText = (EditText) findViewById(R.id.captionText);
 		bodyText = (EditText) findViewById(R.id.bodyText);
 		image = (ImageView) findViewById(R.id.image);
@@ -93,9 +95,8 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 
 	
 	public void composeClickHandler(View view) {
-		Log.i(TAG,"compose Click");
 		if(view.getId() == R.id.abortbutton) {
-			Intent mbIntent = new Intent(view.getContext(), mainMenuView.class);
+			Intent mbIntent = new Intent(view.getContext(), MainMenuView.class);
 			startActivityForResult(mbIntent, 0);
 		} else {
 			caption = captionText.getText().toString();
@@ -144,13 +145,11 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 						}
 
 						if (uploadStatus > 0) {
-							Log.e(TAG, "Upload successful!");
 							Toast.makeText(activity, "Inlägget skickat", Toast.LENGTH_SHORT).show();
-							Intent myIntent = new Intent(activity, mainMenuView.class);
+							Intent myIntent = new Intent(activity, MainMenuView.class);
 							startActivityForResult(myIntent, 0);
 							finish();
 						} else {
-							Log.e(TAG, "Upload failure");
 							Toast.makeText(activity, "Bloggningen misslyckades, fel hemligt ord?", Toast.LENGTH_LONG).show();
 						}
 					}

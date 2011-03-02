@@ -5,23 +5,18 @@ package com.fivestar.mobilblogg;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-public class mainMenuView extends Activity {
+public class MainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
-	private static final String TAG = "MainMenu";
 	private MobilbloggApp app;
 	
 	/* (non-Javadoc)
@@ -68,8 +63,6 @@ public class mainMenuView extends Activity {
 			}
 			app.filePath = filePath;
 			
-			Log.d(TAG, "Create file for picture " + filePath);
-
 			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(filePath)));
 			startActivityForResult(i, CAMERA_PIC_REQUEST);
@@ -94,12 +87,9 @@ public class mainMenuView extends Activity {
 			File file = new File(app.filePath);
 
 			try {
-				Uri u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
+				Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
 							file.getAbsolutePath(), null, null));
 
-				Log.i(TAG,"file.getAbs(): "+file.getAbsolutePath());
-				Log.i(TAG,"filePath: "+app.filePath);
-				
 				Intent composeIntent = new Intent(this, ComposeView.class);
 				composeIntent.putExtra("filepath", app.filePath);
 				startActivityForResult(composeIntent, 0);

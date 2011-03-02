@@ -141,7 +141,6 @@ public class Communicator extends Thread {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			Log.e(TAG,"Request failed:"+t.toString());
 			return null;
 		}
 		return jsonresponse;
@@ -176,8 +175,6 @@ public class Communicator extends Thread {
 				total.append(line);
 			}
 			is.close();
-
-			Log.i(TAG,"postComment response: "+total.toString());
 
 			return total.toString();
 		} catch (Throwable e) {
@@ -230,7 +227,6 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		String urlToAvatar = "";
 		HttpGet getMethod = new HttpGet(url);
-		Log.d(TAG,"URL:"+url);
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
@@ -239,7 +235,6 @@ public class Communicator extends Thread {
 				try {
 					JSONArray json = new JSONArray(jsonresponse);
 					urlToAvatar = json.getJSONObject(0).get("avatar").toString();
-					Log.d(TAG,"avatar:"+urlToAvatar);
 				} catch (JSONException j) {
 					Log.e(TAG,"JSON error:" + j.toString());
 					return null;

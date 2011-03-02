@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +92,7 @@ public class SplashView extends Activity {
 				Log.i(TAG, "Login successful!");
 				app.setUserName(userName);
 				app.setLoggedInStatus(true);
-				Intent myIntent = new Intent(activity, mainMenuView.class);
+				Intent myIntent = new Intent(activity, MainMenuView.class);
 				startActivityForResult(myIntent, 0);
 				finish();
 			} else {
@@ -115,7 +114,7 @@ public class SplashView extends Activity {
 
 
 	public void splashClickHandler(View view) {
-		Intent loginIntent = new Intent(view.getContext(), loginView.class);
+		Intent loginIntent = new Intent(view.getContext(), LoginView.class);
 		startActivity(loginIntent);
 	}
 }

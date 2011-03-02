@@ -15,10 +15,10 @@ public class Mobilblogg extends Activity {
 		MobilbloggApp app = ((MobilbloggApp)getApplicationContext());
 		app.startServices();
 		if(!app.getLoggedInStatus()) {
-			Intent intent = new Intent(this,loginView.class);
+			Intent intent = new Intent(this,LoginView.class);
 			startActivity(intent);
 		} else {
-			Intent intent = new Intent(this,mainMenuView.class);
+			Intent intent = new Intent(this,MainMenuView.class);
 			startActivity(intent);
 		}
 		finish();
