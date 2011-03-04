@@ -81,7 +81,9 @@ public class FirstPageView extends Activity {
 
 				Runnable action = new Runnable() {
 					public void run() {
-						dialog.dismiss();
+						if(dialog.isShowing()) {
+							dialog.dismiss();
+						}
 
 						if (jsonresponse != null && jsonresponse.length()>0) {
 							try {

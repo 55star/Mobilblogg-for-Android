@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class MainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
 	private MobilbloggApp app;
-	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -53,7 +53,7 @@ public class MainMenuView extends Activity {
 
 			File fpath = new File(path);
 			fpath.mkdirs();
-			
+
 			File file = new File(path, name);
 			try {
 				file.createNewFile();
@@ -62,7 +62,7 @@ public class MainMenuView extends Activity {
 				e1.printStackTrace();
 			}
 			app.filePath = filePath;
-			
+
 			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(filePath)));
 			startActivityForResult(i, CAMERA_PIC_REQUEST);
@@ -88,7 +88,7 @@ public class MainMenuView extends Activity {
 
 			try {
 				Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
-							file.getAbsolutePath(), null, null));
+						file.getAbsolutePath(), null, null));
 
 				Intent composeIntent = new Intent(this, ComposeView.class);
 				composeIntent.putExtra("filepath", app.filePath);
@@ -98,8 +98,10 @@ public class MainMenuView extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				Toast.makeText(this, "Något blev fel", Toast.LENGTH_SHORT).show();
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
 			}
+		}
 
-		}  
-	}
+	}  
 }

@@ -226,8 +226,13 @@ public class Communicator extends Thread {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=profile&user="+userName;
 		String jsonresponse = "";
 		String urlToAvatar = "";
-		HttpGet getMethod = new HttpGet(url);
+		HttpGet getMethod;
 		try {
+			getMethod = new HttpGet(url);
+		} catch(IllegalArgumentException ie) {
+			return null;
+		}
+		try {			
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 

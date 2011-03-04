@@ -63,7 +63,7 @@ public class SplashView extends Activity {
 		PackageInfo info;
 		try {
 			info = manager.getPackageInfo(this.getPackageName(), 0);
-			version.setText(info.versionName);
+			version.setText("Version: " + info.versionName);
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

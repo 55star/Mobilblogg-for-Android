@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.fivestar.mobilblogg" android:versionCode="1" android:versionName="Version 1.0">
+	package="com.fivestar.mobilblogg" android:versionCode="1"
+	android:versionName="1.0.1">
 	<supports-screens android:smallScreens="true"
 		android:normalScreens="true" android:largeScreens="true"
 		android:anyDensity="true" />
 
 	<application android:name=".MobilbloggApp" android:icon="@drawable/mobilbloggicon"
-		android:label="@string/app_name"
-		android:theme="@style/MyButton">
+		android:label="@string/app_name" android:theme="@style/MyButton">
 
-		<activity android:name=".SplashView" android:noHistory="true" android:label="@string/app_name">
+		<activity android:name=".SplashView" android:noHistory="true"
+			android:label="@string/app_name" android:configChanges="keyboardHidden|orientation">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity android:name=".Mobilblogg" android:label="@string/app_name" />
-		<activity android:name=".LoginView" android:label="@string/loginViewName" />
+		<activity android:name=".LoginView" android:label="@string/loginViewName" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".MainMenuView" android:label="@string/app_name" />
-		<activity android:name=".BloggView" android:label="@string/app_name" />
-		<activity android:name=".StartPageView" android:label="@string/app_name" />
-		<activity android:name=".CameraView" android:label="@string/app_name" />
-		<activity android:name=".ComposeView" android:label="@string/app_name" />
-		<activity android:name=".CommentView" android:label="@string/app_name" />
-		<activity android:name=".FirstPageView" android:label="@string/app_name" />
-		<activity android:name=".WriteCommentView" android:label="@string/app_name" />
-		<activity android:name=".ImagePreviewView" android:label="@string/app_name" />
+		<activity android:name=".BloggView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".StartPageView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".ComposeView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".CommentView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".FirstPageView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".WriteCommentView" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" />
 
 	</application>
 	<uses-sdk android:minSdkVersion="4" />
