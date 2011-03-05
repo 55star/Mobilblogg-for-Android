@@ -7,17 +7,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.fivestar.mobilblogg.ComposeView.PromptListener;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
+	private static final int GALLERY_PIC_REQUEST = 1337;
 	private MobilbloggApp app;
+	Activity activity;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -27,6 +36,7 @@ public class MainMenuView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainmenu);
 		app = ((MobilbloggApp)getApplicationContext());
+		activity = this;
 	}
 
 	public void mainMenuClickHandler(View view) {
@@ -62,10 +72,7 @@ public class MainMenuView extends Activity {
 				e1.printStackTrace();
 			}
 			app.filePath = filePath;
-
-			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(filePath)));
-			startActivityForResult(i, CAMERA_PIC_REQUEST);
+			promptCameraOrGallery();
 			break;
 
 		case R.id.Button04:
@@ -81,13 +88,25 @@ public class MainMenuView extends Activity {
 		}
 	}
 
-	/* back from camera */
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+	public void promptCameraOrGallery() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		builder.setTitle("Blogga bild från");
+
+		EmptyListener pl = new EmptyListener();
+		builder.setPositiveButton("Kameran", pl);
+		builder.setNegativeButton("Galleriet", pl);
+		AlertDialog ad = builder.create();
+		ad.show();
+	}
+
+	/* back from camera or gallery */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
+		System.out.println("BACK from camera/gallery");
 		if (requestCode == CAMERA_PIC_REQUEST) {  
 			File file = new File(app.filePath);
 
 			try {
-				Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(),
+				Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(),
 						file.getAbsolutePath(), null, null));
 
 				Intent composeIntent = new Intent(this, ComposeView.class);
@@ -102,6 +121,38 @@ public class MainMenuView extends Activity {
 				// TODO Auto-generated catch block
 			}
 		}
+		if (requestCode == GALLERY_PIC_REQUEST && data != null) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
+			Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String filePath = cursor.getString(columnIndex);
+
+			Intent composeIntent = new Intent(this, ComposeView.class);
+			composeIntent.putExtra("filepath", filePath);
+			startActivityForResult(composeIntent, 0);
+		}
 	}  
+
+	public class EmptyListener implements android.content.DialogInterface.OnClickListener {
+
+		public void onClick(DialogInterface dialog, int which) {
+			if(which == DialogInterface.BUTTON1) {
+				/* Camera intent */
+				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(app.filePath)));
+				startActivityForResult(i, CAMERA_PIC_REQUEST);
+			} 
+			if(which == DialogInterface.BUTTON2) {
+				/* Gallery intent */
+				Intent i = new Intent(Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				startActivityForResult(i, GALLERY_PIC_REQUEST);
+
+			} 
+		}
+	}
 }

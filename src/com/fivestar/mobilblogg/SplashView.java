@@ -9,14 +9,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SplashView extends Activity {
 
-	final String TAG = "SplashView";
 	final Handler mHandler = new Handler();
 	final Activity activity = this;
 	String userName;
@@ -41,7 +39,6 @@ public class SplashView extends Activity {
 		String func = getIntent().getStringExtra("func");
 		if(func != null && func.equals("quit")) {
 			Utils.removeSavedCredentials((Context)this);
-			Log.i(TAG,"Cred erased, do finish();");
 			finish();
 		}
 		
@@ -72,10 +69,9 @@ public class SplashView extends Activity {
 		String cred = Utils.getSavedCredentials(cntx);
 		if(cred != null && cred.indexOf('|') > -1) {
 			// Do autologin
-			Log.i(TAG, "do autologin");
+
 			userName = cred.substring(0, cred.indexOf('|'));
 			passWord = cred.substring(cred.indexOf('|')+1,cred.length());
-			Log.i(TAG, userName + " " + passWord);
 			doRemoteLogin(userName, passWord);
 			dialog.show();
 		}
@@ -89,14 +85,12 @@ public class SplashView extends Activity {
 			}
 
 			if (loginStatus == 1) {
-				Log.i(TAG, "Login successful!");
 				app.setUserName(userName);
 				app.setLoggedInStatus(true);
 				Intent myIntent = new Intent(activity, MainMenuView.class);
 				startActivityForResult(myIntent, 0);
 				finish();
 			} else {
-				Log.w(TAG,"Login failure");
 				Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
 			}			
 		}

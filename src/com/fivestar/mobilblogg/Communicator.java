@@ -109,6 +109,7 @@ public class Communicator extends Thread {
 			loginStatus = json.getJSONObject(0).optInt("status");
 		} catch (JSONException j) {
 			Log.e(TAG,"JSON error:" + j.toString());
+			return 0;
 		}
 		return loginStatus;
 	}	
