@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="@color/colorwhite">
+	android:background="@color/colorwhite" android:gravity="center_horizontal">
 
 	<RelativeLayout android:orientation="vertical"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:background="@color/colorwhite" android:padding="20dip"
-		android:layout_gravity="center" android:gravity="center_horizontal">
+		android:gravity="center_horizontal">
 
 		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
 			android:layout_width="120dip" android:drawableTop="@drawable/comment"
@@ -31,8 +31,8 @@
 		<Button android:id="@+id/Button04" android:layout_height="wrap_content"
 			android:layout_width="120dip" android:drawableTop="@drawable/logout"
 			android:text="@string/mainMenuLogout" android:onClick="@string/mainMenuButtonHandler"
-			android:textSize="16dip" android:layout_centerHorizontal="true"
-			android:layout_below="@+id/Button03" android:layout_marginTop="30dip" />
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/Button03" android:layout_marginTop="40dip" />
 
 	</RelativeLayout>
 </LinearLayout>
