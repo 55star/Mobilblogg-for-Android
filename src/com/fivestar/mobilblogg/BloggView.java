@@ -142,6 +142,7 @@ public class BloggView extends Activity {
 				headlineView.setText(Html.fromHtml(pi.headline));
 				dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
 				textView.setText(Html.fromHtml(pi.text));
+				
 				username = pi.user;
 				imgid = pi.imgid;
 				bloggButton.setVisibility(View.VISIBLE);

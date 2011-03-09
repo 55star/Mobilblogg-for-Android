@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/RelativeLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:padding="15dip" android:background="@color/colorwhite">
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/LinearLayout01" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:background="@color/colorwhite"
+		android:orientation="horizontal" android:gravity="center_horizontal">
+
+		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
+			android:layout_width="105dip" android:drawableTop="@drawable/comment"
+			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler"
+			android:layout_marginRight="5dip" />
+
+		<Button android:id="@+id/Button02" android:layout_height="wrap_content"
+			android:layout_width="105dip" android:drawableTop="@drawable/friends"
+			android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
+			android:layout_marginRight="5dip" />
+
+		<Button android:id="@+id/Button05" android:layout_height="wrap_content"
+			android:layout_width="105dip" android:drawableTop="@drawable/home"
+			android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
+			android:layout_marginRight="5dip" />
+
+		<Button android:id="@+id/Button03" android:layout_height="wrap_content"
+			android:layout_width="105dip" android:drawableTop="@drawable/cam"
+			android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler" />
+	</LinearLayout>
+
+
+	<Button android:id="@+id/Button04" android:layout_height="wrap_content"
+		android:layout_below="@+id/LinearLayout01" android:layout_width="105dip"
+		android:drawableTop="@drawable/logout" android:text="@string/mainMenuLogout"
+		android:onClick="@string/mainMenuButtonHandler"
+		android:layout_centerHorizontal="true" android:layout_marginTop="40dip" />
+
+</RelativeLayout>

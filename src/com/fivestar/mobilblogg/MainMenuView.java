@@ -6,9 +6,6 @@ package com.fivestar.mobilblogg;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import com.fivestar.mobilblogg.ComposeView.PromptListener;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -90,13 +86,28 @@ public class MainMenuView extends Activity {
 
 	public void promptCameraOrGallery() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		builder.setTitle("Blogga bild från");
+		builder.setTitle(R.string.bloggdialogtitle);
+		builder.setMessage(R.string.bloggdialogtext);
 
-		EmptyListener pl = new EmptyListener();
-		builder.setPositiveButton("Kameran", pl);
-		builder.setNegativeButton("Galleriet", pl);
-		AlertDialog ad = builder.create();
-		ad.show();
+		builder.setPositiveButton("Kameran", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				/* Camera intent */
+				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(app.filePath)));
+				startActivityForResult(i, CAMERA_PIC_REQUEST);
+			}
+		});
+
+		builder.setNegativeButton("Galleriet", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				/* Gallery intent */
+				Intent i = new Intent(Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+				startActivityForResult(i, GALLERY_PIC_REQUEST);
+			} 
+		});
+		
+		builder.show();
 	}
 
 	/* back from camera or gallery */
@@ -136,23 +147,4 @@ public class MainMenuView extends Activity {
 			startActivityForResult(composeIntent, 0);
 		}
 	}  
-
-	public class EmptyListener implements android.content.DialogInterface.OnClickListener {
-
-		public void onClick(DialogInterface dialog, int which) {
-			if(which == DialogInterface.BUTTON1) {
-				/* Camera intent */
-				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-				i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(app.filePath)));
-				startActivityForResult(i, CAMERA_PIC_REQUEST);
-			} 
-			if(which == DialogInterface.BUTTON2) {
-				/* Gallery intent */
-				Intent i = new Intent(Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-				startActivityForResult(i, GALLERY_PIC_REQUEST);
-
-			} 
-		}
-	}
 }

@@ -66,7 +66,7 @@ public class LoginView extends Activity {
 				startActivityForResult(myIntent, 0);
 				finish();
 			} else {
-				Toast.makeText(activity, "Inloggningen misslyckades, felanvändarnamn eller lösenord", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
 			}			
 		}
 	};
