@@ -134,17 +134,69 @@ public class Communicator extends Thread {
 		return salt;
 	}	
 
-	public String getBlogg(String userName) {
-		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listBlogg&user="+userName;
+	public List<PostInfo> getBloggs(List<PostInfo> piList, int func, String userName, int page) {
+		String[] funcs = {"listBlogg","listStartpage","listFirstpage"};
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[func]+"&user="+userName+"&page="+page;
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
+		int origIndex;
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
 			return null;
 		}
-		return jsonresponse;
+		if(piList == null) {
+			piList = new ArrayList<PostInfo>();
+			origIndex = 0;
+		} else {
+			origIndex = piList.size() - 1;
+		}
+		if (jsonresponse != null && jsonresponse.length()>0) {
+			try {
+				JSONArray json = new JSONArray(jsonresponse);
+				int len = json.length();
+				int index = origIndex;
+				for(int i=0; i<len; i++) {
+					try {
+						PostInfo pi = new PostInfo();
+						pi.img      = json.getJSONObject(i).get("picture_large").toString();
+						pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
+						pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
+						pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
+						pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
+						pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
+						pi.headline = json.getJSONObject(i).get("caption").toString();
+						pi.text     = json.getJSONObject(i).get("body").toString();
+						pi.user     = json.getJSONObject(i).get("user").toString();
+						pi.createdate = json.getJSONObject(i).get("createdate").toString();
+						pi.imgid    = json.getJSONObject(i).get("id").toString();
+						pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+
+						piList.add(index, pi);
+						index++;
+					}
+					catch (NumberFormatException ne) {
+						continue;
+					} catch (JSONException j) {
+						Log.e(TAG,"JSON error:" + j.toString());
+						return null;
+					}
+				}
+
+				/* load more img */
+				if(page == 1) {
+					PostInfo pi = new PostInfo();
+					pi.loadMoreImg = true;
+					piList.add(pi);
+				}
+			} catch (JSONException j) {
+				Log.e(TAG,"JSON error:" + j.toString());
+				return null;
+			}
+			return piList;
+		} 		
+		return null;
 	}	
 
 	public String postComment(String imgid, String comment) {

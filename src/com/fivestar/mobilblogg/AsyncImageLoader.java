@@ -35,9 +35,11 @@ public class AsyncImageLoader {
 			@Override
 			public void run() {
 				Drawable drawable = loadImageFromUrl(imageUrl);
-				imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
-				Message message = handler.obtainMessage(0, drawable);
-				handler.sendMessage(message);
+				if(drawable != null) {
+					imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
+					Message message = handler.obtainMessage(0, drawable);
+					handler.sendMessage(message);
+				}
 			}
 		}.start();
 		return null;
@@ -48,7 +50,8 @@ public class AsyncImageLoader {
 		try {
 			inputStream = new URL(url).openStream();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			return null;
+			//			throw new RuntimeException(e);
 		}
 		return Drawable.createFromStream(inputStream, "src");
 	}

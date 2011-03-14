@@ -3,11 +3,8 @@
  */
 package com.fivestar.mobilblogg;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,7 +12,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,8 +31,10 @@ public class FirstPageView extends Activity {
 	String username;
 	String imgid;
 	int nbrComments;
+	int page = 1;
+	int selectedIndex = 0;
 	MobilbloggApp app;
-
+	List<PostInfo> postList = null;
 	Gallery gallery;
 	ImageView imgView;
 	TextView headlineView;
@@ -77,46 +75,14 @@ public class FirstPageView extends Activity {
 		dialog.show();
 		myBloggThread = new Thread() {
 			public void run() {
-				final String jsonresponse = app.com.getFirstPage();				
+				postList = app.com.getBloggs(postList, 2, username, page);
+				page++;
 
 				Runnable action = new Runnable() {
 					public void run() {
-						if(dialog.isShowing()) {
-							dialog.dismiss();
-						}
-
-						if (jsonresponse != null && jsonresponse.length()>0) {
-							try {
-								JSONArray json = new JSONArray(jsonresponse);
-								int len = json.length();
-								List<PostInfo> piList = new ArrayList<PostInfo>();
-								for(int i=0; i<len;i++) {
-									PostInfo pi = new PostInfo();
-									try {
-										pi.img      = json.getJSONObject(i).get("picture_large").toString();
-										pi.thumb    = json.getJSONObject(i).get("picture_small").toString();
-										pi.imgX     = Integer.parseInt(json.getJSONObject(i).get("picture_large_x").toString());
-										pi.imgY     = Integer.parseInt(json.getJSONObject(i).get("picture_large_y").toString());
-										pi.thumbX   = Integer.parseInt(json.getJSONObject(i).get("picture_small_x").toString());
-										pi.thumbY   = Integer.parseInt(json.getJSONObject(i).get("picture_small_y").toString());
-										pi.headline = json.getJSONObject(i).get("caption").toString();
-										pi.text     = json.getJSONObject(i).get("body").toString();
-										pi.user     = json.getJSONObject(i).get("user").toString();
-										pi.createdate = json.getJSONObject(i).get("createdate").toString();
-										pi.imgid    = json.getJSONObject(i).get("id").toString();
-										pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
-										piList.add(pi);
-									} catch (NumberFormatException ne) {
-										Log.e(TAG,"File not found i image");
-										continue;
-									} catch (JSONException j) {
-										Log.e(TAG,"JSON error:" + j.toString());
-									}
-								}
-								fillList(app,piList);
-							} catch (JSONException j) {
-								Log.e(TAG,"JSON error:" + j.toString());
-							}
+						dialog.dismiss();
+						if(postList != null) {
+							fillList(app, postList);
 						} else {
 							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
 						}
@@ -127,50 +93,76 @@ public class FirstPageView extends Activity {
 		};
 		myBloggThread.start();
 	}
-
+	
 	public void fillList(Context c, List<PostInfo> p) {
 		final List<PostInfo> piList = p;
 		gallery.setAdapter(new PostInfoAdapter(activity, piList, app));
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView parent, View v, int position, long id) {
 				final PostInfo pi = piList.get(position);
+				if(!pi.loadMoreImg) {
+					Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
+						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+							imgView.setImageDrawable(imageDrawable);
+							imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
+							imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+						}
+					});
+					imgView.setImageDrawable(cachedImage);
 
-				Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
-					public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-						imgView.setImageDrawable(imageDrawable);
-						imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
-						imgView.setScaleType(ImageView.ScaleType.FIT_XY);
+					headlineView.setText(Html.fromHtml(pi.headline));
+					dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
+					textView.setText(Html.fromHtml(pi.text));
+
+					username = pi.user;
+					imgid = pi.imgid;
+					bloggButton.setVisibility(View.VISIBLE);
+					commentButton.setVisibility(View.VISIBLE);
+
+					bloggButton.setText(username);
+					bloggButton.setEnabled(true);
+
+					nbrComments = pi.numComment;
+					commentButton.setEnabled(true);
+					if(nbrComments == 0) {
+						commentButton.setText("Kommentera");
 					}
-				});
-				imgView.setImageDrawable(cachedImage);
-
-				headlineView.setText(Html.fromHtml(pi.headline));
-				dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
-				textView.setText(Html.fromHtml(pi.text));
-				username = pi.user;
-				imgid = pi.imgid;
-
-				bloggButton.setVisibility(View.VISIBLE);
-				commentButton.setVisibility(View.VISIBLE);
-
-				bloggButton.setEnabled(true);
-				bloggButton.setText(username);
-
-				nbrComments = pi.numComment;
-				commentButton.setEnabled(true);
-				if(nbrComments == 0) {
-					commentButton.setText("Kommentera");
+					if(nbrComments == 1) {
+						commentButton.setText(nbrComments + " kommentar");
+					}
+					if(nbrComments > 1) {
+						commentButton.setText(nbrComments + " kommentarer");
+					}
+					((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
+				} else {
+					dialog.setMessage(getString(R.string.loading_images));
+					dialog.show();
+					selectedIndex = postList.size() - 1;
+					myBloggThread = new Thread() {
+						public void run() {
+							postList = app.com.getBloggs(postList, 2, username, page);				
+							page++;
+							Runnable action = new Runnable() {
+								public void run() {
+									dialog.dismiss();
+									if(postList != null) {
+										fillList(app, postList);
+									} else {
+										Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
+									}
+								}
+							};
+							activity.runOnUiThread(action);
+						}
+					};
+					myBloggThread.start();
 				}
-				if(nbrComments == 1) {
-					commentButton.setText(nbrComments + " kommentar");
-				}
-				if(nbrComments > 1) {
-					commentButton.setText(nbrComments + " kommentarer");
-				}
-				((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 			}
+
 		});
+		gallery.setSelection(selectedIndex);
 	}
+
 
 	public void startPageClickHandler(View view) {
 		switch(view.getId()) {

@@ -18,7 +18,7 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 	MobilbloggApp app;
 	int galleryItemBg;
 	List<PostInfo> listInfo;
-	
+
 	public PostInfoAdapter(Activity activity, List<PostInfo> pi, MobilbloggApp a) {
 		super(activity, 0, pi);
 		listInfo = pi;
@@ -37,22 +37,29 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 		if(pi == null) {
 			Log.w(TAG,"getItem == null @ position " + position);
 		}
-		// Load the image and set it on the ImageView
 		final ImageView imageView = new ImageView((Context)app);
-		Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.thumb, new ImageCallback() {
-		    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-		        imageView.setImageDrawable(imageDrawable);
-		        imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-				imageView.setBackgroundResource(galleryItemBg);
-		        notifyDataSetChanged();
-		    }
-		});
-	    imageView.setImageDrawable(cachedImage);
-        imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		imageView.setBackgroundResource(galleryItemBg);
-
+		if(!pi.loadMoreImg) {
+			// Load the image and set it on the ImageView
+			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.thumb, new ImageCallback() {
+				public void imageLoaded(Drawable imageDrawable, String imageUrl) {					
+					imageView.setImageDrawable(imageDrawable);
+					imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
+					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+					imageView.setBackgroundResource(galleryItemBg);
+					notifyDataSetChanged();
+				}
+			});
+			imageView.setImageDrawable(cachedImage);
+			imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setBackgroundResource(galleryItemBg);
+		} else {
+			// Load the image and set it on the ImageView
+			imageView.setImageResource(R.drawable.next);
+			imageView.setLayoutParams(new Gallery.LayoutParams(120, 120));
+			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//			imageView.setBackgroundResource(galleryItemBg);
+		}
 		return imageView;
 	}
 

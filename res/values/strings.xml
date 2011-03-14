@@ -22,7 +22,8 @@
 	<string name="mainMenuLogout">Logga ut</string>
 	<string name="mainMenuFirstPage">Förstasidan</string>
 
-	<string name="please_wait">Vänligen vänta...</string>
+	<string name="please_wait">Vänligen vänta</string>
+	<string name="loading_images">Laddar fler bilder</string>
 	<string name="empty">Tom</string>
 
 	<string name="bloggdialogtitle">Blogga</string>

@@ -112,7 +112,6 @@ public class MainMenuView extends Activity {
 
 	/* back from camera or gallery */
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
-		System.out.println("BACK from camera/gallery");
 		if (requestCode == CAMERA_PIC_REQUEST) {  
 			File file = new File(app.filePath);
 

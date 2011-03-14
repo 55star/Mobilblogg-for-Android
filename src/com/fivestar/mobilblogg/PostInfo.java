@@ -1,5 +1,7 @@
 package com.fivestar.mobilblogg;
 
+import android.R.bool;
+
 
 public class PostInfo {
 	public String thumb = "";
@@ -14,6 +16,7 @@ public class PostInfo {
 	public String createdate = "";
 	public String imgid = "";
 	public int numComment = 0;
-
+	public boolean loadMoreImg = false;
+	
 	public PostInfo() {}
 }
