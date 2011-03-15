@@ -6,6 +6,7 @@ public class CommentInfo {
 	public String[] username;
 	public String[] createdate;
 	public String[] avatar;
+	public int[] noMember;
 	public int length;
 
 	public CommentInfo(int len) {
@@ -13,6 +14,7 @@ public class CommentInfo {
 		username    = new String[len];
 		createdate  = new String[len];
 		avatar     	= new String[len];
+		noMember     	= new int[len];
 		length      = len;
 	}
 }

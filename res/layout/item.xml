@@ -6,7 +6,7 @@
 
 	<ImageView android:id="@+id/avatar" android:layout_width="80dip"
 		android:layout_height="80dip" android:src="@drawable/stub"
-		android:scaleType="fitXY" />
+		android:scaleType="fitXY" android:onClick="commentClickHandler"/>
 	<LinearLayout android:id="@+id/LinearLayout02"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:orientation="vertical" android:background="@color/colorwhite">

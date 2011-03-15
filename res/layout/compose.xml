@@ -14,25 +14,19 @@
 				android:layout_height="200dip" android:src="@drawable/stub"
 				android:scaleType="centerInside" android:layout_margin="3dip" />
 
-			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/headline"
-				android:textColor="@color/textcolor" android:textSize="16dip"></TextView>
 			<EditText android:id="@+id/captionText"
 				android:layout_height="wrap_content" android:singleLine="true"
-				android:layout_width="fill_parent"></EditText>
+				android:layout_width="fill_parent" android:hint="@string/headline" />
 
-			<TextView android:id="@+id/TextView02" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/body"
-				android:textColor="@color/textcolor" android:textSize="16dip"></TextView>
 			<EditText android:id="@+id/bodyText" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:inputType="textMultiLine"
-				android:lines="2"></EditText>
+				android:lines="2" android:hint="@string/body" />
 
 			<TextView android:id="@+id/TextView03" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:text="@string/rights"
-				android:textColor="@color/textcolor" android:textSize="16dip"></TextView>
+				android:textColor="@color/textcolor" android:textSize="16dip" />
 			<Spinner android:id="@+id/rights" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:drawSelectorOnTop="true"></Spinner>
+				android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
 
 			<LinearLayout android:id="@+id/LinearLayout03"
 				android:layout_width="fill_parent" android:layout_height="fill_parent"

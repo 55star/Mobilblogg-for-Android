@@ -5,8 +5,8 @@
 	<string name="start">Starta</string>
 	<string name="splashtop">Mobilblogg.nu för Android</string>
 	<string name="splashButtonHandler">splashClickHandler</string>
-	<string name="username">Användarnamn:</string>
-	<string name="password">Lösenord:</string>
+	<string name="username">Användarnamn</string>
+	<string name="password">Lösenord</string>
 	<string name="login">Logga in</string>
 
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera bilder, tagna med mobiltelefonkamera, på en egna blogg. Samtidigt kan du hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu/</string>

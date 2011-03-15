@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -163,21 +164,22 @@ public class BloggView extends Activity {
 		case R.id.bloggButton:
 			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
 			bloggIntent.putExtra("username", username);
-			startActivityForResult(bloggIntent, 0);
+			startActivityForResult(bloggIntent,0);
 			break;
 		case R.id.commentButton:
 			if(nbrComments > 0) {
 				Intent commentIntent = new Intent(view.getContext(), CommentView.class);
 				commentIntent.putExtra("imgid", imgid);
-				startActivityForResult(commentIntent, 0);
+				startActivityForResult(commentIntent,0);
 			} else {
 				Intent writeCommentIntent = new Intent(view.getContext(), WriteCommentView.class);
 				writeCommentIntent.putExtra("imgid", imgid);
-				startActivityForResult(writeCommentIntent, 0);			
+				startActivityForResult(writeCommentIntent,0);			
 			}
 			break;
 		}
 	}
+	
 
 	@Override
 	public void onDestroy() {

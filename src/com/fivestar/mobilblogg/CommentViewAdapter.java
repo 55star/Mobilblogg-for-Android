@@ -37,7 +37,6 @@ public class CommentViewAdapter extends BaseAdapter {
 		TextView  comment = (TextView)row.findViewById(R.id.comment);
 		TextView  username = (TextView)row.findViewById(R.id.username);
 		TextView  date = (TextView)row.findViewById(R.id.date);
-
 //		imageLoader.DisplayImage(ci.avatar[position], context, avatar);
 
 		Drawable cachedImage = app.asyncImageLoader.loadDrawable(ci.avatar[position], new ImageCallback() {
@@ -46,7 +45,9 @@ public class CommentViewAdapter extends BaseAdapter {
 		    }
 		});
 	    avatar.setImageDrawable(cachedImage);
-		
+	    if(ci.noMember[position] == 0) {
+	    	avatar.setTag(ci.username[position]);
+	    }
 		comment.setText(Html.fromHtml(ci.comment[position]));
 		username.setText(ci.username[position]);
 		date.setText(ci.createdate[position]);

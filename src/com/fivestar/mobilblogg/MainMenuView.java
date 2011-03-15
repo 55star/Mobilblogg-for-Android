@@ -47,11 +47,6 @@ public class MainMenuView extends Activity {
 			startActivityForResult(spIntent, 0);
 			break;
 
-		case R.id.Button05:
-			Intent fpIntent = new Intent(view.getContext(), FirstPageView.class);
-			startActivityForResult(fpIntent, 0);
-			break;
-
 		case R.id.Button03:
 			String path = Environment.getExternalStorageDirectory() + "/" + "Mobilblogg";
 			String name = String.format("%d.jpg", System.currentTimeMillis());
@@ -81,7 +76,13 @@ public class MainMenuView extends Activity {
 			quitIntent.putExtra("func", "quit");
 			startActivity(quitIntent);
 			finish();
+			break;
+		case R.id.Button05:
+			Intent fpIntent = new Intent(view.getContext(), FirstPageView.class);
+			startActivityForResult(fpIntent, 0);
+			break;
 		}
+
 	}
 
 	public void promptCameraOrGallery() {
@@ -106,7 +107,7 @@ public class MainMenuView extends Activity {
 				startActivityForResult(i, GALLERY_PIC_REQUEST);
 			} 
 		});
-		
+
 		builder.show();
 	}
 

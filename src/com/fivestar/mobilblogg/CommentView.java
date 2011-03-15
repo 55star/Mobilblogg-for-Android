@@ -72,7 +72,7 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 									ci.username[i]   = json.getJSONObject(i).get("author").toString();
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
 									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
-
+									ci.noMember[i] = Integer.parseInt(json.getJSONObject(i).get("member").toString());
 									ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
 									if(ci.avatar[i] == null) {
 										ci.avatar[i] = "http://www.mobilblogg.nu/gfx/noavatar_100.gif";
@@ -100,6 +100,15 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		startActivityForResult(writecommentIntent, 0);
 	}
 
+	public void commentClickHandler(View view) {
+		String user = (String)view.getTag();
+		if(user != null) {
+			Intent bloggIntent = new Intent(view.getContext(), BloggView.class);
+			bloggIntent.putExtra("username", user);
+			startActivityForResult(bloggIntent,0);
+		}
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
