@@ -305,7 +305,7 @@ public class Communicator extends Thread {
 	}	
 
 
-	public String doUpload(String username, String secret, String caption, String text, String showfor, String filePath) throws Throwable {
+	public String doUpload(String username, String secret, String caption, String text, String showfor, String tags, String filePath) throws Throwable {
 
 		File f = new File(filePath);
 
@@ -322,6 +322,7 @@ public class Communicator extends Thread {
 			StringBody sb6 = new StringBody("upload");
 			StringBody sb7 = new StringBody("/files/"+username);
 			StringBody sb8 = new StringBody(api);
+			StringBody sb9 = new StringBody(tags);
 
 			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			multipartContent.addPart("file", bin);
@@ -333,7 +334,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("func", sb6);
 			multipartContent.addPart("path", sb7);
 			multipartContent.addPart("template", sb8);
-
+			multipartContent.addPart("tags", sb9);
 
 			postMethod.setEntity(multipartContent);
 			HttpResponse resp = client.execute(postMethod);

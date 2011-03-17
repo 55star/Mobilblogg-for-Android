@@ -22,9 +22,13 @@
 				android:layout_width="fill_parent" android:inputType="textMultiLine"
 				android:lines="2" android:hint="@string/body" />
 
+			<EditText android:id="@+id/tags" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:hint="@string/tags" />
 			<TextView android:id="@+id/TextView03" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:text="@string/rights"
-				android:textColor="@color/textcolor" android:textSize="16dip" />
+				android:layout_height="wrap_content" android:text="@string/sep"
+				android:textColor="@color/textcolor" android:textSize="14dip"
+				android:layout_marginBottom="10dip" />
+
 			<Spinner android:id="@+id/rights" android:layout_width="fill_parent"
 				android:layout_height="wrap_content" android:drawSelectorOnTop="true" />
 
@@ -35,13 +39,11 @@
 
 				<Button android:id="@+id/uploadbutton" android:layout_width="120dip"
 					android:layout_height="wrap_content" android:text="@string/upload"
-					android:onClick="composeClickHandler"
-					android:layout_marginRight="25dip" />
+					android:onClick="composeClickHandler" android:layout_marginRight="25dip" />
 
 				<Button android:id="@+id/abortbutton" android:layout_width="120dip"
 					android:layout_height="wrap_content" android:text="@string/cancel"
-					android:onClick="composeClickHandler"
-					android:layout_marginLeft="25dip" />
+					android:onClick="composeClickHandler" android:layout_marginLeft="25dip" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

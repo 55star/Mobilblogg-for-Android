@@ -8,6 +8,8 @@
 	<string name="username">Användarnamn</string>
 	<string name="password">Lösenord</string>
 	<string name="login">Logga in</string>
+	<string name="tags">Taggar</string>
+	<string name="sep">Separera taggarna med mellanslag</string>
 
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera bilder, tagna med mobiltelefonkamera, på en egna blogg. Samtidigt kan du hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu/</string>
 	<string name="remember_me">Kom ihåg mig</string>

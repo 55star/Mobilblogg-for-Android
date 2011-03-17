@@ -26,6 +26,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	private static final String TAG = "Upload";
 	private EditText captionText;
 	private EditText bodyText;
+	private EditText tagsText;
 	private ImageView image;
 	private Spinner rights;
 	private Activity activity;
@@ -37,7 +38,8 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	public String body;
 	public String showfor;
 	public String secretWord;
-	private String[] itemLabels = {"Alla","Alla, inte på förstasidan","Medlemmar","Mina vänner", "Mig"};
+	public String tags;
+	private String[] itemLabels = {"Visa för alla","Alla, inte på förstasidan","Medlemmar","Mina vänner", "Mig"};
 	private String[] itemValues = {"","blog", "members","friends", "private"};
 
 	/*
@@ -53,6 +55,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		
 		captionText = (EditText) findViewById(R.id.captionText);
 		bodyText = (EditText) findViewById(R.id.bodyText);
+		tagsText = (EditText) findViewById(R.id.tags);
 		image = (ImageView) findViewById(R.id.image);
 		rights = (Spinner) findViewById(R.id.rights);
 		activity = this;
@@ -100,20 +103,21 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		} else {
 			caption = captionText.getText().toString();
 			body = bodyText.getText().toString();
+			tags = tagsText.getText().toString();
 			showfor = itemValues[rights.getSelectedItemPosition()];
 
 			promptSecretWord();	
 		}
 	}
 
-	public void uploadPost(final String caption, final String body, final String showfor, final String secret, final Activity activity) {
+	public void uploadPost(final String caption, final String body, final String showfor, final String secret, final String tags, final Activity activity) {
 		dialog.show();
 		composeThread = new Thread() {
 			public void run() {
 				String resp = null;
 				final String jsonresponse;
 				try {
-					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, filePath);
+					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, tags, filePath);
 				} catch (Throwable e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -173,7 +177,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 			if(buttonId == DialogInterface.BUTTON1) {
 				/* ok button */
 				secretWord = getPromptText();
-				uploadPost(caption, body, showfor, secretWord, activity);
+				uploadPost(caption, body, showfor, secretWord, tags, activity);
 			} else {
 				/* cancelbutton */
 				promptReply = null;
