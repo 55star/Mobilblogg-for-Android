@@ -1,7 +1,5 @@
 package com.fivestar.mobilblogg;
 
-import android.R.bool;
-
 
 public class PostInfo {
 	public String thumb = "";

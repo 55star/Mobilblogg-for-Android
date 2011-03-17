@@ -164,8 +164,6 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	}
 
 	public class PromptListener implements android.content.DialogInterface.OnClickListener {
-		private static final String TAG = "PromptListener";
-		private String promptReply = null;
 		View promptDialogView = null;
 		
 		public PromptListener(View inDialogView) {
@@ -180,7 +178,6 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				uploadPost(caption, body, showfor, secretWord, tags, activity);
 			} else {
 				/* cancelbutton */
-				promptReply = null;
 			}
 		}
 		
@@ -188,8 +185,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 			EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
 			return et.getText().toString();
 		}
-	}
-	
+	}	
 
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
