@@ -152,7 +152,7 @@ public class Utils {
 		return strContent.toString();
 	}
 
-	public static String PrettyDate(String cmpDate){    
+	public static String PrettyDate(String cmpDate, Context ctx){    
 		Calendar calNow = Calendar.getInstance();
 		Calendar calCmp = Calendar.getInstance();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -174,18 +174,18 @@ public class Utils {
 
 		if(diffSeconds < 60) {
 			if(diffSeconds < 0) {
-				return "0 sekunder sen";
+				return ("0 " + ctx.getString(R.string.secondssince));
 			}
-			return diffSeconds + " sekunder sen";
+			return (diffSeconds + " " + ctx.getString(R.string.secondssince));
 		}
 		if(diffMinutes < 60) {
-			return diffMinutes + " minuter sen";
+			return (diffMinutes + " " + ctx.getString(R.string.minutessince));
 		}
 		if(diffHours < 24) {
 			if(diffHours == 1) {
-				return diffHours + " timme sen";				
+				return (diffHours + " " + ctx.getString(R.string.hoursince));				
 			}
-			return diffHours + " timmar sen";
+			return (diffHours + " " + ctx.getString(R.string.hoursince));
 		}
 		String longdate = calCmp.get(Calendar.DATE) + " ";
 		longdate += month[calCmp.get(Calendar.MONTH)] + " ";

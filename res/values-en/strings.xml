@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">MobilBlogg</string>
+	<string name="start">Start</string>
+	<string name="splashtop">Mobilblogg.net for Android</string>
+	<string name="splashButtonHandler">splashClickHandler</string>
+	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="login">Login</string>
+	<string name="tags">Tags</string>
+	<string name="sep">Separate tags with space</string>
+	<string name="loginerror">Login failure</string>
+	<string name="geterror">Failure</string>
+	<string name="secondssince">seconds ago</string>
+	<string name="minutessince">minutes ago</string>
+	<string name="hoursince">hour ago</string>
+	<string name="hourssince">hour ago</string>
+	<string name="by">by</string>
+	<string name="camera">Camera</string>
+	<string name="gallery">Gallery</string>
+	<string name="ok">OK</string>
+	<string name="abort">Cancel</string>
+	<string name="postuploaded">Post sent successfully</string>
+	<string name="blogfailure">Failure, wrong secret word?</string>
+
+
+	<string name="all">Show for anyone</string>
+	<string name="blog">All, but not on firstpage</string>
+	<string name="members">Members</string>
+	<string name="friends">Friends</string>
+	<string name="me">Me</string>
+
+	<string name="mobilbloggintro">Moblogging is an easy way to publish images and
+		videos taken
+		with camera phone on the Internet. If you\'re not a member please sign up
+		on http://www.mobilblogg.net/</string>
+	<string name="remember_me">Remember me</string>
+	<color name="textcolor">#333333</color>
+	<string name="loginButtonHandler">loginClickHandler</string>
+	<string name="loginViewName">Login</string>
+	<string name="logging_in">Logging in</string>
+	<string name="mainMenuMyBlogg">My moblog</string>
+	<string name="mainMenuButtonHandler">mainMenuClickHandler</string>
+	<string name="mainMenuMyStartPage">My friends</string>
+	<string name="mainMenuUser">Blog</string>
+	<string name="mainMenuLogout">Logout</string>
+	<string name="mainMenuFirstPage">First page</string>
+
+	<string name="please_wait">Please wait</string>
+	<string name="loading_images">Loading images</string>
+	<string name="empty">Empty</string>
+
+	<string name="bloggdialogtitle">Blog</string>
+	<string name="bloggdialogtext">Take picture or choose image from gallery?</string>
+
+	<color name="bgcolor">#6492A6</color>
+	<color name="colorwhite">#FFFFFF</color>
+	<color name="colorblack">#000000</color>
+	<color name="colorbg">#E7E7E7</color>
+	<color name="colorgray">#C0C0C0</color>
+	<color name="colordarkgray">#454545</color>
+	<color name="colorlightgray">#7b7b7b</color>
+	<color name="colorbutton">#8C8D8C</color>
+
+	<string name="takepicture">Take picture</string>
+	<string name="cameraButtonHandler">cameraClickHandler</string>
+	<string name="headline">Header</string>
+	<string name="body">Text</string>
+	<string name="composeButtonHandler">composeClickHandler</string>
+	<string name="upload">Upload</string>
+	<string name="cancel">Cancel</string>
+	<string name="send">Send</string>
+	<string name="mainMenuUploadPage">Blog</string>
+	<string name="secretWord">Secret word</string>
+	<string name="rights">Show for</string>
+	<string name="startPageButtonHandler">startPageClickHandler</string>
+	<string name="blogg">To blog</string>
+	<string name="firstcomment">Comment</string>
+	<string name="comment">comment</string>
+	<string name="comments">comments</string>
+	<string name="bigcomments">Comments</string>
+	<string name="writecomment">Write a comment</string>
+	<string name="writeCommentButtonHandler">writeCommentClickHandler</string>
+	<string name="commentButtonHandler">commentClickHandler</string>
+</resources>

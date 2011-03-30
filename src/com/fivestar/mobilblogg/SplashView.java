@@ -91,7 +91,7 @@ public class SplashView extends Activity {
 				startActivityForResult(myIntent, 0);
 				finish();
 			} else {
-				Toast.makeText(activity, "Inloggningen misslyckades", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, getString(R.string.loginerror), Toast.LENGTH_LONG).show();
 			}			
 		}
 	};

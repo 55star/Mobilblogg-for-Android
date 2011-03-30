@@ -23,7 +23,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class BloggView extends Activity {
-	final String TAG = "StartPageView";
+	final String TAG = "BloggView";
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	String username;
@@ -64,7 +64,7 @@ public class BloggView extends Activity {
 
 		app = ((MobilbloggApp)getApplicationContext());
 		username = getIntent().getStringExtra("username");
-		this.setTitle(username +"'s mobilblogg");
+		this.setTitle(username +"'s " + getString(R.string.moblog));
 		activity = this;
 
 		dialog.show();
@@ -79,7 +79,7 @@ public class BloggView extends Activity {
 						if(postList != null) {
 							fillList(app, postList);
 						} else {
-							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
 						}
 					}
 				};
@@ -106,7 +106,7 @@ public class BloggView extends Activity {
 					imgView.setImageDrawable(cachedImage);
 
 					headlineView.setText(Html.fromHtml(pi.headline));
-					dateView.setText(Utils.PrettyDate(pi.createdate) + " av " + pi.user);
+					dateView.setText(Utils.PrettyDate(pi.createdate,activity) + " " + getString(R.string.by) + " " + pi.user);
 					textView.setText(Html.fromHtml(pi.text));
 
 					username = pi.user;
@@ -120,13 +120,13 @@ public class BloggView extends Activity {
 					nbrComments = pi.numComment;
 					commentButton.setEnabled(true);
 					if(nbrComments == 0) {
-						commentButton.setText("Kommentera");
+						commentButton.setText(getString(R.string.firstcomment));
 					}
 					if(nbrComments == 1) {
-						commentButton.setText(nbrComments + " kommentar");
+						commentButton.setText(nbrComments + " " + getString(R.string.comment));
 					}
 					if(nbrComments > 1) {
-						commentButton.setText(nbrComments + " kommentarer");
+						commentButton.setText(nbrComments + " " + getString(R.string.comments));
 					}
 					((ScrollView) findViewById(R.id.scroll01)).scrollTo(0, 0);
 				} else {
@@ -143,7 +143,7 @@ public class BloggView extends Activity {
 									if(postList != null) {
 										fillList(app, postList);
 									} else {
-										Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
+										Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
 									}
 								}
 							};

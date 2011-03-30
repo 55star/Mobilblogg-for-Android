@@ -8,6 +8,7 @@ import org.json.JSONException;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 	int imgid = 0;
 	ListView list;
 	CommentViewAdapter adapter;
+	Context ctx;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -34,14 +36,14 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment);
 		activity = this;
-		this.setTitle("Kommentarer");
+		this.setTitle(getString(R.string.bigcomments));
 
 		imgid = Integer.parseInt(getIntent().getStringExtra("imgid"));
 
 		Button b = new Button(this);
 		b.setPadding(0, 15, 0, 15);
 		b.setWidth(80);
-		b.setText("Skriv en kommentar");
+		b.setText(getString(R.string.writecomment));
 		b.setOnClickListener(this);
 
 		list = (ListView)findViewById(android.R.id.list);	
@@ -52,7 +54,8 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 		dialog.setCancelable(false);
 
 		app = ((MobilbloggApp)getApplicationContext());
-
+		ctx = this;
+		
 		dialog.show();
 		commentThread = new Thread() {
 			public void run() {
@@ -71,7 +74,7 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 								for(int i=0; i<len;i++) {
 									ci.username[i]   = json.getJSONObject(i).get("author").toString();
 									ci.comment[i]    = json.getJSONObject(i).get("comment").toString();
-									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString());
+									ci.createdate[i] = Utils.PrettyDate(json.getJSONObject(i).get("createdate").toString(),ctx);
 									ci.noMember[i] = Integer.parseInt(json.getJSONObject(i).get("member").toString());
 									ci.avatar[i] = app.com.getProfileAvatar(ci.username[i]);
 									if(ci.avatar[i] == null) {
@@ -84,7 +87,7 @@ public class CommentView extends ListActivity implements View.OnClickListener {
 								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							Toast.makeText(activity, "Hämtningen misslyckades", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getString(R.string.geterror), Toast.LENGTH_SHORT).show();
 						}
 					}
 				};

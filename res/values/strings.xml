@@ -10,8 +10,33 @@
 	<string name="login">Logga in</string>
 	<string name="tags">Taggar</string>
 	<string name="sep">Separera taggarna med mellanslag</string>
+	<string name="moblog">mobilblogg</string>
+	<string name="geterror">Något misslyckades</string>
+	<string name="loginerror">Inloggningen misslyckades</string>
+	<string name="secondssince">sekunder sen</string>
+	<string name="minutessince">minuter sen</string>
+	<string name="hoursince">timme sen</string>
+	<string name="hourssince">timmar sen</string>
+	<string name="by">av</string>
+	<string name="camera">Kamera</string>
+	<string name="gallery">Galleriet</string>
 
-	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera bilder, tagna med mobiltelefonkamera, på en egna blogg. Samtidigt kan du hänga med i vår sköna community. Om du inte är medlem, registrera dig nu på http://www.mobilblogg.nu/</string>
+	<string name="ok">OK</string>
+	<string name="abort">Avbryt</string>
+	<string name="postuploaded">Inlägget uppladdat</string>
+	<string name="blogfailure">Bloggningen misslyckades, fel hemligt ord?</string>
+
+	<string name="all">Visa för alla</string>
+	<string name="blog">Alla, inte på förstasidan</string>
+	<string name="members">Medlemmar</string>
+	<string name="friends">Mina vänner</string>
+	<string name="me">Mig</string>
+
+
+	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
+		bilder tagna med mobiltelefonkamera på en egna blogg. Samtidigt kan du
+		hänga med i vår sköna community. Om du inte är medlem, registrera dig
+		nu på http://www.mobilblogg.nu/</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
@@ -29,8 +54,9 @@
 	<string name="empty">Tom</string>
 
 	<string name="bloggdialogtitle">Blogga</string>
-	<string name="bloggdialogtext">Ta en bild med kameran eller välj en tidigare tagen bild i galleriet?</string>
-	
+	<string name="bloggdialogtext">Ta en bild med kameran eller välj en tidigare tagen
+		bild i galleriet?</string>
+
 	<color name="bgcolor">#6492A6</color>
 	<color name="colorwhite">#FFFFFF</color>
 	<color name="colorblack">#000000</color>
@@ -39,7 +65,7 @@
 	<color name="colordarkgray">#454545</color>
 	<color name="colorlightgray">#7b7b7b</color>
 	<color name="colorbutton">#8C8D8C</color>
-	
+
 	<string name="takepicture">Ta bild</string>
 	<string name="cameraButtonHandler">cameraClickHandler</string>
 	<string name="headline">Rubrik</string>
@@ -53,7 +79,10 @@
 	<string name="rights">Ska synas för</string>
 	<string name="startPageButtonHandler">startPageClickHandler</string>
 	<string name="blogg">Till blogg</string>
-	<string name="comment">Kommentarer</string>
+	<string name="firstcomment">Kommentera</string>
+	<string name="comment">kommentar</string>
+	<string name="comments">kommentarer</string>
+	<string name="bigcomments">Kommentarer</string>
 	<string name="writecomment">Skriv en kommentar</string>
 	<string name="writeCommentButtonHandler">writeCommentClickHandler</string>
 	<string name="commentButtonHandler">commentClickHandler</string>

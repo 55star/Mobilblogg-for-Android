@@ -90,7 +90,7 @@ public class MainMenuView extends Activity {
 		builder.setTitle(R.string.bloggdialogtitle);
 		builder.setMessage(R.string.bloggdialogtext);
 
-		builder.setPositiveButton("Kameran", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getString(R.string.camera), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				/* Camera intent */
 				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -99,7 +99,7 @@ public class MainMenuView extends Activity {
 			}
 		});
 
-		builder.setNegativeButton("Galleriet", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(getString(R.string.gallery), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				/* Gallery intent */
 				Intent i = new Intent(Intent.ACTION_PICK,
@@ -127,7 +127,7 @@ public class MainMenuView extends Activity {
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				Toast.makeText(this, "Något blev fel", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.geterror), Toast.LENGTH_SHORT).show();
 			} catch (NullPointerException e) {
 				// TODO Auto-generated catch block
 			}

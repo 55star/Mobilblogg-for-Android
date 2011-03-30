@@ -39,7 +39,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	public String showfor;
 	public String secretWord;
 	public String tags;
-	private String[] itemLabels = {"Visa för alla","Alla, inte på förstasidan","Medlemmar","Mina vänner", "Mig"};
+	private String[] itemLabels = new String[5];
 	private String[] itemValues = {"","blog", "members","friends", "private"};
 
 	/*
@@ -52,7 +52,13 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compose);
 		this.setTitle(R.string.mainMenuUploadPage);
-		
+
+		itemLabels[0] = getString(R.string.all); //"Visa för alla";
+		itemLabels[1] = getString(R.string.blog); //"Alla, inte på förstasidan";
+		itemLabels[2] = getString(R.string.members); //"Medlemmar";
+		itemLabels[3] = getString(R.string.friends); //"Mina vänner";
+		itemLabels[4] = getString(R.string.me); // "Mig";
+
 		captionText = (EditText) findViewById(R.id.captionText);
 		bodyText = (EditText) findViewById(R.id.bodyText);
 		tagsText = (EditText) findViewById(R.id.tags);
@@ -70,7 +76,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		rights.setAdapter(aa);
 		rights.setSelection(0);
-		
+
 		// load image from sdcard
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 2;
@@ -81,21 +87,21 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	public void promptSecretWord() {
 		LayoutInflater li = LayoutInflater.from(activity);
 		View view = li.inflate(R.layout.prompt, null);
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		builder.setTitle("Hemligt ord");
+		builder.setTitle(getString(R.string.secretWord));
 		builder.setView(view);
-		
+
 		PromptListener pl = new PromptListener(view);
-		builder.setPositiveButton("OK", pl);
-		builder.setNegativeButton("Avbryt", pl);
-		
+		builder.setPositiveButton(getString(R.string.ok), pl);
+		builder.setNegativeButton(getString(R.string.abort), pl);
+
 		AlertDialog ad = builder.create();
-		
+
 		ad.show();
 	}
 
-	
+
 	public void composeClickHandler(View view) {
 		if(view.getId() == R.id.abortbutton) {
 			Intent mbIntent = new Intent(view.getContext(), MainMenuView.class);
@@ -125,7 +131,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				if(resp != null) {
 					jsonresponse = resp;
 				} else {
-					Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -144,16 +150,16 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							Toast.makeText(activity, "Bloggningen misslyckades", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
 						}
 
 						if (uploadStatus > 0) {
-							Toast.makeText(activity, "Inlägget skickat", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getString(R.string.postuploaded), Toast.LENGTH_SHORT).show();
 							Intent myIntent = new Intent(activity, MainMenuView.class);
 							startActivityForResult(myIntent, 0);
 							finish();
 						} else {
-							Toast.makeText(activity, "Bloggningen misslyckades, fel hemligt ord?", Toast.LENGTH_LONG).show();
+							Toast.makeText(activity, getString(R.string.blogfailure), Toast.LENGTH_LONG).show();
 						}
 					}
 				};
@@ -165,11 +171,11 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 
 	public class PromptListener implements android.content.DialogInterface.OnClickListener {
 		View promptDialogView = null;
-		
+
 		public PromptListener(View inDialogView) {
 			promptDialogView = inDialogView;
 		}
-		
+
 		/* Callback from dialog */
 		public void onClick(DialogInterface v, int buttonId) {
 			if(buttonId == DialogInterface.BUTTON1) {
@@ -180,7 +186,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				/* cancelbutton */
 			}
 		}
-		
+
 		private String getPromptText() {
 			EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
 			return et.getText().toString();

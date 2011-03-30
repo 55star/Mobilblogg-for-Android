@@ -43,7 +43,7 @@ public class WriteCommentView extends Activity {
 
 		imgid = getIntent().getStringExtra("imgid");
 
-		this.setTitle("Skriv din kommentar");
+		this.setTitle(getString(R.string.writecomment));
 
 		activity = this;
 	}
@@ -67,7 +67,7 @@ public class WriteCommentView extends Activity {
 				if(resp != null) {
 					jsonresponse = resp;
 				} else {
-					Toast.makeText(activity, "Något blev fel", Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, getString(R.string.geterror), Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -86,7 +86,7 @@ public class WriteCommentView extends Activity {
 								Log.e(TAG,"JSON error:" + j.toString());
 							}
 						} else {
-							Toast.makeText(activity, "Något blev fel", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getString(R.string.geterror), Toast.LENGTH_SHORT).show();
 						}
 
 						if (postStatus > 0) {
@@ -96,7 +96,7 @@ public class WriteCommentView extends Activity {
 							startActivityForResult(commentIntent, 0);
 							finish();
 						} else {
-							Toast.makeText(activity, "Något blev fel", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, getString(R.string.geterror), Toast.LENGTH_SHORT).show();
 						}
 					}
 				};
