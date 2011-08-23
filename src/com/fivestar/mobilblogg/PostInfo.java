@@ -1,6 +1,5 @@
 package com.fivestar.mobilblogg;
 
-
 public class PostInfo {
 	public String thumb = "";
 	public String img = "";

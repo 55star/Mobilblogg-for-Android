@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 public class MainMenuView extends Activity {
@@ -30,6 +31,7 @@ public class MainMenuView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mainmenu);
 		app = ((MobilbloggApp)getApplicationContext());
 		activity = this;
@@ -37,17 +39,26 @@ public class MainMenuView extends Activity {
 
 	public void mainMenuClickHandler(View view) {
 		switch(view.getId()) {
-		case R.id.Button01:
-			Intent mbIntent = new Intent(view.getContext(), BloggView.class);
-			mbIntent.putExtra("username", app.getUserName());
-			startActivityForResult(mbIntent, 0);
-			break;
-		case R.id.Button02:
-			Intent spIntent = new Intent(view.getContext(), StartPageView.class);
-			startActivityForResult(spIntent, 0);
+		case R.id.firstpage:
+			Intent fpIntent = new Intent(view.getContext(), GalleryView.class);
+			fpIntent.putExtra("list", app.bc.FIRSTPAGE);
+			startActivityForResult(fpIntent, 0);
 			break;
 
-		case R.id.Button03:
+		case R.id.startpage:
+			Intent spIntent = new Intent(view.getContext(), GalleryView.class);
+			spIntent.putExtra("list", app.bc.FRIENDPAGE);
+			startActivityForResult(spIntent, 0);
+			break;
+			
+		case R.id.myblogg:
+			Intent mbIntent = new Intent(view.getContext(), GalleryView.class);
+			mbIntent.putExtra("username", app.getUserName());
+			mbIntent.putExtra("list", app.bc.BLOGGPAGE);
+			startActivityForResult(mbIntent, 0);
+			break;
+
+		case R.id.blogga:
 			String path = Environment.getExternalStorageDirectory() + "/" + "Mobilblogg";
 			String name = String.format("%d.jpg", System.currentTimeMillis());
 			String filePath = path + "/" + name;
@@ -66,7 +77,7 @@ public class MainMenuView extends Activity {
 			promptCameraOrGallery();
 			break;
 
-		case R.id.Button04:
+		case R.id.loggaut:
 			app.com.shutdownHttpClient();
 			app.setUserName("");
 			app.setLoggedInStatus(false);
@@ -77,12 +88,7 @@ public class MainMenuView extends Activity {
 			startActivity(quitIntent);
 			finish();
 			break;
-		case R.id.Button05:
-			Intent fpIntent = new Intent(view.getContext(), FirstPageView.class);
-			startActivityForResult(fpIntent, 0);
-			break;
 		}
-
 	}
 
 	public void promptCameraOrGallery() {

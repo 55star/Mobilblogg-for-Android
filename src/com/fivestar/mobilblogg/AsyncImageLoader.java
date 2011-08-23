@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 

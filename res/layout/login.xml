@@ -5,11 +5,12 @@
 	android:padding="20dip">
 
 	<EditText android:id="@+id/EditText01" android:layout_height="wrap_content"
-		android:singleLine="true" android:layout_width="fill_parent" android:hint="@string/username" />
+		android:singleLine="true" android:layout_width="fill_parent"
+		android:hint="@string/username" />
 
 	<EditText android:id="@+id/EditText02" android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:inputType="textPassword"
-		android:singleLine="true" android:hint="@string/password"  />
+		android:singleLine="true" android:hint="@string/password" />
 
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="horizontal" android:layout_width="fill_parent"
@@ -17,10 +18,17 @@
 
 		<Button android:id="@+id/Button01" android:layout_width="120dip"
 			android:layout_height="wrap_content" android:text="@string/login"
-			android:onClick="@string/loginButtonHandler" android:textSize="20dip" />
+			android:onClick="@string/loginButtonHandler" />
 
-		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" android:layout_marginLeft="15dip" android:text="@string/remember_me"
-			android:textColor="@color/textcolor" android:textSize="16dip" />
+		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_marginLeft="15dip"
+			android:text="@string/remember_me" android:textColor="@color/textcolor" />
+
 	</LinearLayout>
+
+	<Button android:id="@+id/register" android:layout_width="120dip"
+		android:layout_height="wrap_content" android:text="Bli medlem"
+		android:onClick="@string/loginButtonHandler" android:layout_marginTop="40dip"
+		android:layout_centerHorizontal="true" android:layout_gravity="bottom|center" />
+
 </LinearLayout>

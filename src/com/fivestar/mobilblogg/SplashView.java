@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +21,16 @@ public class SplashView extends Activity {
 
 	final Handler mHandler = new Handler();
 	final Activity activity = this;
-	String userName;
-	String passWord;
+	String TAG = "SplashView";
 	int loginStatus;
+
 	private ProgressDialog dialog;
 	private Thread loginThread;
 	private MobilbloggApp app;
 	private Context cntx;
 	private TextView version;
+	private String userName;
+	private String passWord;
 
 	/*
 	 * (non-Javadoc)
@@ -34,18 +40,18 @@ public class SplashView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		/* quit app, called from mainmenu */
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.splash);
+
+
+		/* quit app & logout, called from mainmenu */
 		String func = getIntent().getStringExtra("func");
 		if(func != null && func.equals("quit")) {
 			Utils.removeSavedCredentials((Context)this);
 			finish();
 		}
-		
 		app = ((MobilbloggApp)getApplicationContext());
-		app.startServices();
-		setContentView(R.layout.splash);
-		this.setTitle(R.string.splashtop);
+		app.startServices();		
 
 		version = (TextView)findViewById(R.id.TextView02);
 
@@ -66,12 +72,10 @@ public class SplashView extends Activity {
 			e.printStackTrace();
 		}
 
-		String cred = Utils.getSavedCredentials(cntx);
-		if(cred != null && cred.indexOf('|') > -1) {
-			// Do autologin
-
-			userName = cred.substring(0, cred.indexOf('|'));
-			passWord = cred.substring(cred.indexOf('|')+1,cred.length());
+		String creds = Utils.getSavedCredentials(cntx);
+		if(creds != null) {
+			userName = creds.substring(0, creds.indexOf('|'));
+			passWord = creds.substring(creds.indexOf('|')+1,creds.length());
 			doRemoteLogin(userName, passWord);
 			dialog.show();
 		}

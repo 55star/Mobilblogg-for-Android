@@ -1,5 +1,7 @@
 package com.fivestar.mobilblogg;
 
+import java.util.List;
+
 import android.app.Application;
 
 public class MobilbloggApp extends Application {
@@ -9,6 +11,7 @@ public class MobilbloggApp extends Application {
 	public Communicator com;
 	public AsyncImageLoader asyncImageLoader;
 	public String filePath = null;
+	public BloggContainer bc = null;
 	
 	public String getUserName(){
 		if(userName != null && loggedInStatus) {
@@ -42,6 +45,11 @@ public class MobilbloggApp extends Application {
 	public void startServices() {
 		startImageLoader();
 		startHttpEngine();
+		initBloggContainer();
+	}
+	
+	private void initBloggContainer() {
+		bc = new BloggContainer();
 	}
 	
 	private void startImageLoader() {

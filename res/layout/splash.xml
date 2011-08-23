@@ -23,6 +23,6 @@
 	<Button android:id="@+id/Button01" android:layout_width="120dip"
 		android:layout_height="wrap_content" android:text="@string/start"
 		android:layout_centerHorizontal="true" android:onClick="@string/splashButtonHandler"
-		android:layout_gravity="center" android:textSize="20dip" />
+		android:layout_gravity="center" />
 
 </LinearLayout>

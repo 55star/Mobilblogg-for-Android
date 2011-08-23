@@ -16,11 +16,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.util.Log;
 
 public class Utils {
+	final String TAG = "Utils.java";
+	final static String SHAREDPREFFILE = "mb_cred";
 
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size=1024;
@@ -97,60 +102,33 @@ public class Utils {
 		return true;
 	}
 
-	public static void saveCredentials(Context c, String userName, String passWord) {
-		String FILENAME = "mb_cred";
-		String delimiter = "|";
-		String string = userName + delimiter + passWord;
+	private static SharedPreferences getPrefs(Context c) {
+		SharedPreferences sp = c.getSharedPreferences(SHAREDPREFFILE, c.MODE_PRIVATE);
+		return sp;
+	}
 
-		FileOutputStream fos = null;
-		try {
-			fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(fos != null) {
-			try {
-				fos.write(string.getBytes());
-				fos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public static void saveCredentials(Context c, String userName, String passWord) {
+		Editor e = getPrefs(c).edit();
+		e.putString("mb_cred_usr", userName);
+		e.putString("mb_cred_pwd", passWord);
+		e.commit();
+	}
+
+	public static String getSavedCredentials(Context c) {
+		SharedPreferences sp = getPrefs(c);
+		if(sp.contains("mb_cred_usr") && sp.contains("mb_cred_pwd")) {
+			return sp.getString("mb_cred_usr", "default") + "|" + sp.getString("mb_cred_pwd", "default");
+		} else {
+			return null;
 		}
 	}
 
 	public static void removeSavedCredentials(Context c) {
-		File dir = c.getFilesDir();
-		File file = new File(dir, "mb_cred");
-		file.delete();
+		Editor e = getPrefs(c).edit();
+		e.clear();
+		e.commit();
 	}
 
-	public static String getSavedCredentials(Context cntx) {
-		String FILENAME = "mb_cred";
-		int ch;
-		StringBuffer strContent = new StringBuffer("");
-
-		FileInputStream fin = null;
-		try {
-			fin = cntx.openFileInput(FILENAME);
-		} catch (FileNotFoundException fnfe) {
-			// TODO Auto-generated catch block
-			fnfe.printStackTrace();
-			return null;
-		}
-		try {
-			while((ch = fin.read()) > -1) {
-				strContent.append((char)ch);
-			}
-			fin.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		return strContent.toString();
-	}
 
 	public static String PrettyDate(String cmpDate, Context ctx){    
 		Calendar calNow = Calendar.getInstance();
@@ -185,7 +163,7 @@ public class Utils {
 			if(diffHours == 1) {
 				return (diffHours + " " + ctx.getString(R.string.hoursince));				
 			}
-			return (diffHours + " " + ctx.getString(R.string.hoursince));
+			return (diffHours + " " + ctx.getString(R.string.hourssince));
 		}
 		String longdate = calCmp.get(Calendar.DATE) + " ";
 		longdate += month[calCmp.get(Calendar.MONTH)] + " ";
@@ -202,7 +180,7 @@ public class Utils {
 			longdate += min + " ";
 		}
 		longdate += calCmp.get(Calendar.YEAR);
-		
+
 		return longdate;
 	}
 }

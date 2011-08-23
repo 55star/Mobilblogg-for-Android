@@ -34,7 +34,7 @@
 
 
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
-		bilder tagna med mobiltelefonkamera på en egna blogg. Samtidigt kan du
+		bilder tagna med mobiltelefonkamera på en egen blogg. Samtidigt kan du
 		hänga med i vår sköna community. Om du inte är medlem, registrera dig
 		nu på http://www.mobilblogg.nu/</string>
 	<string name="remember_me">Kom ihåg mig</string>
@@ -64,7 +64,7 @@
 	<color name="colorgray">#C0C0C0</color>
 	<color name="colordarkgray">#454545</color>
 	<color name="colorlightgray">#7b7b7b</color>
-	<color name="colorbutton">#8C8D8C</color>
+<!--	<color name="colorbutton">#8C8D8C</color>-->
 
 	<string name="takepicture">Ta bild</string>
 	<string name="cameraButtonHandler">cameraClickHandler</string>

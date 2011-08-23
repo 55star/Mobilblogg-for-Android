@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
@@ -23,9 +25,10 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 		super(activity, 0, pi);
 		listInfo = pi;
 		app = a;
-		TypedArray typArray =  app.obtainStyledAttributes(R.styleable.GalleryTheme);
-		galleryItemBg = typArray.getResourceId(R.styleable.GalleryTheme_android_galleryItemBackground, 0);
-		typArray.recycle();
+// should not be needed when we switched away from galleryview 2011-08-17
+//		TypedArray typArray =  app.obtainStyledAttributes(R.styleable.GalleryTheme);
+//		galleryItemBg = typArray.getResourceId(R.styleable.GalleryTheme_android_galleryItemBackground, 0);
+//		typArray.recycle();
 	}
 
 	public int getCount() {
@@ -43,23 +46,25 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.thumb, new ImageCallback() {
 				public void imageLoaded(Drawable imageDrawable, String imageUrl) {					
 					imageView.setImageDrawable(imageDrawable);
-					imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
+					final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
+					imageView.setLayoutParams(new GridView.LayoutParams(w * 2, w * 2));
 					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-					imageView.setBackgroundResource(galleryItemBg);
+					//					imageView.setBackgroundResource(galleryItemBg);
 					notifyDataSetChanged();
 				}
 			});
 			imageView.setImageDrawable(cachedImage);
-			imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-			imageView.setBackgroundResource(galleryItemBg);
-		} else {
-			// Load the image and set it on the ImageView
-			imageView.setImageResource(R.drawable.next);
-			imageView.setLayoutParams(new Gallery.LayoutParams(120, 120));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//			imageView.setBackgroundResource(galleryItemBg);
+			final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
+			imageView.setLayoutParams(new GridView.LayoutParams(w * 2, w * 2));
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}
+//		else {
+//			// Load the image and set it on the ImageView
+//			final Button more_btn = new Button((Context)app);
+//			more_btn.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT,GridView.LayoutParams.WRAP_CONTENT));
+//			more_btn.setText("Ladda fler");
+//			return more_btn;
+//		}
 		return imageView;
 	}
 

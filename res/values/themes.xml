@@ -3,8 +3,4 @@
 	<declare-styleable name="GalleryTheme">
 		<attr name="android:galleryItemBackground" />
 	</declare-styleable>
-	<style name="MyButton" parent="android:Theme">
-		<item name="android:buttonStyle">@style/Button</item>
-	</style>
-
 </resources>

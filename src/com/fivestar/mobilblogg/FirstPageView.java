@@ -75,7 +75,7 @@ public class FirstPageView extends Activity {
 		dialog.show();
 		myBloggThread = new Thread() {
 			public void run() {
-				postList = app.com.getBloggs(postList, 2, username, page);
+//				postList = app.com.getBloggs(postList, 2, username, page);
 				page++;
 
 				Runnable action = new Runnable() {
@@ -140,7 +140,7 @@ public class FirstPageView extends Activity {
 					selectedIndex = postList.size() - 1;
 					myBloggThread = new Thread() {
 						public void run() {
-							postList = app.com.getBloggs(postList, 2, username, page);				
+//							postList = app.com.getBloggs(postList, 2, username, page);				
 							page++;
 							Runnable action = new Runnable() {
 								public void run() {

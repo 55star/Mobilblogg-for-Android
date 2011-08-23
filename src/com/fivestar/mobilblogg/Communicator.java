@@ -96,12 +96,13 @@ public class Communicator extends Thread {
 				}
 				in.close();
 				jsonresponse = sb.toString();
-
 			} catch (ClientProtocolException e) {  
 				// TODO Auto-generated catch block  
 			} catch (IOException e) {  
 				// TODO Auto-generated catch block  
 			}  
+		} else {
+			return 0;
 		}
 
 		try {
@@ -134,23 +135,23 @@ public class Communicator extends Thread {
 		return salt;
 	}	
 
-	public List<PostInfo> getBloggs(List<PostInfo> piList, int func, String userName, int page) {
+	public void loadBloggs(MobilbloggApp app, int listNum) throws CommunicatorException {
 		String[] funcs = {"listBlogg","listStartpage","listFirstpage"};
-		String url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[func]+"&user="+userName+"&page="+page;
+		String url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[listNum]+"&user="+app.getUserName()+"&page="+app.bc.getPage(listNum);
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
+		app.bc.increasePage(listNum);
 		int origIndex;
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			jsonresponse = client.execute(getMethod, responseHandler);
 		} catch (Throwable t) {
-			return null;
+			throw new CommunicatorException(t.getMessage());
 		}
-		if(piList == null) {
-			piList = new ArrayList<PostInfo>();
+		if(app.bc.size(listNum) == 0) {
 			origIndex = 0;
 		} else {
-			origIndex = piList.size() - 1;
+			origIndex = app.bc.size(listNum) - 1;
 		}
 		if (jsonresponse != null && jsonresponse.length()>0) {
 			try {
@@ -173,31 +174,20 @@ public class Communicator extends Thread {
 						pi.imgid    = json.getJSONObject(i).get("id").toString();
 						pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
 
-						piList.add(index, pi);
+						app.bc.add(listNum, pi);
 						index++;
 					}
 					catch (NumberFormatException ne) {
 						continue;
 					} catch (JSONException j) {
-						Log.e(TAG,"JSON error:" + j.toString());
-						return null;
+						throw new CommunicatorException(j.getMessage());
 					}
 				}
-
-				/* load more img */
-				if(page == 1) {
-					PostInfo pi = new PostInfo();
-					pi.loadMoreImg = true;
-					piList.add(pi);
-				}
 			} catch (JSONException j) {
-				Log.e(TAG,"JSON error:" + j.toString());
-				return null;
+				throw new CommunicatorException(j.getMessage());
 			}
-			return piList;
 		} 		
-		return null;
-	}	
+	}
 
 	public String postComment(String imgid, String comment) {
 		try {

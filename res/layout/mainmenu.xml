@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="@color/colorwhite" android:gravity="center_horizontal">
+	android:background="@color/colorwhite" android:gravity="center_horizontal"
+	android:orientation="vertical" android:padding="20dip">
 
-	<RelativeLayout android:orientation="vertical"
+	<ImageView android:src="@drawable/mobilblogglogo"
+		android:layout_height="wrap_content" android:focusable="false"
+		android:layout_width="wrap_content" android:layout_gravity="center|top"
+		android:layout_centerHorizontal="true" />
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/colorwhite" android:padding="20dip"
-		android:gravity="center_horizontal">
+		android:background="@color/colorwhite" android:gravity="center|bottom"
+		android:orientation="vertical" android:padding="10dip">
 
-		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
-			android:layout_width="120dip" android:drawableTop="@drawable/comment"
-			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler" android:layout_marginRight="10dip" />
+		<Button android:id="@+id/firstpage" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:text="@string/mainMenuFirstPage"
+			android:onClick="@string/mainMenuButtonHandler"
+			android:layout_centerHorizontal="true" android:textSize="16dip" />
 
-		<Button android:id="@+id/Button02" android:layout_height="wrap_content"
-			android:layout_width="120dip" android:drawableTop="@drawable/friends"
-			android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_toRightOf="@+id/Button01" android:layout_marginLeft="10dip" />
+		<Button android:id="@+id/startpage" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:text="@string/mainMenuMyStartPage"
+			android:onClick="@string/mainMenuButtonHandler"
+			android:layout_marginTop="5dip" android:layout_centerHorizontal="true"
+			android:textSize="16dip" />
 
-		<Button android:id="@+id/Button05" android:layout_height="wrap_content"
-			android:layout_width="120dip" android:drawableTop="@drawable/home"
-			android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_below="@+id/Button01" android:layout_marginTop="20dip" android:layout_marginRight="10dip" />
+		<Button android:id="@+id/myblogg" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:text="@string/mainMenuMyBlogg"
+			android:onClick="@string/mainMenuButtonHandler"
+			android:layout_marginTop="5dip" android:layout_centerHorizontal="true"
+			android:textSize="16dip" />
 
-		<Button android:id="@+id/Button03" android:layout_height="wrap_content"
-			android:layout_width="120dip" android:drawableTop="@drawable/cam"
-			android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_below="@+id/Button02" android:layout_toRightOf="@+id/Button05"
-			android:layout_marginLeft="10dip" android:layout_marginTop="20dip" />
+		<Button android:id="@+id/blogga" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:text="@string/mainMenuUploadPage"
+			android:onClick="@string/mainMenuButtonHandler" android:layout_below="@+id/Button02"
+			android:layout_marginTop="5dip" android:layout_centerHorizontal="true"
+			android:textSize="16dip" />
 
-		<Button android:id="@+id/Button04" android:layout_height="wrap_content"
-			android:layout_width="120dip" android:drawableTop="@drawable/logout"
-			android:text="@string/mainMenuLogout" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/Button03" android:layout_marginTop="40dip" />
+		<Button android:id="@+id/loggaut" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:text="@string/mainMenuLogout"
+			android:onClick="@string/mainMenuButtonHandler"
+			android:layout_centerHorizontal="true" android:layout_marginTop="30dip"
+			android:textSize="16dip" />
 
-	</RelativeLayout>
+	</LinearLayout>
 </LinearLayout>
