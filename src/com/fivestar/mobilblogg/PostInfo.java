@@ -12,6 +12,7 @@ public class PostInfo {
 	public String user = "";
 	public String createdate = "";
 	public String imgid = "";
+	public String avatar = "";
 	public int numComment = 0;
 	public boolean loadMoreImg = false;
 	

@@ -27,6 +27,7 @@ public class GalleryView extends Activity {
 	int nbrComments;
 	int selectedIndex = 0;
 	int listNum;
+	String userName = null;
 	MobilbloggApp app;
 	GridView imggrid;
 	Activity activity;
@@ -40,7 +41,12 @@ public class GalleryView extends Activity {
 		setContentView(R.layout.gallery);
 
 		listNum = getIntent().getIntExtra("list",-1);
-
+		userName = getIntent().getStringExtra("username");
+		
+		if(userName != null) {
+			this.setTitle(userName +"'s " + getString(R.string.moblog));
+		}
+		
 		imggrid = (GridView) findViewById(R.id.dataGrid);
 
 		dialog = new ProgressDialog(GalleryView.this);
@@ -52,11 +58,11 @@ public class GalleryView extends Activity {
 
 		activity = this;
 
-		if(app.bc.size(listNum) == 0) {
+		if(app.bc.size(listNum, userName) == 0) {
 			dialog.show();
 			loadBloggPosts();
 		} else {
-			fillList(app, app.bc.getList(listNum));
+			fillList(app, app.bc.getList(listNum, userName));
 		}
 	}
 
@@ -64,7 +70,7 @@ public class GalleryView extends Activity {
 		Thread mThread = new Thread() {
 			public void run() {
 				try {
-					app.com.loadBloggs(app, listNum);
+					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
 					Log.e(TAG,c.getError());
 					return;
@@ -78,7 +84,7 @@ public class GalleryView extends Activity {
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
 			dialog.dismiss();
-			fillList(app, app.bc.getList(listNum));
+			fillList(app, app.bc.getList(listNum, userName));
 		}
 	};
 
@@ -92,6 +98,7 @@ public class GalleryView extends Activity {
 				Intent pvIntent = new Intent(mContext, PostView.class);
 				pvIntent.putExtra("idx", position);
 				pvIntent.putExtra("list", listNum);
+				pvIntent.putExtra("username", userName);
 				startActivity(pvIntent);
 			}
 

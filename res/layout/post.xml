@@ -6,43 +6,60 @@
 
 	<ScrollView android:id="@+id/scroll01" android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
-		<LinearLayout android:id="@+id/LinearLayout02"
-			android:layout_width="fill_parent" android:layout_height="fill_parent"
+
+		<LinearLayout android:id="@+id/LinearLayout05"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:orientation="vertical" android:padding="10dip">
 
-			<ImageView android:id="@+id/ImageView01"
-				android:layout_width="fill_parent" android:layout_height="wrap_content"
-				android:layout_gravity="center_horizontal|top" />
-
-			<TextView android:id="@+id/headline" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_weight="1"
-				android:layout_gravity="center|top" android:textSize="20dip"
-				android:text="" android:textStyle="bold" android:textColor="@color/textcolor" />
-
-			<LinearLayout android:id="@+id/LinearLayout03"
+			<LinearLayout android:id="@+id/header"
 				android:layout_width="fill_parent" android:layout_height="fill_parent"
-				android:orientation="horizontal" android:gravity="center_horizontal"
-				android:layout_marginTop="10dip">
+				android:orientation="horizontal">
 
+				<ImageView android:id="@+id/avatar" android:layout_width="35dip"
+					android:layout_height="35dip" android:background="#C0C0C0"
+					android:padding="1px" android:layout_marginRight="5dip" 
+					android:onClick="PostViewClickHandler" />
 
-				<ImageView android:id="@+id/avatar" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:drawable="@drawable/stub" />
+				<RelativeLayout android:id="@+id/userdate"
+					android:layout_width="fill_parent" android:layout_height="fill_parent"
+					android:orientation="horizontal">
 
-				<TextView android:id="@+id/username" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:textSize="12dip"
-					android:textColor="@color/textcolor" />
+					<TextView android:id="@+id/date" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:textSize="12dip"
+						android:textColor="@color/textcolor" android:text="date"
+						android:layout_marginRight="5dip" android:layout_alignParentRight="true"
+						android:layout_alignParentBottom="true" />
 
-				<TextView android:id="@+id/date" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_gravity="left|top"
-					android:textSize="12dip" android:textColor="@color/textcolor" />
+					<TextView android:id="@+id/username" android:layout_width="wrap_content"
+						android:layout_height="wrap_content" android:textSize="18dip"
+						android:textColor="@color/textcolor" android:textStyle="bold"
+						android:text="username" android:layout_alignParentLeft="true"
+						android:layout_alignParentBottom="true" android:layout_toLeftOf="@+id/date"
+						android:clickable="true" android:onClick="PostViewClickHandler" />
+				</RelativeLayout>
 			</LinearLayout>
 
-			<TextView android:id="@+id/text" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:layout_weight="1"
-				android:layout_gravity="left|top" android:textSize="16dip"
-				android:text="" android:textColor="@color/textcolor"
-				android:autoLink="web" />
+			<LinearLayout android:id="@+id/LinearLayout02"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:orientation="vertical" android:padding="10dip">
 
+				<ImageView android:id="@+id/ImageView01"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:layout_gravity="center_horizontal|top" />
+
+				<TextView android:id="@+id/headline" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_weight="1"
+					android:layout_gravity="center|top" android:textSize="20dip"
+					android:text="" android:textStyle="bold" android:textColor="@color/textcolor" />
+
+
+				<TextView android:id="@+id/text" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:layout_weight="1"
+					android:layout_gravity="left|top" android:textSize="16dip"
+					android:text="" android:textColor="@color/textcolor"
+					android:autoLink="web" />
+
+			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 

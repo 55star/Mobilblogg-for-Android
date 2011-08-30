@@ -135,12 +135,18 @@ public class Communicator extends Thread {
 		return salt;
 	}	
 
-	public void loadBloggs(MobilbloggApp app, int listNum) throws CommunicatorException {
+	public void loadBloggs(MobilbloggApp app, int listNum, String username) throws CommunicatorException {
 		String[] funcs = {"listBlogg","listStartpage","listFirstpage"};
-		String url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[listNum]+"&user="+app.getUserName()+"&page="+app.bc.getPage(listNum);
 		String jsonresponse = "";
+		String url = "";
+		if(username != null) {
+			url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[listNum]+"&user="+username+"&page="+app.bc.getPage(listNum,username);
+		} else {
+			url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[listNum]+"&page="+app.bc.getPage(listNum,username);
+		}
+		
 		HttpGet getMethod = new HttpGet(url);
-		app.bc.increasePage(listNum);
+		app.bc.increasePage(listNum, username);
 		int origIndex;
 		try {
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -148,10 +154,10 @@ public class Communicator extends Thread {
 		} catch (Throwable t) {
 			throw new CommunicatorException(t.getMessage());
 		}
-		if(app.bc.size(listNum) == 0) {
+		if(app.bc.size(listNum, username) == 0) {
 			origIndex = 0;
 		} else {
-			origIndex = app.bc.size(listNum) - 1;
+			origIndex = app.bc.size(listNum, username) - 1;
 		}
 		if (jsonresponse != null && jsonresponse.length()>0) {
 			try {
@@ -173,8 +179,9 @@ public class Communicator extends Thread {
 						pi.createdate = json.getJSONObject(i).get("createdate").toString();
 						pi.imgid    = json.getJSONObject(i).get("id").toString();
 						pi.numComment = json.getJSONObject(i).getInt("nbr_comments");
+						pi.avatar   = json.getJSONObject(i).get("avatar").toString();
 
-						app.bc.add(listNum, pi);
+						app.bc.add(listNum, pi, username);
 						index++;
 					}
 					catch (NumberFormatException ne) {

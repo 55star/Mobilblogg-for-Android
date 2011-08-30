@@ -56,7 +56,7 @@ public class SplashView extends Activity {
 		version = (TextView)findViewById(R.id.TextView02);
 
 		dialog = new ProgressDialog(SplashView.this);
-		dialog.setMessage(getString(R.string.logging_in));
+//		dialog.setMessage(getString(R.string.logging_in));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 		app = ((MobilbloggApp)getApplicationContext());
