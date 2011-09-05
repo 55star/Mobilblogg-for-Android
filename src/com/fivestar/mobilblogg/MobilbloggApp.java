@@ -12,6 +12,7 @@ public class MobilbloggApp extends Application {
 	public AsyncImageLoader asyncImageLoader;
 	public String filePath = null;
 	public BloggContainer bc = null;
+	public String uploadJson = null;
 	
 	public String getUserName(){
 		if(userName != null && loggedInStatus) {

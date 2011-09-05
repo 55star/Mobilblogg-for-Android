@@ -9,20 +9,35 @@
 		android:layout_width="wrap_content" android:layout_marginBottom="5dip"
 		android:layout_gravity="center" android:layout_centerHorizontal="true" />
 
-	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="@string/mobilbloggintro"
-		android:textColor="@color/colorblack" android:textSize="16dip"
-		android:layout_marginBottom="10dip" android:autoLink="web" />
-
 	<TextView android:id="@+id/TextView02" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text=""
 		android:textColor="@color/textcolor" android:textSize="14dip"
 		android:layout_marginBottom="10dip" android:layout_gravity="center" />
 
+	<EditText android:id="@+id/EditText01" android:layout_height="wrap_content"
+		android:singleLine="true" android:layout_width="fill_parent"
+		android:hint="@string/username" />
 
-	<Button android:id="@+id/Button01" android:layout_width="120dip"
-		android:layout_height="wrap_content" android:text="@string/start"
-		android:layout_centerHorizontal="true" android:onClick="@string/splashButtonHandler"
-		android:layout_gravity="center" />
+	<EditText android:id="@+id/EditText02" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:inputType="textPassword"
+		android:singleLine="true" android:hint="@string/password" />
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="horizontal" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:background="@color/colorwhite">
+
+		<Button android:id="@+id/login" android:layout_width="120dip"
+			android:layout_height="wrap_content" android:text="@string/login"
+			android:onClick="@string/splashButtonHandler" />
+
+		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_marginLeft="15dip"
+			android:text="@string/remember_me" android:textColor="@color/textcolor" />
+	</LinearLayout>
+
+	<Button android:id="@+id/register" android:layout_width="120dip"
+		android:layout_height="wrap_content" android:text="Bli medlem"
+		android:onClick="@string/splashButtonHandler" android:layout_marginTop="40dip"
+		android:layout_centerHorizontal="true" android:layout_gravity="bottom|center" />
 
 </LinearLayout>

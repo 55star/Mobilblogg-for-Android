@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,79 +130,82 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if(resp != null) {
-					jsonresponse = resp;
-				} else {
-					Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				Runnable action = new Runnable() {
-					public void run() {
-						int uploadStatus = 0;
-
-						dialog.dismiss();
-
-						if (jsonresponse != null && jsonresponse.length()>0) {
-							try {
-								JSONArray json = new JSONArray(jsonresponse);
-								uploadStatus = json.getJSONObject(0).optInt("imgid");
-
-							} catch (JSONException j) {
-								Log.e(TAG,"JSON error:" + j.toString());
-							}
-						} else {
-							Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
-						}
-
-						if (uploadStatus > 0) {
-							Toast.makeText(activity, getString(R.string.postuploaded), Toast.LENGTH_SHORT).show();
-							Intent myIntent = new Intent(activity, MainMenuView.class);
-							startActivityForResult(myIntent, 0);
-							finish();
-						} else {
-							Toast.makeText(activity, getString(R.string.blogfailure), Toast.LENGTH_LONG).show();
-						}
-					}
-				};
-				activity.runOnUiThread(action);
+				
+				app.uploadJson = resp;
+				
+//				if(resp != null) {
+//					jsonresponse = resp;
+//				} else {
+//	looper.prepare() exception -->	Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+				uiCallback.sendEmptyMessage(0);
 			}
 		};
 		composeThread.start();
 	}
 
-	public class PromptListener implements android.content.DialogInterface.OnClickListener {
-		View promptDialogView = null;
+	private Handler uiCallback = new Handler() {
+		public void handleMessage(Message msg) {
+			int uploadStatus = 0;
 
-		public PromptListener(View inDialogView) {
-			promptDialogView = inDialogView;
-		}
+			dialog.dismiss();
 
-		/* Callback from dialog */
-		public void onClick(DialogInterface v, int buttonId) {
-			if(buttonId == DialogInterface.BUTTON1) {
-				/* ok button */
-				secretWord = getPromptText();
-				uploadPost(caption, body, showfor, secretWord, tags, activity);
+			if (app.uploadJson != null && app.uploadJson.length()>0) {
+				try {
+					JSONArray json = new JSONArray(app.uploadJson);
+					uploadStatus = json.getJSONObject(0).optInt("imgid");
+				} catch (JSONException j) {
+					Log.e(TAG,"JSON error:" + j.toString());
+				}
 			} else {
-				/* cancelbutton */
+				Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
+			}
+
+			if (uploadStatus > 0) {
+				Toast.makeText(activity, getString(R.string.postuploaded), Toast.LENGTH_SHORT).show();
+				Intent myIntent = new Intent(activity, MainMenuView.class);
+				startActivityForResult(myIntent, 0);
+				finish();
+			} else {
+				Toast.makeText(activity, getString(R.string.blogfailure), Toast.LENGTH_LONG).show();
 			}
 		}
+	};
 
-		private String getPromptText() {
-			EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
-			return et.getText().toString();
+
+public class PromptListener implements android.content.DialogInterface.OnClickListener {
+	View promptDialogView = null;
+
+	public PromptListener(View inDialogView) {
+		promptDialogView = inDialogView;
+	}
+
+	/* Callback from dialog */
+	public void onClick(DialogInterface v, int buttonId) {
+		if(buttonId == DialogInterface.BUTTON1) {
+			/* ok button */
+			secretWord = getPromptText();
+			uploadPost(caption, body, showfor, secretWord, tags, activity);
+		} else {
+			/* cancelbutton */
 		}
-	}	
-
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-
 	}
 
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-
+	private String getPromptText() {
+		EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
+		return et.getText().toString();
 	}
+}	
+
+public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+		long arg3) {
+	// TODO Auto-generated method stub
+
+}
+
+public void onNothingSelected(AdapterView<?> arg0) {
+	// TODO Auto-generated method stub
+
+}
 }

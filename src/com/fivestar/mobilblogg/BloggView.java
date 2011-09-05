@@ -23,7 +23,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class BloggView extends Activity {
-	final String TAG = "BloggView";
+	final String TAG = "BloggView1";
 	ProgressDialog dialog;
 	Thread myBloggThread;
 	String username;
