@@ -40,21 +40,29 @@ public class GalleryView extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery);
 
+		app = ((MobilbloggApp)getApplicationContext());
+
 		listNum = getIntent().getIntExtra("list",-1);
 		userName = getIntent().getStringExtra("username");
-		
+
 		if(userName != null) {
 			this.setTitle(userName +"'s " + getString(R.string.moblog));
+		}
+
+		if(listNum == app.bc.FIRSTPAGE) {
+			this.setTitle(getString(R.string.mainMenuFirstPage));
+		} else {
+			if(listNum == app.bc.FRIENDPAGE) {
+				this.setTitle(getString(R.string.mainMenuMyStartPage));
+			}
 		}
 		
 		imggrid = (GridView) findViewById(R.id.dataGrid);
 
 		dialog = new ProgressDialog(GalleryView.this);
-		dialog.setMessage(getString(R.string.please_wait));
+		dialog.setMessage(getString(R.string.loading));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
-
-		app = ((MobilbloggApp)getApplicationContext());
 
 		activity = this;
 
@@ -72,6 +80,7 @@ public class GalleryView extends Activity {
 				try {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
+					Log.e(TAG,"CommunicatorException from loadBloggs");
 					Log.e(TAG,c.getError());
 					return;
 				}

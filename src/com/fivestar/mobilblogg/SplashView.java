@@ -49,7 +49,7 @@ public class SplashView extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splash);
-
+		
 		/* quit app & logout, called from mainmenu */
 		String func = getIntent().getStringExtra("func");
 		if(func != null && func.equals("quit")) {

@@ -5,6 +5,8 @@ package com.fivestar.mobilblogg;
 
 import java.util.List;
 
+import com.fivestar.mobilblogg.widgets.AspectRatioImageView;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -46,10 +49,13 @@ public class PostView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.post);
 
-		final ImageView imgView = (ImageView)findViewById(R.id.ImageView01);
+		listNum = getIntent().getIntExtra("list",-1);
+		userName = getIntent().getStringExtra("username");
+
+		final AspectRatioImageView imgView = (AspectRatioImageView)findViewById(R.id.ImageView01);
 		final ImageView avatar = (ImageView)findViewById(R.id.avatar);
 
 		headline = (TextView)findViewById(R.id.headline);
@@ -66,25 +72,27 @@ public class PostView extends Activity {
 		imgid = getIntent().getIntExtra("imgid",0);
 
 		selectedIndex = getIntent().getIntExtra("idx",0);
-		listNum = getIntent().getIntExtra("list",-1);
-		userName = getIntent().getStringExtra("username");
 
 		Log.w(TAG,"postview getList");
 		postList = app.bc.getList(listNum, userName);
 
-		//		this.setTitle(postList.get(selectedIndex).user +"'s " + getString(R.string.moblog));
+		this.setTitle(postList.get(selectedIndex).user);
+		Log.w(TAG,"userName: "+userName);
 
 		dialog.show();
 
 		pi = postList.get(selectedIndex);
-		Drawable bloggImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
-			public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-				imgView.setImageDrawable(imageDrawable);
-				//				final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
-				imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
-				imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			}
-		});
+		if(pi.img != null && pi.img.length() > 0) {
+			Drawable bloggImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
+				public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+					imgView.setImageDrawable(imageDrawable);
+					//				final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
+					//				imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
+					//				imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+				}
+			});
+			imgView.setImageDrawable(bloggImage);
+		}
 		if(pi.avatar != null && pi.avatar.length() > 0) {
 			Drawable avatarImage = app.asyncImageLoader.loadDrawable(pi.avatar, new ImageCallback() {
 				public void imageLoaded(Drawable imageDrawable, String imageUrl) {
@@ -99,8 +107,7 @@ public class PostView extends Activity {
 			avatar.setImageResource(R.drawable.stub);
 		}
 
-		imgView.setImageDrawable(bloggImage);
-
+		//		imgView.setImageDrawable(bloggImage);
 
 		headline.setText(pi.headline);
 		text.setText(Html.fromHtml(pi.text));
@@ -115,10 +122,10 @@ public class PostView extends Activity {
 		case (R.id.avatar):
 		case (R.id.username):
 			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
-			bIntent.putExtra("username", userName);
-			bIntent.putExtra("list", app.bc.BLOGGPAGE);
-			startActivityForResult(bIntent,0);
-			break;
+		bIntent.putExtra("username", userName);
+		bIntent.putExtra("list", app.bc.BLOGGPAGE);
+		startActivityForResult(bIntent,0);
+		break;
 		case R.id.bloggButton:
 			Intent bloggIntent = new Intent(view.getContext(), PostView.class);
 			bloggIntent.putExtra("username", userName);
