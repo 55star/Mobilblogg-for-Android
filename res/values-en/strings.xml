@@ -32,9 +32,13 @@
 
 	<string name="mobilbloggintro">Moblogging is an easy way to publish images and
 		videos taken
-		with camera phone on the Internet. If you\'re not a member please sign up
-		on http://www.mobilblogg.net/</string>
+		with camera phone on the Internet. If you\'re not a member
+		please sign up
+		on http://www.mobilblogg.net/
+	</string>
 	<string name="remember_me">Remember me</string>
+	<string name="remember">Remember</string>
+
 	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
 	<string name="loginViewName">Login</string>

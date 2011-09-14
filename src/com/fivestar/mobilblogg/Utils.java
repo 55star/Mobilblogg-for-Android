@@ -123,6 +123,22 @@ public class Utils {
 		}
 	}
 
+	public static void saveSecretWord(Context c, String secretWord) {
+		Editor e = getPrefs(c).edit();
+		e.putString("secret", secretWord);
+		e.commit();
+	}
+
+	public static String getSecretWord(Context c) {
+		SharedPreferences sp = getPrefs(c);
+		if(sp.contains("secret")) {
+			return sp.getString("secret", "default");
+		} else {
+			return null;
+		}
+	}
+	
+	
 	public static void removeSavedCredentials(Context c) {
 		Editor e = getPrefs(c).edit();
 		e.clear();

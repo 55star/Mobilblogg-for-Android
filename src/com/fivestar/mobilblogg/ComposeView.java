@@ -3,6 +3,8 @@ package com.fivestar.mobilblogg;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.fivestar.mobilblogg.widgets.AspectRatioImageView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,8 +18,10 @@ import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -29,7 +33,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	private EditText captionText;
 	private EditText bodyText;
 	private EditText tagsText;
-	private ImageView image;
+	private AspectRatioImageView image;
 	private Spinner rights;
 	private Activity activity;
 	private ProgressDialog dialog;
@@ -52,19 +56,19 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.compose);
-		this.setTitle(R.string.mainMenuUploadPage);
 
 		itemLabels[0] = getString(R.string.all); //"Visa fÃ¶r alla";
-		itemLabels[1] = getString(R.string.blog); //"Alla, inte pÃ¥ fÃ¶rstasidan";
+		itemLabels[1] = getString(R.string.blog); //"Alla, inte pŒ fšrstasidan";
 		itemLabels[2] = getString(R.string.members); //"Medlemmar";
-		itemLabels[3] = getString(R.string.friends); //"Mina vÃ¤nner";
+		itemLabels[3] = getString(R.string.friends); //"Mina vŠnner";
 		itemLabels[4] = getString(R.string.me); // "Mig";
 
 		captionText = (EditText) findViewById(R.id.captionText);
 		bodyText = (EditText) findViewById(R.id.bodyText);
 		tagsText = (EditText) findViewById(R.id.tags);
-		image = (ImageView) findViewById(R.id.image);
+		image = (AspectRatioImageView) findViewById(R.id.image);
 		rights = (Spinner) findViewById(R.id.rights);
 		activity = this;
 		dialog = new ProgressDialog(ComposeView.this);
@@ -114,7 +118,12 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 			tags = tagsText.getText().toString();
 			showfor = itemValues[rights.getSelectedItemPosition()];
 
-			promptSecretWord();	
+			String sw = Utils.getSecretWord(activity);
+			if(sw != null) {
+				uploadPost(caption, body, showfor, sw, tags, activity);
+			} else {
+				promptSecretWord();
+			}
 		}
 	}
 
@@ -130,15 +139,15 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 				app.uploadJson = resp;
-				
-//				if(resp != null) {
-//					jsonresponse = resp;
-//				} else {
-//	looper.prepare() exception -->	Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
-//					return;
-//				}
+
+				//				if(resp != null) {
+				//					jsonresponse = resp;
+				//				} else {
+				//	looper.prepare() exception -->	Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
+				//					return;
+				//				}
 				uiCallback.sendEmptyMessage(0);
 			}
 		};
@@ -174,38 +183,46 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	};
 
 
-public class PromptListener implements android.content.DialogInterface.OnClickListener {
-	View promptDialogView = null;
+	public class PromptListener implements android.content.DialogInterface.OnClickListener {
+		View promptDialogView = null;
 
-	public PromptListener(View inDialogView) {
-		promptDialogView = inDialogView;
-	}
-
-	/* Callback from dialog */
-	public void onClick(DialogInterface v, int buttonId) {
-		if(buttonId == DialogInterface.BUTTON1) {
-			/* ok button */
-			secretWord = getPromptText();
-			uploadPost(caption, body, showfor, secretWord, tags, activity);
-		} else {
-			/* cancelbutton */
+		public PromptListener(View inDialogView) {
+			promptDialogView = inDialogView;
 		}
+
+		/* Callback from dialog */
+		public void onClick(DialogInterface v, int buttonId) {
+			if(buttonId == DialogInterface.BUTTON1) {
+				/* ok button */
+				secretWord = getPromptText();
+				if(getPromptRemember()) {
+					Utils.saveSecretWord(activity, secretWord);
+				}
+				uploadPost(caption, body, showfor, secretWord, tags, activity);
+			} else {
+				/* cancelbutton */
+			}
+		}
+
+		private String getPromptText() {
+			EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
+			return et.getText().toString();
+		}
+		
+		private Boolean getPromptRemember() {
+			CheckBox cb = (CheckBox)promptDialogView.findViewById(R.id.remember_secret);
+			return cb.isChecked();
+		}
+	}	
+
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+
 	}
 
-	private String getPromptText() {
-		EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
-		return et.getText().toString();
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+
 	}
-}	
-
-public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-		long arg3) {
-	// TODO Auto-generated method stub
-
-}
-
-public void onNothingSelected(AdapterView<?> arg0) {
-	// TODO Auto-generated method stub
-
-}
 }

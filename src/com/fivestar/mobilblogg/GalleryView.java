@@ -80,7 +80,6 @@ public class GalleryView extends Activity {
 				try {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
-					Log.e(TAG,"CommunicatorException from loadBloggs");
 					Log.e(TAG,c.getError());
 					return;
 				}
