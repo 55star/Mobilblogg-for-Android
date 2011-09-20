@@ -91,8 +91,9 @@ public class GalleryView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			dialog.dismiss();
+//			dialog.dismiss();
 			fillList(app, app.bc.getList(listNum, userName));
+			dialog.dismiss();
 		}
 	};
 

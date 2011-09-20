@@ -10,7 +10,7 @@
 		android:orientation="horizontal" android:gravity="center_horizontal">
 
 		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/comment"
+			android:layout_width="105dip" android:drawableTop="@drawable/myblog"
 			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler"
 			android:layout_marginRight="5dip" />
 
@@ -20,12 +20,12 @@
 			android:layout_marginRight="5dip" />
 
 		<Button android:id="@+id/Button05" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/home"
+			android:layout_width="105dip" android:drawableTop="@drawable/firstpage"
 			android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
 			android:layout_marginRight="5dip" />
 
 		<Button android:id="@+id/Button03" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/cam"
+			android:layout_width="105dip" android:drawableTop="@drawable/camera"
 			android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler" />
 	</LinearLayout>
 
