@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -95,8 +92,14 @@ public class SplashView extends Activity {
 	protected void doRemoteLogin(final String userName, final String passWord) {
 		loginThread = new Thread() {
 			public void run() {
-				loginStatus = app.com.doLogin(userName, passWord);
-				uiCallback.sendEmptyMessage(0);			
+				try {
+					loginStatus = app.com.doLogin(userName, passWord);
+				} catch (CommunicatorException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					uiCallback.sendEmptyMessage(0);
+				}
+				uiCallback.sendEmptyMessage(0);
 			}
 		};
 		loginThread.start();
@@ -131,7 +134,7 @@ public class SplashView extends Activity {
 			// Go to register view
 			//			Intent registerIntent = new Intent(view.getContext(), LoginView.class);
 			//			startActivity(registerIntent);
-			Log.w(TAG,"Let«s go and register!");
+			Utils.log(TAG,"Let«s make a nice looking moblog!");
 
 			break;
 		case R.id.login:

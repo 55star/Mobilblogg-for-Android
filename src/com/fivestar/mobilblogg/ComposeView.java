@@ -132,22 +132,13 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		composeThread = new Thread() {
 			public void run() {
 				String resp = null;
-				final String jsonresponse;
 				try {
 					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, tags, filePath);
 				} catch (Throwable e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
 				app.uploadJson = resp;
-
-				//				if(resp != null) {
-				//					jsonresponse = resp;
-				//				} else {
-				//	looper.prepare() exception -->	Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
-				//					return;
-				//				}
 				uiCallback.sendEmptyMessage(0);
 			}
 		};

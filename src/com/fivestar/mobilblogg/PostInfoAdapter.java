@@ -4,14 +4,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -49,7 +46,7 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 					final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
 					imageView.setLayoutParams(new GridView.LayoutParams(w * 2, w * 2));
 					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-					//					imageView.setBackgroundResource(galleryItemBg);
+				//	imageView.setBackgroundResource(galleryItemBg);
 					notifyDataSetChanged();
 				}
 			});

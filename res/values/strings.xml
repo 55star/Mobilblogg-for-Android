@@ -40,7 +40,6 @@
 	</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<string name="remember">Kom ihåg</string>
-	<color name="textcolor">#333333</color>
 	<string name="loginButtonHandler">loginClickHandler</string>
 	<string name="loginViewName">Logga in</string>
 	<string name="logging_in">Loggar in</string>
@@ -68,7 +67,8 @@
 	<color name="colorgray">#C0C0C0</color>
 	<color name="colordarkgray">#454545</color>
 	<color name="colorlightgray">#7b7b7b</color>
-	<!-- <color name="colorbutton">#8C8D8C</color> -->
+	<color name="colorbutton">#8C8D8C</color>
+	<color name="textcolor">#333333</color>
 
 	<string name="takepicture">Ta bild</string>
 	<string name="cameraButtonHandler">cameraClickHandler</string>
@@ -91,5 +91,4 @@
 	<string name="writeCommentButtonHandler">writeCommentClickHandler</string>
 	<string name="commentButtonHandler">commentClickHandler</string>
 	<string name="blogornot">Vill du blogga den här bilden?</string>
-
 </resources>

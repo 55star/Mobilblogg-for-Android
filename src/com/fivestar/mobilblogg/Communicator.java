@@ -3,16 +3,13 @@ package com.fivestar.mobilblogg;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -24,24 +21,25 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.util.Log;
-
 public class Communicator extends Thread {
 	final String TAG = "Communicator";
+	final int TIMEOUTCONNECTION = 15000; // timeout ms
+	final int TIMEOUTSOCKET = 25000; // timeout ms
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
-	private String api  = "api_android_1.0.t";
+	private String api  = "api_android_2.0.t";
 	private DefaultHttpClient client;
 
 	public Communicator() {
@@ -50,13 +48,61 @@ public class Communicator extends Thread {
 		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
 		HttpProtocolParams.setUseExpectContinue(params, true);
 
+		HttpConnectionParams.setConnectionTimeout(params, TIMEOUTCONNECTION);
+		HttpConnectionParams.setSoTimeout(params, TIMEOUTSOCKET);
+
 		SchemeRegistry schReg = new SchemeRegistry();
 		schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-		schReg.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 443));
+//		schReg.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 443));
 		ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
 
 		client = new DefaultHttpClient(conMgr, params);
+		client.setParams(params);
 	} 
+
+	private String getRequestResponse(HttpPost post, HttpGet get) throws CommunicatorException  {
+		BasicHttpResponse httpResponse = null;
+		if(post != null) {
+			try {
+				httpResponse = (BasicHttpResponse) client.execute(post);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if(get != null) {
+			try {
+				httpResponse = (BasicHttpResponse) client.execute(post);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new CommunicatorException("Network error");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new CommunicatorException("Network error");
+			}
+		}
+		if(httpResponse != null) {
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+
+				StringBuilder sb = new StringBuilder();
+				String line = "";
+				while ((line = in.readLine()) != null) {
+					sb.append(line);
+				}
+				in.close();
+				return sb.toString();
+			} catch(IOException ioe) {
+				ioe.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	public void shutdownHttpClient() {
 		if(client!=null && client.getConnectionManager()!= null) {
@@ -64,7 +110,7 @@ public class Communicator extends Thread {
 		}
 	}
 
-	public int doLogin(String userName, String passWord) {
+	public int doLogin(String userName, String passWord) throws CommunicatorException {
 		String url = protocoll+host+"/o.o.i.s";
 		String jsonresponse = "";
 		String hashedPassword = "";
@@ -78,7 +124,6 @@ public class Communicator extends Thread {
 
 		if(hashedPassword.length() > 10) {
 			try {
-				BufferedReader in = null;
 				List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
 				uri.add(new BasicNameValuePair("template", api));  
 				uri.add(new BasicNameValuePair("func", "login"));  
@@ -86,20 +131,10 @@ public class Communicator extends Thread {
 				uri.add(new BasicNameValuePair("password", hashedPassword));  
 				postMethod.setEntity(new UrlEncodedFormEntity(uri));  
 
-				HttpResponse response = client.execute(postMethod);
-				in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-				StringBuilder sb = new StringBuilder();
-				String line = "";
-				while ((line = in.readLine()) != null) {
-					sb.append(line);
-				}
-				in.close();
-				jsonresponse = sb.toString();
-			} catch (ClientProtocolException e) {  
-				// TODO Auto-generated catch block  
+				jsonresponse = getRequestResponse(postMethod, null);
 			} catch (IOException e) {  
 				// TODO Auto-generated catch block  
+				e.printStackTrace();
 			}  
 		} else {
 			return 0;
@@ -109,7 +144,7 @@ public class Communicator extends Thread {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
 		} catch (JSONException j) {
-			Log.e(TAG,"JSON error:" + j.toString());
+			Utils.log(TAG,"JSON error:" + j.toString());
 			return 0;
 		}
 		return loginStatus;
@@ -121,8 +156,7 @@ public class Communicator extends Thread {
 		String salt = "";
 		HttpGet getMethod = new HttpGet(url);
 		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
+			jsonresponse = getRequestResponse(null, getMethod);
 		} catch (Throwable t) {
 			return null;
 		}
@@ -144,26 +178,21 @@ public class Communicator extends Thread {
 		} else {
 			url = protocoll+host+"/o.o.i.s?template="+api+"&func="+funcs[listNum]+"&page="+app.bc.getPage(listNum,username);
 		}
-		
+
 		HttpGet getMethod = new HttpGet(url);
 		app.bc.increasePage(listNum, username);
-		int origIndex;
-		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
-		} catch (Throwable t) {
-			throw new CommunicatorException(t.getMessage());
-		}
-		if(app.bc.size(listNum, username) == 0) {
-			origIndex = 0;
-		} else {
-			origIndex = app.bc.size(listNum, username) - 1;
-		}
+
+		jsonresponse = getRequestResponse(null, getMethod);
+
+//		if(app.bc.size(listNum, username) == 0) {
+//			origIndex = 0;
+//		} else {
+//			origIndex = app.bc.size(listNum, username) - 1;
+//		}
 		if (jsonresponse != null && jsonresponse.length()>0) {
 			try {
 				JSONArray json = new JSONArray(jsonresponse);
 				int len = json.length();
-				int index = origIndex;
 				for(int i=0; i<len; i++) {
 					try {
 						PostInfo pi = new PostInfo();
@@ -182,11 +211,12 @@ public class Communicator extends Thread {
 						pi.avatar   = json.getJSONObject(i).get("avatar").toString();
 
 						app.bc.add(listNum, pi, username);
-						index++;
-					}
-					catch (NumberFormatException ne) {
+					} catch (NumberFormatException ne) {
 						continue;
 					} catch (JSONException j) {
+						Utils.log(TAG, "Fel i json parsningen: "+j.getStackTrace());
+						Utils.log(TAG, "Response: "+jsonresponse);
+
 						throw new CommunicatorException(j.getMessage());
 					}
 				}
@@ -214,19 +244,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("wtd", sb4);
 			multipartContent.addPart("template", sb5);
 
-			postMethod.setEntity(multipartContent);
-			HttpResponse resp = client.execute(postMethod);
-
-			InputStream is = resp.getEntity().getContent();
-			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-			StringBuilder total = new StringBuilder();
-			String line;
-			while ((line = r.readLine()) != null) {
-				total.append(line);
-			}
-			is.close();
-
-			return total.toString();
+			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			return null;
 		}
@@ -238,8 +256,7 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
 		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
+			jsonresponse = getRequestResponse(null, getMethod);
 		} catch (Throwable t) {
 			return null;
 		}
@@ -251,8 +268,7 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
 		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
+			jsonresponse = getRequestResponse(null, getMethod);
 		} catch (Throwable t) {
 			return null;
 		}
@@ -264,8 +280,7 @@ public class Communicator extends Thread {
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
 		try {
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
+			jsonresponse = getRequestResponse(null, getMethod);
 		} catch (Throwable t) {
 			return null;
 		}
@@ -283,15 +298,14 @@ public class Communicator extends Thread {
 			return null;
 		}
 		try {			
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			jsonresponse = client.execute(getMethod, responseHandler);
+			jsonresponse = getRequestResponse(null, getMethod);
 
 			if (jsonresponse != null && jsonresponse.length()>0) {
 				try {
 					JSONArray json = new JSONArray(jsonresponse);
 					urlToAvatar = json.getJSONObject(0).get("avatar").toString();
 				} catch (JSONException j) {
-					Log.e(TAG,"JSON error:" + j.toString());
+					Utils.log(TAG,"JSON error:" + j.toString());
 					return null;
 				}
 			}
@@ -333,19 +347,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("template", sb8);
 			multipartContent.addPart("tags", sb9);
 
-			postMethod.setEntity(multipartContent);
-			HttpResponse resp = client.execute(postMethod);
-
-			InputStream is = resp.getEntity().getContent();
-			BufferedReader r = new BufferedReader(new InputStreamReader(is));
-			StringBuilder total = new StringBuilder();
-			String line;
-			while ((line = r.readLine()) != null) {
-				total.append(line);
-			}
-			is.close();
-
-			return total.toString();
+			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			throw e;
 		}

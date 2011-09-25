@@ -73,7 +73,7 @@ public class PostView extends Activity {
 
 		selectedIndex = getIntent().getIntExtra("idx",0);
 
-		Log.w(TAG,"postview getList");
+		Utils.log(TAG,"postview getList");
 		postList = app.bc.getList(listNum, userName);
 
 		this.setTitle(postList.get(selectedIndex).user);
@@ -83,32 +83,33 @@ public class PostView extends Activity {
 
 		pi = postList.get(selectedIndex);
 		if(pi.img != null && pi.img.length() > 0) {
-			Drawable bloggImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
+			app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
 				public void imageLoaded(Drawable imageDrawable, String imageUrl) {
 					imgView.setImageDrawable(imageDrawable);
 					//				final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
 					//				imgView.setLayoutParams(new LinearLayout.LayoutParams(pi.imgX, pi.imgY));
 					//				imgView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					Log.w(TAG,"img loaded");
 				}
 			});
-			imgView.setImageDrawable(bloggImage);
+			//			imgView.setImageDrawable(bloggImage);
 		}
 		if(pi.avatar != null && pi.avatar.length() > 0) {
-			Drawable avatarImage = app.asyncImageLoader.loadDrawable(pi.avatar, new ImageCallback() {
+			app.asyncImageLoader.loadDrawable(pi.avatar, new ImageCallback() {
 				public void imageLoaded(Drawable imageDrawable, String imageUrl) {
 					avatar.setImageDrawable(imageDrawable);
-					//				final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
+					final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
 					avatar.setLayoutParams(new LinearLayout.LayoutParams(36, 36));
-					avatar.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					//					avatar.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+					Utils.log(TAG,"Avatar loaded, size: "+w);
 				}
 			});
-			avatar.setImageDrawable(avatarImage);
 		} else {
 			avatar.setImageResource(R.drawable.stub);
 		}
 
-		//		imgView.setImageDrawable(bloggImage);
-
+		Utils.log(TAG, "text: "+pi.text);
+		
 		headline.setText(pi.headline);
 		text.setText(Html.fromHtml(pi.text));
 		date.setText(Utils.PrettyDate(pi.createdate, this));
@@ -122,9 +123,9 @@ public class PostView extends Activity {
 		case (R.id.avatar):
 		case (R.id.username):
 			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
-		bIntent.putExtra("username", userName);
-		bIntent.putExtra("list", app.bc.BLOGGPAGE);
-		startActivityForResult(bIntent,0);
+			bIntent.putExtra("username", userName);
+			bIntent.putExtra("list", app.bc.BLOGGPAGE);
+			startActivityForResult(bIntent,0);
 		break;
 		case R.id.bloggButton:
 			Intent bloggIntent = new Intent(view.getContext(), PostView.class);

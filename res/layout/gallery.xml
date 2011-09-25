@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/rl1" android:layout_width="wrap_content"
-	android:layout_height="wrap_content" android:background="@color/colorwhite">
+	android:layout_height="wrap_content" android:background="@color/colorwhite"
+	android:layout_marginBottom="10dip">
 	<GridView xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/dataGrid" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:verticalSpacing="5dp"
@@ -12,7 +13,8 @@
 
 	<Button android:id="@+id/loadbutton" android:layout_width="120dip"
 		android:layout_height="wrap_content" android:text="Ladda fler"
-		android:layout_alignParentBottom="true"
+		android:layout_alignParentBottom="true" android:layout_marginBottom="10dip"
 		android:layout_centerHorizontal="true" android:gravity="center"
-		android:onClick="galleryClickHandler" />
+		android:onClick="galleryClickHandler" android:background="@drawable/styledbutton"
+		style="@style/ButtonText" />
 </RelativeLayout>

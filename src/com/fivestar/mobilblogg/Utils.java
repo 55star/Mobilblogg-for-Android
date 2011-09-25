@@ -2,7 +2,6 @@ package com.fivestar.mobilblogg;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +25,17 @@ import android.util.Log;
 public class Utils {
 	final String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
+	private static int LOGLEVEL = 1;
+
+	public static void log(String tag, String mess) {
+		if (LOGLEVEL > 1) {
+			Log.e(tag, mess);
+		} else {
+			if(LOGLEVEL > 0) {
+				Log.w(tag, mess);
+			}
+		}
+	}
 
 	public static void CopyStream(InputStream is, OutputStream os) {
 		final int buffer_size=1024;
@@ -137,8 +147,8 @@ public class Utils {
 			return null;
 		}
 	}
-	
-	
+
+
 	public static void removeSavedCredentials(Context c) {
 		Editor e = getPrefs(c).edit();
 		e.clear();

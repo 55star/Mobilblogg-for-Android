@@ -12,10 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class GalleryView extends Activity {
@@ -56,7 +56,7 @@ public class GalleryView extends Activity {
 				this.setTitle(getString(R.string.mainMenuMyStartPage));
 			}
 		}
-		
+
 		imggrid = (GridView) findViewById(R.id.dataGrid);
 
 		dialog = new ProgressDialog(GalleryView.this);
@@ -80,8 +80,8 @@ public class GalleryView extends Activity {
 				try {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
-					Log.e(TAG,c.getError());
-					return;
+					Utils.log(TAG,"DŒlig teckning "+c.getError());
+					uiCallback.sendEmptyMessage(-1);				
 				}
 				uiCallback.sendEmptyMessage(0);
 			}
@@ -91,11 +91,24 @@ public class GalleryView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
-//			dialog.dismiss();
-			fillList(app, app.bc.getList(listNum, userName));
-			dialog.dismiss();
+			if(msg.what == -1) {
+				Utils.log(TAG, "Kass teckning!!");
+				if(dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				Toast.makeText(activity, "NŠtverksfel, fšr dŒlig teckning?", Toast.LENGTH_LONG).show();
+				// Flasha en dialog "Kass teckning, vill du fšrsška igen?". OK/NOK
+				// OK: restart
+				// NOK: -> mainmenu
+			} else {
+				fillList(app, app.bc.getList(listNum, userName));
+				if(dialog.isShowing()) {
+					dialog.dismiss();
+				}
+			}
 		}
 	};
+	
 
 	public void fillList(Context c, List<PostInfo> p) {
 		final List<PostInfo> piList = p;

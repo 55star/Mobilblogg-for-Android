@@ -113,7 +113,6 @@ public class MainMenuView extends Activity {
 				startActivityForResult(i, GALLERY_PIC_REQUEST);
 			} 
 		});
-
 		builder.show();
 	}
 

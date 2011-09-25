@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:background="@color/colorwhite"
-	android:padding="20dip" >
+	android:padding="20dip">
 
 	<ImageView android:src="@drawable/mobilblogglogo"
 		android:layout_height="wrap_content" android:focusable="false"
@@ -28,16 +28,17 @@
 
 		<Button android:id="@+id/login" android:layout_width="120dip"
 			android:layout_height="wrap_content" android:text="@string/login"
-			android:onClick="@string/splashButtonHandler" />
-
+			android:onClick="@string/splashButtonHandler" android:background="@drawable/styledbutton"
+			style="@style/ButtonText" />
 		<CheckBox android:id="@+id/check01" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:layout_marginLeft="15dip"
 			android:text="@string/remember_me" android:textColor="@color/textcolor" />
 	</LinearLayout>
-
 	<Button android:id="@+id/register" android:layout_width="120dip"
 		android:layout_height="wrap_content" android:text="Bli medlem"
-		android:onClick="@string/splashButtonHandler" android:layout_marginTop="40dip"
-		android:layout_centerHorizontal="true" android:layout_gravity="bottom|center" />
+		android:onClick="@string/splashButtonHandler"
+		android:layout_marginTop="40dip" android:layout_centerHorizontal="true"
+		android:layout_gravity="bottom|center" android:background="@drawable/styledbutton"
+		style="@style/ButtonText" />
 
 </LinearLayout>

@@ -77,7 +77,12 @@ public class LoginView extends Activity {
 	protected void doRemoteLogin(final String userName,final String passWord) {
 		loginThread = new Thread() {
 			public void run() {
-				loginStatus = app.com.doLogin(userName, passWord);
+				try {
+					loginStatus = app.com.doLogin(userName, passWord);
+				} catch (CommunicatorException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				mHandler.post(mUpdateResults);
 			}
 		};

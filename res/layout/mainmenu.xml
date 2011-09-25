@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@color/colorwhite" android:gravity="center_horizontal"
-	android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
 
 	<ImageView android:src="@drawable/mobilblogglogo"
 		android:layout_height="wrap_content" android:focusable="false"
 		android:layout_width="fill_parent" android:layout_gravity="center|top"
-		android:layout_centerHorizontal="true" android:layout_marginBottom="20dip" android:layout_marginTop="20dip"/>
+		android:layout_centerHorizontal="true" android:layout_marginBottom="20dip"
+		android:layout_marginTop="20dip" />
 
 	<LinearLayout android:orientation="horizontal"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_marginLeft="20dip" android:layout_marginRight="20dip" android:gravity="center_horizontal"
-		android:layout_centerHorizontal="true">
+		android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
+		android:gravity="center_horizontal" android:layout_centerHorizontal="true">
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/Button01" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:gravity="left"
 			android:orientation="vertical" android:layout_marginRight="10dip">
 
-			<ImageButton android:id="@+id/firstpage"
+			<ImageButton android:id="@+id/myblogg"
 				android:layout_height="wrap_content" android:layout_width="100dip"
-				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/firstpage"
-				android:layout_centerHorizontal="true" />
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_blog"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
 
-			<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
-				android:text="@string/mainMenuFirstPage" android:layout_height="wrap_content"
+			<TextView android:id="@+id/mypagetext" android:textSize="14dip"
+				android:text="@string/mainMenuMyBlogg" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
 				android:textColor="@color/colordarkgray" android:gravity="center" />
 		</LinearLayout>
@@ -36,8 +39,9 @@
 
 			<ImageButton android:id="@+id/startpage"
 				android:layout_height="wrap_content" android:layout_width="100dip"
-				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/friends"
-				android:layout_centerHorizontal="true" />
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_friends"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
 
 			<TextView android:id="@+id/startpagetext" android:textSize="14dip"
 				android:text="@string/mainMenuMyStartPage" android:layout_height="wrap_content"
@@ -48,21 +52,23 @@
 
 	<LinearLayout android:orientation="horizontal"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:gravity="center_horizontal" android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
-		android:layout_marginTop="20dip"  android:layout_centerHorizontal="true">
+		android:gravity="center_horizontal" android:layout_marginLeft="20dip"
+		android:layout_marginRight="20dip" android:layout_marginTop="20dip"
+		android:layout_centerHorizontal="true">
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/Button05" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:orientation="vertical"
 			android:layout_below="@+id/Button01" android:layout_marginRight="10dip">
 
-			<ImageButton android:id="@+id/myblogg"
+			<ImageButton android:id="@+id/firstpage"
 				android:layout_height="wrap_content" android:layout_width="100dip"
-				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/myblog"
-				android:layout_centerHorizontal="true" />
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_home"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
 
-			<TextView android:id="@+id/mypagetext" android:textSize="14dip"
-				android:text="@string/mainMenuMyBlogg" android:layout_height="wrap_content"
+			<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
+				android:text="@string/mainMenuFirstPage" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
 				android:textColor="@color/colordarkgray" android:gravity="center" />
 		</LinearLayout>
@@ -75,8 +81,9 @@
 			<ImageButton android:id="@+id/blogga"
 				android:layout_height="wrap_content" android:layout_width="100dip"
 				android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
-				android:src="@drawable/camera" android:layout_below="@+id/Button02"
-				android:layout_centerHorizontal="true" />
+				android:src="@drawable/ic_menu_camera" android:layout_below="@+id/Button02"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
 
 			<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
 				android:text="@string/mainMenuUploadPage" android:layout_height="wrap_content"
@@ -93,8 +100,9 @@
 
 		<ImageButton android:id="@+id/loggaut"
 			android:layout_height="wrap_content" android:layout_width="100dip"
-			android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/logout"
-			android:layout_centerHorizontal="true" />
+			android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_logout"
+			android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+			style="@style/ButtonText" />
 
 		<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
 			android:text="@string/mainMenuLogout" android:layout_height="wrap_content"
