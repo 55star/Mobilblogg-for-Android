@@ -1,8 +1,9 @@
 package com.fivestar.mobilblogg.widgets;
 
+import com.fivestar.mobilblogg.Utils;
+
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class AspectRatioImageView extends ImageView {
@@ -25,12 +26,12 @@ public class AspectRatioImageView extends ImageView {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
 		int height = MeasureSpec.getSize(heightMeasureSpec);
 		if(getDrawable() == null) {
-			Log.w(TAG,"drawable == null, set height to width");
+			Utils.log(TAG,"drawable == null, set height to width");
 			height = width;
 		} else {
 			height = width * getDrawable().getIntrinsicHeight() / getDrawable().getIntrinsicWidth();
 		}
-		Log.w(TAG,"width: "+width+" height: "+height);
+		Utils.log(TAG,"width: "+width+" height: "+height);
 		setMeasuredDimension(width, height);			
 	}
 }

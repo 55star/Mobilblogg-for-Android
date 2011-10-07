@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +48,7 @@ public class SplashView extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splash);
-		
+
 		/* quit app & logout, called from mainmenu */
 		String func = getIntent().getStringExtra("func");
 		if(func != null && func.equals("quit")) {
@@ -68,6 +70,10 @@ public class SplashView extends Activity {
 		app = ((MobilbloggApp)getApplicationContext());
 		cntx = this;
 
+		if(!isNetworkAvailable()) {
+			Toast.makeText(activity, getText(R.string.no_network), Toast.LENGTH_LONG).show();
+		}
+		
 		PackageManager manager = this.getPackageManager();
 		PackageInfo info;
 		try {
@@ -77,7 +83,6 @@ public class SplashView extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		String creds = Utils.getSavedCredentials(cntx);
 		if(creds != null) {
 			userName = creds.substring(0, creds.indexOf('|'));
@@ -148,4 +153,15 @@ public class SplashView extends Activity {
 			break;
 		}
 	}
+	
+	public boolean isNetworkAvailable() {
+		ConnectivityManager cm = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+		// if no network is available networkInfo will be null, otherwise check if we are connected
+		if (networkInfo != null && networkInfo.isConnected()) {
+			return true;
+		}
+		return false;
+	}
+
 }

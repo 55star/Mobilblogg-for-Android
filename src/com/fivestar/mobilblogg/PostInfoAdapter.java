@@ -35,33 +35,24 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		PostInfo pi = getItem(position);	
 		if(pi == null) {
-			Log.w(TAG,"getItem == null @ position " + position);
+			Utils.log(TAG,"getItem == null @ position " + position);
 		}
 		final ImageView imageView = new ImageView((Context)app);
 		if(!pi.loadMoreImg) {
 			// Load the image and set it on the ImageView
 			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.thumb, new ImageCallback() {
-				public void imageLoaded(Drawable imageDrawable, String imageUrl) {					
-					imageView.setImageDrawable(imageDrawable);
+			    public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+			        imageView.setImageDrawable(imageDrawable);
 					final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
 					imageView.setLayoutParams(new GridView.LayoutParams(w * 2, w * 2));
 					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-				//	imageView.setBackgroundResource(galleryItemBg);
-					notifyDataSetChanged();
-				}
+			    }
 			});
 			imageView.setImageDrawable(cachedImage);
 			final int w = (int)(36 * app.getResources().getDisplayMetrics().density + 0.5f);
 			imageView.setLayoutParams(new GridView.LayoutParams(w * 2, w * 2));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 		}
-//		else {
-//			// Load the image and set it on the ImageView
-//			final Button more_btn = new Button((Context)app);
-//			more_btn.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT,GridView.LayoutParams.WRAP_CONTENT));
-//			more_btn.setText("Ladda fler");
-//			return more_btn;
-//		}
 		return imageView;
 	}
 

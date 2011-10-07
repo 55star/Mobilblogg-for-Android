@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,10 +38,11 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 	private Thread composeThread;
 	private MobilbloggApp app;
 	private String filePath;
+	private boolean rememberSecretWord = false;
+	private String secretWord;
 	public String caption;
 	public String body;
 	public String showfor;
-	public String secretWord;
 	public String tags;
 	private String[] itemLabels = new String[5];
 	private String[] itemValues = {"","blog", "members","friends", "private"};
@@ -153,16 +152,20 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 
 			if (app.uploadJson != null && app.uploadJson.length()>0) {
 				try {
+					Utils.log(TAG, "RESP: "+app.uploadJson);
 					JSONArray json = new JSONArray(app.uploadJson);
 					uploadStatus = json.getJSONObject(0).optInt("imgid");
 				} catch (JSONException j) {
-					Log.e(TAG,"JSON error:" + j.toString());
+					Utils.log(TAG,"JSON error:" + j.toString());
 				}
 			} else {
 				Toast.makeText(activity, getText(R.string.geterror), Toast.LENGTH_SHORT).show();
 			}
 
 			if (uploadStatus > 0) {
+				if(rememberSecretWord && secretWord.length() > 0) {
+					Utils.saveSecretWord(activity, secretWord);
+				}
 				Toast.makeText(activity, getString(R.string.postuploaded), Toast.LENGTH_SHORT).show();
 				Intent myIntent = new Intent(activity, MainMenuView.class);
 				startActivityForResult(myIntent, 0);
@@ -185,24 +188,18 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 		public void onClick(DialogInterface v, int buttonId) {
 			if(buttonId == DialogInterface.BUTTON1) {
 				/* ok button */
-				secretWord = getPromptText();
-				if(getPromptRemember()) {
-					Utils.saveSecretWord(activity, secretWord);
-				}
+				CheckBox cb = (CheckBox)promptDialogView.findViewById(R.id.remember_secret);
+				EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
+
+				Utils.log(TAG, "SW: "+secretWord + "REM: "+rememberSecretWord);
+
+				secretWord = et.getText().toString();
+				rememberSecretWord = cb.isChecked();
+				Utils.log(TAG, "SW: "+secretWord + "REM: "+rememberSecretWord);
 				uploadPost(caption, body, showfor, secretWord, tags, activity);
 			} else {
 				/* cancelbutton */
 			}
-		}
-
-		private String getPromptText() {
-			EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
-			return et.getText().toString();
-		}
-		
-		private Boolean getPromptRemember() {
-			CheckBox cb = (CheckBox)promptDialogView.findViewById(R.id.remember_secret);
-			return cb.isChecked();
 		}
 	}	
 

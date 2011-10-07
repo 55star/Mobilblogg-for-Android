@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -81,7 +78,7 @@ public class LoginView extends Activity {
 					loginStatus = app.com.doLogin(userName, passWord);
 				} catch (CommunicatorException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e.getMessage();
 				}
 				mHandler.post(mUpdateResults);
 			}

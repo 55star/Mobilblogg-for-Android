@@ -20,6 +20,9 @@
 	<string name="by">av</string>
 	<string name="camera">Kamera</string>
 	<string name="gallery">Galleriet</string>
+	<string name="reload">Ladda om</string>
+	<string name="no_network">Inget nät tillgängligt</string>
+	<string name="loadmore">Ladda fler</string>
 
 	<string name="ok">OK</string>
 	<string name="abort">Avbryt</string>

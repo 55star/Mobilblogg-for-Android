@@ -25,7 +25,7 @@ import android.util.Log;
 public class Utils {
 	final String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
-	private static int LOGLEVEL = 1;
+	private static int LOGLEVEL = 42;
 
 	public static void log(String tag, String mess) {
 		if (LOGLEVEL > 1) {
@@ -43,7 +43,7 @@ public class Utils {
 			byte[] bytes=new byte[buffer_size];
 			for(;;) {
 				int count=is.read(bytes, 0, buffer_size);
-				if(count==-1)
+				if(count == -1)
 					break;
 				os.write(bytes, 0, count);
 			}

@@ -12,6 +12,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -74,13 +77,29 @@ public class GalleryView extends Activity {
 		}
 	}
 
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.reload:
+			Toast.makeText(this, "You have chosen the " + getResources().getString(R.string.reload) + " menu option",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	private void loadBloggPosts() {
 		Thread mThread = new Thread() {
 			public void run() {
 				try {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
-					Utils.log(TAG,"DŒlig teckning "+c.getError());
 					uiCallback.sendEmptyMessage(-1);				
 				}
 				uiCallback.sendEmptyMessage(0);
@@ -108,11 +127,11 @@ public class GalleryView extends Activity {
 			}
 		}
 	};
-	
 
 	public void fillList(Context c, List<PostInfo> p) {
 		final List<PostInfo> piList = p;
 		final Context mContext = c;
+		selectedIndex += p.size();
 		imggrid.setAdapter(new PostInfoAdapter(activity, piList, app));
 		imggrid.setOnItemClickListener(new OnItemClickListener() {
 
@@ -127,7 +146,6 @@ public class GalleryView extends Activity {
 		});
 		imggrid.setSelection(selectedIndex);
 	}
-
 
 	public void galleryClickHandler(View view) {
 		if(view.getId() == R.id.loadbutton) {

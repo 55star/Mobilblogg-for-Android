@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -35,8 +34,9 @@ import org.json.JSONException;
 
 public class Communicator extends Thread {
 	final String TAG = "Communicator";
-	final int TIMEOUTCONNECTION = 15000; // timeout ms
-	final int TIMEOUTSOCKET = 25000; // timeout ms
+	final int TIMEOUTCONNECTION = 20000; // timeout ms
+	final int TIMEOUTSOCKET = 15000; // timeout ms
+	final int TRIALS = 3; 
 	private String protocoll = "http://";
 	private String host = "api.mobilblogg.nu";
 	private String api  = "api_android_2.0.t";
@@ -62,27 +62,29 @@ public class Communicator extends Thread {
 
 	private String getRequestResponse(HttpPost post, HttpGet get) throws CommunicatorException  {
 		BasicHttpResponse httpResponse = null;
-		if(post != null) {
+		int retry = TRIALS;
+		int count = 0;
+		while(count < retry) {
+			count += 1;
 			try {
-				httpResponse = (BasicHttpResponse) client.execute(post);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
+				if(post != null) {
+					Utils.log(TAG, "Do POST request!");
+					httpResponse = (BasicHttpResponse) client.execute(post);
+				} else if(get != null) {
+					Utils.log(TAG, "Do GET request!");
+					httpResponse = (BasicHttpResponse) client.execute(get);	
+				}
+			} catch (Exception e) {
+				count += 1;
 				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if(count < retry) {
+					Utils.log(TAG, "Exception, but let's try again");
+				} else {
+					throw new CommunicatorException("Network error");
+				}
 			}
-		} else if(get != null) {
-			try {
-				httpResponse = (BasicHttpResponse) client.execute(post);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new CommunicatorException("Network error");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new CommunicatorException("Network error");
+			if(httpResponse != null) {
+				break;
 			}
 		}
 		if(httpResponse != null) {
@@ -130,12 +132,12 @@ public class Communicator extends Thread {
 				uri.add(new BasicNameValuePair("username", userName));  
 				uri.add(new BasicNameValuePair("password", hashedPassword));  
 				postMethod.setEntity(new UrlEncodedFormEntity(uri));  
-
 				jsonresponse = getRequestResponse(postMethod, null);
 			} catch (IOException e) {  
 				// TODO Auto-generated catch block  
 				e.printStackTrace();
-			}  
+				return 0;
+			}
 		} else {
 			return 0;
 		}
@@ -144,7 +146,8 @@ public class Communicator extends Thread {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
 		} catch (JSONException j) {
-			Utils.log(TAG,"JSON error:" + j.toString());
+			return 0;
+		} catch (NullPointerException ne) {
 			return 0;
 		}
 		return loginStatus;
@@ -184,11 +187,11 @@ public class Communicator extends Thread {
 
 		jsonresponse = getRequestResponse(null, getMethod);
 
-//		if(app.bc.size(listNum, username) == 0) {
-//			origIndex = 0;
-//		} else {
-//			origIndex = app.bc.size(listNum, username) - 1;
-//		}
+		//		if(app.bc.size(listNum, username) == 0) {
+		//			origIndex = 0;
+		//		} else {
+		//			origIndex = app.bc.size(listNum, username) - 1;
+		//		}
 		if (jsonresponse != null && jsonresponse.length()>0) {
 			try {
 				JSONArray json = new JSONArray(jsonresponse);
@@ -231,18 +234,26 @@ public class Communicator extends Thread {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
 
-			StringBody sb1 = new StringBody("writeComment");
-			StringBody sb2 = new StringBody(imgid);
-			StringBody sb3 = new StringBody(comment);
-			StringBody sb4 = new StringBody("comment");
-			StringBody sb5 = new StringBody(api);
+			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
+			uri.add(new BasicNameValuePair("func", "writeComment"));  
+			uri.add(new BasicNameValuePair("imgid", imgid));  
+			uri.add(new BasicNameValuePair("message", comment));  
+			uri.add(new BasicNameValuePair("wtd", "comment"));
+			uri.add(new BasicNameValuePair("template", api));
 
-			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-			multipartContent.addPart("func", sb1);
-			multipartContent.addPart("imgid", sb2);
-			multipartContent.addPart("message", sb3);
-			multipartContent.addPart("wtd", sb4);
-			multipartContent.addPart("template", sb5);
+			
+//			StringBody sb1 = new StringBody("writeComment");
+//			StringBody sb2 = new StringBody(imgid);
+//			StringBody sb3 = new StringBody(comment);
+//			StringBody sb4 = new StringBody("comment");
+//			StringBody sb5 = new StringBody(api);
+//
+//			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//			multipartContent.addPart("func", sb1);
+//			multipartContent.addPart("imgid", sb2);
+//			multipartContent.addPart("message", sb3);
+//			multipartContent.addPart("wtd", sb4);
+//			multipartContent.addPart("template", sb5);
 
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
@@ -275,14 +286,14 @@ public class Communicator extends Thread {
 		return jsonresponse;
 	}		
 
-	public String getComments(int imgid) {
+	public String getComments(String imgid) throws CommunicatorException {
 		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=listComments&imgid="+imgid;
 		String jsonresponse = "";
 		HttpGet getMethod = new HttpGet(url);
 		try {
 			jsonresponse = getRequestResponse(null, getMethod);
 		} catch (Throwable t) {
-			return null;
+			throw new CommunicatorException(t.getMessage());
 		}
 		return jsonresponse;
 	}	
@@ -317,36 +328,35 @@ public class Communicator extends Thread {
 
 
 	public String doUpload(String username, String secret, String caption, String text, String showfor, String tags, String filePath) throws Throwable {
-
 		File f = new File(filePath);
-
+	
 		try {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
-
-			FileBody bin = new FileBody(f);			
-			StringBody sb1 = new StringBody("ladda_upp");
-			StringBody sb2 = new StringBody(caption);
-			StringBody sb3 = new StringBody(text);
-			StringBody sb4 = new StringBody(secret);
-			StringBody sb5 = new StringBody(showfor);
-			StringBody sb6 = new StringBody("upload");
-			StringBody sb7 = new StringBody("/files/"+username);
-			StringBody sb8 = new StringBody(api);
-			StringBody sb9 = new StringBody(tags);
-
+			
 			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-			multipartContent.addPart("file", bin);
-			multipartContent.addPart("wtd", sb1);
-			multipartContent.addPart("header", sb2);
-			multipartContent.addPart("text", sb3);
-			multipartContent.addPart("secretword", sb4);
-			multipartContent.addPart("rights", sb5);
-			multipartContent.addPart("func", sb6);
-			multipartContent.addPart("path", sb7);
-			multipartContent.addPart("template", sb8);
-			multipartContent.addPart("tags", sb9);
+			multipartContent.addPart("file", new FileBody(f));
+			multipartContent.addPart("wtd", new StringBody("ladda_upp"));
+			multipartContent.addPart("header", new StringBody(caption));
+			multipartContent.addPart("text", new StringBody(text));
+			multipartContent.addPart("secretword", new StringBody(secret));
+			multipartContent.addPart("rights", new StringBody(showfor));
+			multipartContent.addPart("func", new StringBody("upload"));
+			multipartContent.addPart("path", new StringBody("/files/"+username));
+			multipartContent.addPart("template", new StringBody(api));
+			multipartContent.addPart("tags", new StringBody(tags));
 
+			Utils.log(TAG, "url: "+url);
+			Utils.log(TAG,"username:" + username);
+			Utils.log(TAG,"secret:" + secret);
+			Utils.log(TAG,"caption:" + caption);
+			Utils.log(TAG,"text:" + text);
+			Utils.log(TAG,"showfor:" + showfor);
+			Utils.log(TAG,"tags:" + tags);
+			Utils.log(TAG,"filepath:" + filePath);
+			Utils.log(TAG,"api:" + api);
+			Utils.log(TAG,"file size:" + f.length());
+			
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			throw e;

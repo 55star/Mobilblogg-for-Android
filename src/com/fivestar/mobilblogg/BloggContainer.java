@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
 public class BloggContainer {
 	final String TAG = "BloggContainer";
 
@@ -19,6 +17,7 @@ public class BloggContainer {
 
 	public Map<String, List<PostInfo>> userBloggs;
 	public Map<String, Integer> userPage;
+	public Map<String, List<CommentInfo>> imgidComment;
 
 	public int page[] = {1, 1, 1};
 
@@ -28,6 +27,7 @@ public class BloggContainer {
 		friendPageList = new ArrayList<PostInfo>();
 		userBloggs = new HashMap<String, List<PostInfo>>();
 		userPage = new HashMap<String, Integer>();
+		imgidComment = new HashMap<String, List<CommentInfo>>();
 	}
 
 	public void add(int listNum, PostInfo pi, String username) {
@@ -84,12 +84,9 @@ public class BloggContainer {
 			return friendPageList;
 		case BLOGGPAGE: 
 			if(username == null) {
-				Log.w(TAG,"username: "+username);
 				return null;
 			}
 			if(userBloggs.containsKey(username)) {
-				Log.w(TAG,"username: "+username);
-				Log.w(TAG,"Found list size: "+userBloggs.get(username).size());
 				return userBloggs.get(username);
 			}
 		}
@@ -135,19 +132,43 @@ public class BloggContainer {
 		}
 		page[listNum]++;
 	}
-
-public int getPage(int listNum, String username) {
-	if(listNum == BLOGGPAGE) {
-		if(username == null) {
-			return 1;
-		}
-		if(userPage.containsKey(username)) {
-			return userPage.get(username);
+	
+	public void addComment(String imgId, CommentInfo ci) {
+		if(imgidComment.containsKey(imgId)) {
+			List<CommentInfo> list = imgidComment.get(imgId);
+			list.add(ci);
 		} else {
-			userPage.put(username, 1);
-			return 1;
+			List<CommentInfo> list = new ArrayList<CommentInfo>();
+			list.add(ci);
+			imgidComment.put(imgId, list);
 		}
 	}
-	return page[listNum];
-}
+	
+	public List<CommentInfo> getComments(String imgId) {
+		if(imgidComment.containsKey(imgId)) {
+			return imgidComment.get(imgId);
+		}
+		return null;
+	}
+	
+
+	public int getPage(int listNum, String username) {
+		if(listNum == BLOGGPAGE) {
+			if(username == null) {
+				return 1;
+			}
+			if(userPage.containsKey(username)) {
+				return userPage.get(username);
+			} else {
+				userPage.put(username, 1);
+				return 1;
+			}
+		}
+		return page[listNum];
+	}
+	
+	public void addComments() {
+		
+		
+	}
 }

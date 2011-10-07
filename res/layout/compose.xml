@@ -14,7 +14,7 @@
 				android:layout_centerHorizontal="true" android:id="@+id/image"
 				android:layout_alignParentTop="true" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:adjustViewBounds="true"
-				android="@drawable/stub" android:layout_marginBottom="5dip"/>
+				android="@drawable/stub" android:layout_marginBottom="5dip" />
 
 			<!-- <ImageView android:id="@+id/image" android:layout_width="fill_parent" -->
 			<!-- android:layout_height="200dip" android:src="@drawable/stub" -->
@@ -30,7 +30,7 @@
 
 			<EditText android:id="@+id/tags" android:layout_height="wrap_content"
 				android:layout_width="fill_parent" android:hint="@string/tags" />
-				
+
 			<TextView android:id="@+id/TextView03" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:text="@string/sep"
 				android:textColor="@color/colorlightgray" android:textSize="14dip"
@@ -46,11 +46,13 @@
 
 				<Button android:id="@+id/uploadbutton" android:layout_width="120dip"
 					android:layout_height="wrap_content" android:text="@string/mainMenuUploadPage"
-					android:onClick="composeClickHandler" android:layout_marginRight="25dip" />
+					android:onClick="composeClickHandler" android:layout_marginRight="25dip"
+					android:background="@drawable/styledbutton" style="@style/ButtonText" />
 
 				<Button android:id="@+id/abortbutton" android:layout_width="120dip"
 					android:layout_height="wrap_content" android:text="@string/cancel"
-					android:onClick="composeClickHandler" android:layout_marginLeft="25dip" />
+					android:onClick="composeClickHandler" android:layout_marginLeft="25dip"
+					android:background="@drawable/styledbutton" style="@style/ButtonText" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

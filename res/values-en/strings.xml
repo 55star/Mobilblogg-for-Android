@@ -22,8 +22,12 @@
 	<string name="abort">Cancel</string>
 	<string name="postuploaded">Post sent successfully</string>
 	<string name="blogfailure">Failure, wrong secret word?</string>
-
-
+	<string name="reload">Reload</string>
+	<string name="no_network">No network found</string>
+	<string name="loadmore">Load more</string>
+	
+	
+	
 	<string name="all">Show for anyone</string>
 	<string name="blog">All, but not on firstpage</string>
 	<string name="members">Members</string>
