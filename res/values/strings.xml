@@ -70,6 +70,7 @@
 	<color name="colorgray">#C0C0C0</color>
 	<color name="colordarkgray">#454545</color>
 	<color name="colorlightgray">#7b7b7b</color>
+	<color name="colorverylightgray">#F0F0F0</color>
 	<color name="colorbutton">#8C8D8C</color>
 	<color name="textcolor">#333333</color>
 

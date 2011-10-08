@@ -54,6 +54,7 @@ public class PostView extends Activity {
 	EditText comment;
 	Button commentButton;
 	LinearLayout commentHolder;
+	Activity activity;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -83,17 +84,19 @@ public class PostView extends Activity {
 		dialog.setCancelable(false);
 
 		app = (MobilbloggApp)getApplicationContext();
-
+		activity = this;
+		
 		selectedIndex = getIntent().getIntExtra("idx",0);
 
 		Utils.log(TAG,"postview getList");
 		postList = app.bc.getList(listNum, userName);
+		pi = postList.get(selectedIndex);
 
-		this.setTitle(postList.get(selectedIndex).user);
+		this.setTitle(pi.user);
+		userName = pi.user;
 
 		dialog.show();
 
-		pi = postList.get(selectedIndex);
 		imgid = pi.imgid;
 		if(pi.img != null && pi.img.length() > 0) {
 			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
@@ -134,18 +137,18 @@ public class PostView extends Activity {
 			if (msg.what >= 0) {
 				commentList = app.bc.getComments(imgid);
 				if(commentList != null) {
-					Utils.log(TAG, "Num com: "+commentList.size());
 					commentHolder.removeAllViews();
 					for(int i=0; i<commentList.size(); i++) {
+						CommentInfo ci = commentList.get(i);
 						TextView com = new TextView(app);
 						if(i % 2 == 0) {
-							com.setBackgroundResource(R.color.colorbg);
+							com.setBackgroundResource(R.color.colorverylightgray);
 						} else {
 							com.setBackgroundResource(R.color.colorwhite);
 						}
 						com.setTextColor(R.color.textcolor);
 						com.setPadding(5, 8, 5, 8);
-						com.setText(commentList.get(i).username + ":\n" + Html.fromHtml(commentList.get(i).comment));
+						com.setText(Html.fromHtml("<b>"+ci.username+"</b> @ <i>" + ci.createdate + "</i><br />" + ci.comment));
 						com.setId(i);
 						commentHolder.addView(com);
 					}
@@ -163,7 +166,6 @@ public class PostView extends Activity {
 				String jsonresponse = null;
 				JSONArray json = null;
 				try {
-					Utils.log(TAG, "imgid: "+imgid);
 					jsonresponse = app.com.getComments(imgid);
 				} catch (CommunicatorException c) {
 					Utils.log(TAG, "No network?");
@@ -197,15 +199,15 @@ public class PostView extends Activity {
 		switch(view.getId()) {
 		case (R.id.avatar):
 		case (R.id.username):
-			Utils.log(TAG, "Goto blog!");
-		Intent bIntent = new Intent(view.getContext(), GalleryView.class);
-		bIntent.putExtra("username", userName);
-		bIntent.putExtra("list", app.bc.BLOGGPAGE);
-		startActivityForResult(bIntent,0);
-		break;
+			Utils.log(TAG, "Goto " + userName +" blog!");
+			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
+			bIntent.putExtra("username", userName);
+			bIntent.putExtra("list", app.bc.BLOGGPAGE);
+			startActivityForResult(bIntent,0);
+			break;
 		case (R.id.commentButton):
-			Utils.log(TAG, "Kommentar: "+comment.getText().toString());
-		break;
+			Utils.log(TAG, "Kommenterar: "+comment.getText().toString());
+			break;
 		}
 	}
 

@@ -44,19 +44,18 @@ public class GalleryView extends Activity {
 		setContentView(R.layout.gallery);
 
 		app = ((MobilbloggApp)getApplicationContext());
-
 		listNum = getIntent().getIntExtra("list",-1);
-		userName = getIntent().getStringExtra("username");
-
-		if(userName != null) {
-			this.setTitle(userName +"'s " + getString(R.string.moblog));
-		}
-
+		
 		if(listNum == app.bc.FIRSTPAGE) {
 			this.setTitle(getString(R.string.mainMenuFirstPage));
 		} else {
 			if(listNum == app.bc.FRIENDPAGE) {
 				this.setTitle(getString(R.string.mainMenuMyStartPage));
+			} else {
+				userName = getIntent().getStringExtra("username");
+				if(userName != null) {
+					this.setTitle(userName +"'s " + getString(R.string.moblog));
+				}				
 			}
 		}
 
@@ -77,22 +76,6 @@ public class GalleryView extends Activity {
 		}
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.option_menu, menu);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.reload:
-			Toast.makeText(this, "You have chosen the " + getResources().getString(R.string.reload) + " menu option",
-					Toast.LENGTH_SHORT).show();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	private void loadBloggPosts() {
 		Thread mThread = new Thread() {
@@ -110,20 +93,17 @@ public class GalleryView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
+			if(dialog.isShowing()) {
+				dialog.dismiss();
+			}
 			if(msg.what == -1) {
 				Utils.log(TAG, "Kass teckning!!");
-				if(dialog.isShowing()) {
-					dialog.dismiss();
-				}
 				Toast.makeText(activity, "NŠtverksfel, fšr dŒlig teckning?", Toast.LENGTH_LONG).show();
 				// Flasha en dialog "Kass teckning, vill du fšrsška igen?". OK/NOK
 				// OK: restart
 				// NOK: -> mainmenu
 			} else {
 				fillList(app, app.bc.getList(listNum, userName));
-				if(dialog.isShowing()) {
-					dialog.dismiss();
-				}
 			}
 		}
 	};
@@ -131,7 +111,8 @@ public class GalleryView extends Activity {
 	public void fillList(Context c, List<PostInfo> p) {
 		final List<PostInfo> piList = p;
 		final Context mContext = c;
-		selectedIndex += p.size();
+		//		selectedIndex += p.size();
+		selectedIndex += 12;
 		imggrid.setAdapter(new PostInfoAdapter(activity, piList, app));
 		imggrid.setOnItemClickListener(new OnItemClickListener() {
 
@@ -142,7 +123,7 @@ public class GalleryView extends Activity {
 				pvIntent.putExtra("username", userName);
 				startActivity(pvIntent);
 			}
-
+			
 		});
 		imggrid.setSelection(selectedIndex);
 	}
@@ -152,6 +133,23 @@ public class GalleryView extends Activity {
 			// Load more images
 			dialog.show();
 			loadBloggPosts();
+		}
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.reload:
+			Toast.makeText(this, "You have chosen the " + getResources().getString(R.string.reload) + " menu option",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

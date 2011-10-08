@@ -132,7 +132,7 @@ public class BloggContainer {
 		}
 		page[listNum]++;
 	}
-	
+
 	public void addComment(String imgId, CommentInfo ci) {
 		if(imgidComment.containsKey(imgId)) {
 			List<CommentInfo> list = imgidComment.get(imgId);
@@ -143,14 +143,14 @@ public class BloggContainer {
 			imgidComment.put(imgId, list);
 		}
 	}
-	
+
 	public List<CommentInfo> getComments(String imgId) {
 		if(imgidComment.containsKey(imgId)) {
 			return imgidComment.get(imgId);
 		}
 		return null;
 	}
-	
+
 
 	public int getPage(int listNum, String username) {
 		if(listNum == BLOGGPAGE) {
@@ -166,9 +166,9 @@ public class BloggContainer {
 		}
 		return page[listNum];
 	}
-	
+
 	public void addComments() {
-		
-		
+
+
 	}
 }

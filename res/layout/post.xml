@@ -65,20 +65,22 @@
 				android:orientation="vertical" android:layout_marginTop="10dip"
 				android:layout_marginBottom="10dip">
 			</LinearLayout>
-			<LinearLayout android:id="@+id/LinearLayout04"
+			<RelativeLayout android:id="@+id/RelativeLayout04"
 				android:layout_width="fill_parent" android:layout_height="fill_parent"
 				android:orientation="horizontal" android:gravity="center_horizontal">
-
-				<EditText android:id="@+id/commentText"
-					android:layout_height="wrap_content" android:layout_width="230dip"
-					android:inputType="textMultiLine" android:lines="1"
-					android:hint="@string/writecomment" />
 
 				<Button android:id="@+id/commentButton"
 					android:layout_height="wrap_content" android:layout_width="wrap_content"
 					android:text="@string/send" android:onClick="PostViewClickHandler"
-					android:background="@drawable/styledbutton" style="@style/ButtonText" />
-			</LinearLayout>
+					android:background="@drawable/styledbutton" style="@style/ButtonText" 
+					android:layout_alignParentRight="true" />
+
+				<EditText android:id="@+id/commentText"
+					android:layout_height="wrap_content" android:layout_width="fill_parent"
+					android:inputType="textMultiLine" android:lines="1"
+					android:hint="@string/writecomment" android:layout_toLeftOf="@+id/commentButton" />
+
+			</RelativeLayout>
 		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

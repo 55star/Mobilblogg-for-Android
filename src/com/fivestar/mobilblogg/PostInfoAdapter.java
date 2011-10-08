@@ -29,6 +29,9 @@ public class PostInfoAdapter extends ArrayAdapter<PostInfo> {
 	}
 
 	public int getCount() {
+		if(listInfo == null) {
+			return 0;
+		}
 		return listInfo.size();
 	}
 
