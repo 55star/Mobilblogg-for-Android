@@ -18,18 +18,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
-import android.text.util.Linkify;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PostView extends Activity {
 	final String TAG = "PostView";
@@ -43,7 +39,6 @@ public class PostView extends Activity {
 	MobilbloggApp app;
 	int listNum;
 	List<PostInfo> postList = null;
-	List<CommentInfo> commentList = null;
 	PostInfo pi = null;
 	Gallery gallery;
 	TextView headline;
@@ -85,7 +80,7 @@ public class PostView extends Activity {
 
 		app = (MobilbloggApp)getApplicationContext();
 		activity = this;
-		
+
 		selectedIndex = getIntent().getIntExtra("idx",0);
 
 		Utils.log(TAG,"postview getList");
@@ -135,9 +130,16 @@ public class PostView extends Activity {
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what >= 0) {
-				commentList = app.bc.getComments(imgid);
+//				int len = commentHolder.getChildCount();
+//				Utils.log(TAG, "childcount: "+len);
+//
+//				for(int i=0; i<len; i++) {
+//					Utils.log(TAG, "child: "+i);
+//					commentHolder.removeView(commentHolder.getChildAt(i));
+//				}
+				
+				List<CommentInfo> commentList = app.bc.getComments(imgid);
 				if(commentList != null) {
-					commentHolder.removeAllViews();
 					for(int i=0; i<commentList.size(); i++) {
 						CommentInfo ci = commentList.get(i);
 						TextView com = new TextView(app);
@@ -161,6 +163,7 @@ public class PostView extends Activity {
 	};
 
 	private void loadComments() {
+		Utils.log(TAG,  "LOAD COMMENTS");
 		Thread mThread = new Thread() {
 			public void run() {
 				String jsonresponse = null;
@@ -204,12 +207,24 @@ public class PostView extends Activity {
 			bIntent.putExtra("username", userName);
 			bIntent.putExtra("list", app.bc.BLOGGPAGE);
 			startActivityForResult(bIntent,0);
-			break;
+		break;
 		case (R.id.commentButton):
-			Utils.log(TAG, "Kommenterar: "+comment.getText().toString());
+			Thread cThread = new Thread() {
+				public void run() {
+					app.com.postComment(imgid, comment.getText().toString());
+					postCommentCallback.sendEmptyMessage(0);
+				}
+			};
+			cThread.start();
 			break;
 		}
 	}
+
+	private Handler postCommentCallback = new Handler() {
+		public void handleMessage(Message msg) {	
+			loadComments();
+		}
+	};
 
 	@Override
 	public void onDestroy() {

@@ -234,27 +234,15 @@ public class Communicator extends Thread {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
 
-			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
-			uri.add(new BasicNameValuePair("func", "writeComment"));  
-			uri.add(new BasicNameValuePair("imgid", imgid));  
-			uri.add(new BasicNameValuePair("message", comment));  
-			uri.add(new BasicNameValuePair("wtd", "comment"));
-			uri.add(new BasicNameValuePair("template", api));
+			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			multipartContent.addPart("func", new StringBody("writeComment"));
+			multipartContent.addPart("imgid", new StringBody(imgid));
+			multipartContent.addPart("message", new StringBody(comment));
+			multipartContent.addPart("wtd", new StringBody("comment"));
+			multipartContent.addPart("template", new StringBody(api));
 
+			postMethod.setEntity(multipartContent);
 			
-//			StringBody sb1 = new StringBody("writeComment");
-//			StringBody sb2 = new StringBody(imgid);
-//			StringBody sb3 = new StringBody(comment);
-//			StringBody sb4 = new StringBody("comment");
-//			StringBody sb5 = new StringBody(api);
-//
-//			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-//			multipartContent.addPart("func", sb1);
-//			multipartContent.addPart("imgid", sb2);
-//			multipartContent.addPart("message", sb3);
-//			multipartContent.addPart("wtd", sb4);
-//			multipartContent.addPart("template", sb5);
-
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			return null;
@@ -346,16 +334,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("template", new StringBody(api));
 			multipartContent.addPart("tags", new StringBody(tags));
 
-			Utils.log(TAG, "url: "+url);
-			Utils.log(TAG,"username:" + username);
-			Utils.log(TAG,"secret:" + secret);
-			Utils.log(TAG,"caption:" + caption);
-			Utils.log(TAG,"text:" + text);
-			Utils.log(TAG,"showfor:" + showfor);
-			Utils.log(TAG,"tags:" + tags);
-			Utils.log(TAG,"filepath:" + filePath);
-			Utils.log(TAG,"api:" + api);
-			Utils.log(TAG,"file size:" + f.length());
+			postMethod.setEntity(multipartContent);
 			
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {

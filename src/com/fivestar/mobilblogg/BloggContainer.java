@@ -151,6 +151,13 @@ public class BloggContainer {
 		return null;
 	}
 
+	public int numComments(String imgId) {
+		if(imgidComment.containsKey(imgId)) {
+			return imgidComment.get(imgId).size();
+		}
+		return 0;
+	}
+	
 
 	public int getPage(int listNum, String username) {
 		if(listNum == BLOGGPAGE) {
@@ -165,10 +172,5 @@ public class BloggContainer {
 			}
 		}
 		return page[listNum];
-	}
-
-	public void addComments() {
-
-
 	}
 }
