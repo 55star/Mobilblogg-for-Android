@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -130,13 +131,6 @@ public class PostView extends Activity {
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what >= 0) {
-//				int len = commentHolder.getChildCount();
-//				Utils.log(TAG, "childcount: "+len);
-//
-//				for(int i=0; i<len; i++) {
-//					Utils.log(TAG, "child: "+i);
-//					commentHolder.removeView(commentHolder.getChildAt(i));
-//				}
 				
 				List<CommentInfo> commentList = app.bc.getComments(imgid);
 				if(commentList != null) {
@@ -178,6 +172,7 @@ public class PostView extends Activity {
 					json = new JSONArray(jsonresponse);
 					Utils.log(TAG, "json resp: "+jsonresponse);
 					int len = json.length();
+					app.bc.cleanComments(imgid);
 					for(int i=0; i<len;i++) {
 						CommentInfo ci = new CommentInfo();
 
@@ -190,7 +185,6 @@ public class PostView extends Activity {
 					}
 					uiCallback.sendEmptyMessage(0);					
 				} catch (JSONException j) {
-					Utils.log(TAG, "No comments?");
 					uiCallback.sendEmptyMessage(-1);
 				}
 			}
@@ -206,7 +200,7 @@ public class PostView extends Activity {
 			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
 			bIntent.putExtra("username", userName);
 			bIntent.putExtra("list", app.bc.BLOGGPAGE);
-			startActivityForResult(bIntent,0);
+			startActivityForResult(bIntent, 0);
 		break;
 		case (R.id.commentButton):
 			Thread cThread = new Thread() {

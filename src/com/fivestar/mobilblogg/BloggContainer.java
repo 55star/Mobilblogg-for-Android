@@ -136,10 +136,10 @@ public class BloggContainer {
 	public void addComment(String imgId, CommentInfo ci) {
 		if(imgidComment.containsKey(imgId)) {
 			List<CommentInfo> list = imgidComment.get(imgId);
-			list.add(ci);
+			list.add(0, ci);
 		} else {
 			List<CommentInfo> list = new ArrayList<CommentInfo>();
-			list.add(ci);
+			list.add(0, ci);
 			imgidComment.put(imgId, list);
 		}
 	}
@@ -151,6 +151,13 @@ public class BloggContainer {
 		return null;
 	}
 
+	public void cleanComments(String imgId) {
+		if(imgidComment.containsKey(imgId)) {
+			List<CommentInfo> cl = imgidComment.get(imgId);
+			cl.clear();
+		}
+	}
+	
 	public int numComments(String imgId) {
 		if(imgidComment.containsKey(imgId)) {
 			return imgidComment.get(imgId).size();
