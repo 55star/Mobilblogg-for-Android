@@ -1,8 +1,10 @@
 package com.fivestar.mobilblogg;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -24,7 +26,6 @@ public class SplashView extends Activity {
 	final Handler mHandler = new Handler();
 	final Activity activity = this;
 	String TAG = "SplashView";
-	int loginStatus;
 
 	private ProgressDialog dialog;
 	private Thread loginThread;
@@ -71,40 +72,58 @@ public class SplashView extends Activity {
 		cntx = this;
 
 		if(!isNetworkAvailable()) {
-			Toast.makeText(activity, getText(R.string.no_network), Toast.LENGTH_LONG).show();
+			AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+			alertbox.setMessage(getText(R.string.no_network));
+
+			alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface arg0, int arg1) {
+					// the button was clicked
+				}
+			});
+			alertbox.show();			
+			//			Toast.makeText(activity, getText(R.string.no_network), Toast.LENGTH_LONG).show();
 		}
-		
+
 		PackageManager manager = this.getPackageManager();
 		PackageInfo info;
 		try {
 			info = manager.getPackageInfo(this.getPackageName(), 0);
+			// nullpointer here, why?			
 			version.setText("Version: " + info.versionName);
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String creds = Utils.getSavedCredentials(cntx);
-		if(creds != null) {
-			userName = creds.substring(0, creds.indexOf('|'));
-			passWord = creds.substring(creds.indexOf('|')+1,creds.length());
-			if(userName.length() > 0 && passWord.length() > 0) {
-				doRemoteLogin(userName, passWord);
-				dialog.show();
-			}
+		if(Utils.getCredentialsUsername(cntx) != null && 
+				Utils.getCredentialsPassword(cntx) != null) {
+			Utils.log(TAG, "Found credentials!");
+			userName = Utils.getCredentialsUsername(cntx);
+			passWord = Utils.getCredentialsPassword(cntx);
+			doRemoteLogin(userName, passWord);
+			dialog.show();
+		} else {
+			
+			/*************************/
+			/* REMOVE BEFORE PUBLISH */
+			/*************************/
+			
+	//		AppRater.showRateDialog(this, null);
 		}
 	}
 
 	protected void doRemoteLogin(final String userName, final String passWord) {
 		loginThread = new Thread() {
 			public void run() {
+				int status = 0;
 				try {
-					loginStatus = app.com.doLogin(userName, passWord);
+					status = app.com.doLogin(userName, passWord);
 				} catch (CommunicatorException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					uiCallback.sendEmptyMessage(0);
 				}
-				uiCallback.sendEmptyMessage(0);
+				Utils.log(TAG,"Login status: " + status);
+				uiCallback.sendEmptyMessage(status);
 			}
 		};
 		loginThread.start();
@@ -117,7 +136,7 @@ public class SplashView extends Activity {
 				dialog.dismiss();
 			}
 
-			if (loginStatus == 1) {
+			if (msg.what == 1) {
 				app.setUserName(userName);
 				app.setLoggedInStatus(true);
 				if(rememberMe.isChecked()) { 
@@ -137,10 +156,9 @@ public class SplashView extends Activity {
 		switch(view.getId()) {
 		case R.id.register:
 			// Go to register view
-			//			Intent registerIntent = new Intent(view.getContext(), LoginView.class);
-			//			startActivity(registerIntent);
-			Utils.log(TAG,"Let«s make a nice looking moblog!");
-
+			Utils.log(TAG, "Goto Register");
+			Intent registerIntent = new Intent(view.getContext(), RegisterView.class);
+			startActivityForResult(registerIntent, 0);
 			break;
 		case R.id.login:
 			userName = userNameInput.getText().toString();
@@ -153,7 +171,7 @@ public class SplashView extends Activity {
 			break;
 		}
 	}
-	
+
 	public boolean isNetworkAvailable() {
 		ConnectivityManager cm = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -163,5 +181,4 @@ public class SplashView extends Activity {
 		}
 		return false;
 	}
-
 }

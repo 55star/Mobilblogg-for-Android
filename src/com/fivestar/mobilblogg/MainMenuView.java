@@ -8,22 +8,32 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
 	private static final int GALLERY_PIC_REQUEST = 1337;
+	final String TAG = "MainMenuView";
 	private MobilbloggApp app;
 	Activity activity;
+	View mView;
+	EditText blog;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -35,6 +45,8 @@ public class MainMenuView extends Activity {
 		setContentView(R.layout.mainmenu);
 		app = ((MobilbloggApp)getApplicationContext());
 		activity = this;
+		blog = (EditText) findViewById(R.id.gotoblog);
+		AppRater.app_launched(this);
 	}
 
 	public void mainMenuClickHandler(View view) {
@@ -76,20 +88,77 @@ public class MainMenuView extends Activity {
 			app.filePath = filePath;
 			promptCameraOrGallery();
 			break;
+			
+		case R.id.gotobutton:
+			mView = view;
+			String userName = blog.getText().toString();
+			checkUserName(userName);
+			break;
+		}
+	}
+	
+	private void checkUserName(String userName) {
+		final String user = userName;
+		Thread mThread = new Thread() {
+			public void run() {
+				try {
+					if(app.com.foundUser(user)) {
+						checkUserCallback.sendEmptyMessage(0);	
+					}
+				} catch (CommunicatorException c) {
+					checkUserCallback.sendEmptyMessage(0);
+				}
+				checkUserCallback.sendEmptyMessage(1);
+			}
+		};
+		mThread.start();
+	}
 
-		case R.id.loggaut:
+	private Handler checkUserCallback = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what <= 0) {
+				Intent mbIntent = new Intent(mView.getContext(), GalleryView.class);
+				mbIntent.putExtra("username", blog.getText().toString());
+				mbIntent.putExtra("list", app.bc.BLOGGPAGE);
+				startActivityForResult(mbIntent, 0);
+			} else {
+				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
+				alertbox.setMessage(getText(R.string.blognamenotfound));
+				alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						// the button was clicked
+						// blog.requestFocus();
+					}
+				});
+				alertbox.show();
+			}
+		}
+	};
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.option_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.logout:
 			app.com.shutdownHttpClient();
 			app.setUserName("");
 			app.setLoggedInStatus(false);
 
 			/* goto splashscreen and exit */
-			Intent quitIntent = new Intent(view.getContext(), SplashView.class);
+			Intent quitIntent = new Intent(this, SplashView.class);
 			quitIntent.putExtra("func", "quit");
 			startActivity(quitIntent);
 			finish();
-			break;
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
+
 
 	public void promptCameraOrGallery() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity);

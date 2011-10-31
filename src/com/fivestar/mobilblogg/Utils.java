@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,6 +77,19 @@ public class Utils {
 		sha1hash = md.digest();
 		return convertToHex(sha1hash);
 	}
+	
+
+	public static String createSalt() {
+		char data[] = new char[18];
+		for(int i=0; i<18; i++) {
+			int rand = new Random().nextInt((int)(1 + new Date().getTime() % 74));
+			if (rand == 96 || rand == 94 || rand == 92) {
+				rand -= 1;
+			}
+			data[i] = (char)new Random().nextInt((int)(1 + new Date().getTime() % 74));
+		}
+		return data.toString();
+	}
 
 	public static boolean StoreByteImage(Context mContext, byte[] imageData, int quality, String expName) {
 
@@ -124,15 +139,25 @@ public class Utils {
 		e.commit();
 	}
 
-	public static String getSavedCredentials(Context c) {
+	public static String getCredentialsUsername(Context c) {
 		SharedPreferences sp = getPrefs(c);
-		if(sp.contains("mb_cred_usr") && sp.contains("mb_cred_pwd")) {
-			return sp.getString("mb_cred_usr", "default") + "|" + sp.getString("mb_cred_pwd", "default");
+		if(sp.contains("mb_cred_usr")) {
+			return sp.getString("mb_cred_usr", "default");
 		} else {
 			return null;
 		}
 	}
 
+	public static String getCredentialsPassword(Context c) {
+		SharedPreferences sp = getPrefs(c);
+		if(sp.contains("mb_cred_pwd")) {
+			return sp.getString("mb_cred_pwd", "default");
+		} else {
+			return null;
+		}
+	}
+	
+	
 	public static void saveSecretWord(Context c, String secretWord) {
 		Editor e = getPrefs(c).edit();
 		e.putString("secret", secretWord);

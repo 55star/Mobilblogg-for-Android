@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:padding="20dip"
+	android:fillViewport="true" android:background="@color/colorwhite">
+
+	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Text som beskriver registeringsflödet bla bla bla"
+		android:textColor="@color/textcolor" android:textSize="16dip"
+		android:layout_marginBottom="15dip" android:layout_gravity="center" />
+
+	<EditText android:id="@+id/username" android:layout_height="wrap_content"
+		android:singleLine="true" android:layout_width="fill_parent"
+		android:hint="@string/username" />
+
+	<EditText android:id="@+id/password" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:inputType="textPassword"
+		android:singleLine="true" android:hint="@string/password"
+		android:layout_marginTop="15dip" />
+
+	<EditText android:id="@+id/repeatpassword"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:inputType="textPassword" android:singleLine="true"
+		android:hint="@string/repeatpassword" android:layout_marginTop="5dip" />
+
+	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Det hemliga ordet används när du ska blogga"
+		android:textColor="@color/colorlightgray" android:textSize="14dip"
+		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
+		android:layout_gravity="left" />
+	<EditText android:id="@+id/secret" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:inputType="textPassword"
+		android:singleLine="true" android:hint="@string/secretWord" />
+
+
+	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="E-posten kommer enbart användas till ..."
+		android:textColor="@color/colorlightgray" android:textSize="14dip"
+		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
+		android:layout_gravity="left" />
+	<EditText android:id="@+id/email" android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:inputType="textPassword"
+		android:singleLine="true" android:hint="@string/email" />
+
+	<Button android:id="@+id/register" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/register"
+		android:onClick="registerClickHandler" android:background="@drawable/styledbutton"
+		style="@style/ButtonText" android:layout_marginTop="15dip"
+		android:layout_gravity="center" />
+</LinearLayout>

@@ -6,8 +6,10 @@ package com.fivestar.mobilblogg;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +46,7 @@ public class GalleryView extends Activity {
 		setContentView(R.layout.gallery);
 
 		app = ((MobilbloggApp)getApplicationContext());
-		listNum = getIntent().getIntExtra("list",-1);
+		listNum = getIntent().getIntExtra("list", -1);
 		
 		if(listNum == app.bc.FIRSTPAGE) {
 			this.setTitle(getString(R.string.mainMenuFirstPage));
@@ -83,6 +85,8 @@ public class GalleryView extends Activity {
 				try {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
+//					c.printStackTrace();
+					Utils.log(TAG, c.getMessage());
 					uiCallback.sendEmptyMessage(-1);				
 				}
 				uiCallback.sendEmptyMessage(0);
@@ -98,7 +102,19 @@ public class GalleryView extends Activity {
 			}
 			if(msg.what == -1) {
 				Utils.log(TAG, "Kass teckning!!");
-				Toast.makeText(activity, "NŠtverksfel, fšr dŒlig teckning?", Toast.LENGTH_LONG).show();
+				
+				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
+	            alertbox.setMessage(getText(R.string.no_network));
+	 
+	            alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface arg0, int arg1) {
+	                    // the button was clicked
+	                }
+	            });
+	            alertbox.show();
+				
+				
+//				Toast.makeText(activity, "NŠtverksfel, fšr dŒlig teckning?", Toast.LENGTH_LONG).show();
 				// Flasha en dialog "Kass teckning, vill du fšrsška igen?". OK/NOK
 				// OK: restart
 				// NOK: -> mainmenu
@@ -136,22 +152,6 @@ public class GalleryView extends Activity {
 		}
 	}
 	
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.option_menu, menu);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.reload:
-			Toast.makeText(this, "You have chosen the " + getResources().getString(R.string.reload) + " menu option",
-					Toast.LENGTH_SHORT).show();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	@Override
 	public void onDestroy() {

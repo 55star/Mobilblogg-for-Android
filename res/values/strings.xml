@@ -21,8 +21,9 @@
 	<string name="camera">Kamera</string>
 	<string name="gallery">Galleriet</string>
 	<string name="reload">Ladda om</string>
-	<string name="no_network">Inget nät tillgängligt</string>
+	<string name="no_network">Nätverksfel. Kontrollera att nätverkstrafik är påslagen.</string>
 	<string name="loadmore">Ladda fler</string>
+	<string name="notdone">Inte riktigt färdigt än...</string>
 
 	<string name="ok">OK</string>
 	<string name="abort">Avbryt</string>
@@ -34,12 +35,13 @@
 	<string name="members">Medlemmar</string>
 	<string name="friends">Mina vänner</string>
 	<string name="me">Mig</string>
-
+	<string name="gotobuttontext">Gå till</string>
+	<string name="gotobloghint">Blogg</string>
+	<string name="blognamenotfound">Det finns ingen blogg med det namnet</string>
 
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
 		bilder tagna med mobiltelefonkamera på en egen blogg. Samtidigt kan du
-		hänga med i vår sköna community. Om du inte är medlem, registrera dig
-		nu på http://www.mobilblogg.nu/
+		hänga med i vår sköna community.
 	</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<string name="remember">Kom ihåg</string>
@@ -57,7 +59,18 @@
 	<string name="loading">Laddar...</string>
 	<string name="loading_images">Laddar fler bilder</string>
 	<string name="empty">Tom</string>
-
+	<string name="register">Starta en mobilblogg</string>
+	<string name="repeatpassword">Bekräfta lösenordet</string>
+	<string name="email">E-postadress</string>
+	<string name="usernameinuse">Användarnamnet är redan upptaget. Välj ett annat.</string>
+	<string name="enjoy">Om du tycker om</string>
+	<string name="please_rate">, vänligen betygsätt den på Market. Tack!</string>
+	<string name="rate">Betygsätt</string>
+	<string name="later">Påminn mig senare</string>
+	<string name="no">Nej tack</string>	
+	
+	
+	
 	<string name="bloggdialogtitle">Blogga</string>
 	<string name="bloggdialogtext">Ta en bild med kameran eller välj en tidigare tagen
 		bild i galleriet?

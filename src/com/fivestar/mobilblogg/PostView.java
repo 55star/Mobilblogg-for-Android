@@ -11,7 +11,9 @@ import org.json.JSONException;
 import com.fivestar.mobilblogg.widgets.AspectRatioImageView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,11 +23,13 @@ import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class PostView extends Activity {
@@ -50,6 +54,7 @@ public class PostView extends Activity {
 	EditText comment;
 	Button commentButton;
 	LinearLayout commentHolder;
+	ScrollView scroll;
 	Activity activity;
 
 	/* (non-Javadoc)
@@ -71,6 +76,7 @@ public class PostView extends Activity {
 		comment  = (EditText) findViewById(R.id.commentText);
 		commentHolder = (LinearLayout) findViewById(R.id.CommentHolder);
 		avatarImg = (ImageView) findViewById(R.id.avatar);
+		scroll   = (ScrollView) findViewById(R.id.scroll01);
 
 		final AspectRatioImageView imgView = (AspectRatioImageView)findViewById(R.id.ImageView01);
 
@@ -92,7 +98,7 @@ public class PostView extends Activity {
 		userName = pi.user;
 
 		dialog.show();
-
+		
 		imgid = pi.imgid;
 		if(pi.img != null && pi.img.length() > 0) {
 			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
@@ -130,13 +136,17 @@ public class PostView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what >= 0) {
-				
+			if (msg.what >= 0) {	
 				List<CommentInfo> commentList = app.bc.getComments(imgid);
 				if(commentList != null) {
 					for(int i=0; i<commentList.size(); i++) {
+						Boolean newView = false;
+						TextView com = (TextView)commentHolder.getChildAt(i);
+						if(com == null) {
+							com = new TextView(app);
+							newView = true;
+						}
 						CommentInfo ci = commentList.get(i);
-						TextView com = new TextView(app);
 						if(i % 2 == 0) {
 							com.setBackgroundResource(R.color.colorverylightgray);
 						} else {
@@ -146,12 +156,26 @@ public class PostView extends Activity {
 						com.setPadding(5, 8, 5, 8);
 						com.setText(Html.fromHtml("<b>"+ci.username+"</b> @ <i>" + ci.createdate + "</i><br />" + ci.comment));
 						com.setId(i);
-						commentHolder.addView(com);
+						if(newView) {
+							commentHolder.addView(com);
+						}
 					}
 				}
+				Utils.log(TAG, "Scroll to top");
+				scroll.scrollTo(0, 0);
 				if(dialog.isShowing()) {
 					dialog.dismiss();
 				}
+			} else {
+				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
+	            alertbox.setMessage(getText(R.string.no_network));
+	 
+	            alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface arg0, int arg1) {
+	                    // the button was clicked
+	                }
+	            });
+	            alertbox.show();
 			}
 		}
 	};
@@ -196,16 +220,19 @@ public class PostView extends Activity {
 		switch(view.getId()) {
 		case (R.id.avatar):
 		case (R.id.username):
-			Utils.log(TAG, "Goto " + userName +" blog!");
 			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
 			bIntent.putExtra("username", userName);
 			bIntent.putExtra("list", app.bc.BLOGGPAGE);
 			startActivityForResult(bIntent, 0);
-		break;
+			break;
 		case (R.id.commentButton):
+			dialog.show();
 			Thread cThread = new Thread() {
 				public void run() {
-					app.com.postComment(imgid, comment.getText().toString());
+					String commentText = comment.getText().toString();
+					if(commentText.length() > 0) {
+						app.com.postComment(imgid, commentText);
+					}
 					postCommentCallback.sendEmptyMessage(0);
 				}
 			};
@@ -215,7 +242,12 @@ public class PostView extends Activity {
 	}
 
 	private Handler postCommentCallback = new Handler() {
-		public void handleMessage(Message msg) {	
+		public void handleMessage(Message msg) {
+			// Clean up and remove keyboard
+			comment.setText("");
+			InputMethodManager imm = (InputMethodManager)getSystemService(activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(comment.getWindowToken(), 0);
+
 			loadComments();
 		}
 	};

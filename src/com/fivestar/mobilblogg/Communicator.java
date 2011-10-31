@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class Communicator extends Thread {
 
 		SchemeRegistry schReg = new SchemeRegistry();
 		schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-//		schReg.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 443));
+		//		schReg.register(new Scheme("https", PlainSocketFactory.getSocketFactory(), 443));
 		ClientConnectionManager conMgr = new ThreadSafeClientConnManager(params, schReg);
 
 		client = new DefaultHttpClient(conMgr, params);
@@ -68,10 +69,8 @@ public class Communicator extends Thread {
 			count += 1;
 			try {
 				if(post != null) {
-					Utils.log(TAG, "Do POST request!");
 					httpResponse = (BasicHttpResponse) client.execute(post);
 				} else if(get != null) {
-					Utils.log(TAG, "Do GET request!");
 					httpResponse = (BasicHttpResponse) client.execute(get);	
 				}
 			} catch (Exception e) {
@@ -114,17 +113,19 @@ public class Communicator extends Thread {
 
 	public int doLogin(String userName, String passWord) throws CommunicatorException {
 		String url = protocoll+host+"/o.o.i.s";
-		String jsonresponse = "";
-		String hashedPassword = "";
-		int loginStatus = -1;
+		String jsonresponse = null;
+		String hashedPassword = null;
+		int loginStatus = 0;
 
 		HttpPost postMethod = new HttpPost(url);
 
 		try {
 			hashedPassword = Utils.SHA1(getSalt(userName)+passWord);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			return 0;
+		}
 
-		if(hashedPassword.length() > 10) {
+		if(hashedPassword != null) {
 			try {
 				List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
 				uri.add(new BasicNameValuePair("template", api));  
@@ -135,13 +136,11 @@ public class Communicator extends Thread {
 				jsonresponse = getRequestResponse(postMethod, null);
 			} catch (IOException e) {  
 				// TODO Auto-generated catch block  
-				e.printStackTrace();
 				return 0;
 			}
 		} else {
 			return 0;
 		}
-
 		try {
 			JSONArray json = new JSONArray(jsonresponse);
 			loginStatus = json.getJSONObject(0).optInt("status");
@@ -151,15 +150,21 @@ public class Communicator extends Thread {
 			return 0;
 		}
 		return loginStatus;
-	}	
+	}
 
 	public String getSalt(String userName) {
-		String url = protocoll+host+"/o.o.i.s?template="+api+"&func=getSalt&user="+userName;
+		String url = protocoll+host+"/o.o.i.s";
 		String jsonresponse = "";
 		String salt = "";
-		HttpGet getMethod = new HttpGet(url);
+		HttpPost postMethod = new HttpPost(url);
+		
 		try {
-			jsonresponse = getRequestResponse(null, getMethod);
+			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
+			uri.add(new BasicNameValuePair("template", api));  
+			uri.add(new BasicNameValuePair("func", "getSalt"));  
+			uri.add(new BasicNameValuePair("user", userName));
+			postMethod.setEntity(new UrlEncodedFormEntity(uri));  
+			jsonresponse = getRequestResponse(postMethod, null);
 		} catch (Throwable t) {
 			return null;
 		}
@@ -171,6 +176,80 @@ public class Communicator extends Thread {
 		}
 		return salt;
 	}	
+
+	public boolean foundUser(String userName) throws CommunicatorException {
+		String url = protocoll+host+"/o.o.i.s";
+		String jsonresponse = "";
+		HttpPost postMethod = new HttpPost(url);
+		
+		try {
+			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
+			uri.add(new BasicNameValuePair("template", api));  
+			uri.add(new BasicNameValuePair("func", "findUser"));  
+			uri.add(new BasicNameValuePair("username", userName));
+			postMethod.setEntity(new UrlEncodedFormEntity(uri));  
+			jsonresponse = getRequestResponse(postMethod, null);
+		} catch (Throwable t) {
+			return false;
+		}
+		try {
+			JSONArray json = new JSONArray(jsonresponse);
+			int foundUserName = json.getJSONObject(0).optInt("found");
+			Utils.log(TAG, "FoundUsername json:" + foundUserName);
+			if(json.getJSONObject(0).optInt("found") == 1) {
+				Utils.log(TAG,"return true");
+				return true;
+			}
+		} catch (JSONException j) {
+			throw new CommunicatorException(j.getMessage());
+		}
+		Utils.log(TAG,"return false");
+		return false;
+	}	
+
+	public int register(String userName, String passWord, String email, String secret) {
+		String url = protocoll+host+"/o.o.i.s";
+		String jsonresponse = "";
+		String hashedPassword = "";
+		String salt = "";
+		int registerStatus = 0;
+
+		salt = Utils.createSalt();
+		try {
+			hashedPassword = Utils.SHA1(salt+passWord);
+		} catch (Exception e) {
+			return 0;
+		}
+
+		HttpPost postMethod = new HttpPost(url);
+		try {
+			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
+			uri.add(new BasicNameValuePair("template", api));  
+			uri.add(new BasicNameValuePair("func", "register"));  
+			uri.add(new BasicNameValuePair("username", userName));  
+			uri.add(new BasicNameValuePair("passhash", hashedPassword));  
+			uri.add(new BasicNameValuePair("salt", salt));  
+			uri.add(new BasicNameValuePair("secret", secret));  
+			postMethod.setEntity(new UrlEncodedFormEntity(uri));  
+			jsonresponse = getRequestResponse(postMethod, null);
+		} catch (CommunicatorException ce) {  
+			// TODO Auto-generated catch block  
+			return 0;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			return 0;
+		}
+		try {
+			JSONArray json = new JSONArray(jsonresponse);
+			registerStatus = json.getJSONObject(0).optInt("userid");
+		} catch (JSONException j) {
+			return 0;
+		} catch (NullPointerException ne) {
+			return 0;
+		}
+		return registerStatus;
+	}
+
 
 	public void loadBloggs(MobilbloggApp app, int listNum, String username) throws CommunicatorException {
 		String[] funcs = {"listBlogg","listStartpage","listFirstpage"};
@@ -224,6 +303,8 @@ public class Communicator extends Thread {
 					}
 				}
 			} catch (JSONException j) {
+				Utils.log(TAG, "JSON parsing failure: "+jsonresponse);
+				Utils.log(TAG, "FŒngade Jsonexception, skickar comexc.");
 				throw new CommunicatorException(j.getMessage());
 			}
 		} 		
@@ -242,7 +323,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("template", new StringBody(api));
 
 			postMethod.setEntity(multipartContent);
-			
+
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			return null;
@@ -317,11 +398,11 @@ public class Communicator extends Thread {
 
 	public String doUpload(String username, String secret, String caption, String text, String showfor, String tags, String filePath) throws Throwable {
 		File f = new File(filePath);
-	
+
 		try {
 			String url = protocoll+host+"/o.o.i.s";
 			HttpPost postMethod = new HttpPost(url);
-			
+
 			MultipartEntity multipartContent = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			multipartContent.addPart("file", new FileBody(f));
 			multipartContent.addPart("wtd", new StringBody("ladda_upp"));
@@ -335,7 +416,7 @@ public class Communicator extends Thread {
 			multipartContent.addPart("tags", new StringBody(tags));
 
 			postMethod.setEntity(multipartContent);
-			
+
 			return getRequestResponse(postMethod, null);
 		} catch (Throwable e) {
 			throw e;
