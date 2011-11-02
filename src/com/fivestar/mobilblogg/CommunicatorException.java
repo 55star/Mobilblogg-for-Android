@@ -1,6 +1,10 @@
 package com.fivestar.mobilblogg;
 
 public class CommunicatorException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String error;
 	
 	public CommunicatorException() {

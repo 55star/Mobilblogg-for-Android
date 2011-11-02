@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -81,7 +80,7 @@ public class PostView extends Activity {
 		final AspectRatioImageView imgView = (AspectRatioImageView)findViewById(R.id.ImageView01);
 
 		dialog = new ProgressDialog(PostView.this);
-		dialog.setMessage(getString(R.string.please_wait));
+		dialog.setMessage(getString(R.string.loading));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
 

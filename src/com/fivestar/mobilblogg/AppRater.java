@@ -15,8 +15,8 @@ public class AppRater {
 	private final static String APP_TITLE = "Mobilblogg";
 	private final static String APP_PNAME = "com.fivestar.mobilblogg";
 
-	private final static int DAYS_UNTIL_PROMPT = 8;
-	private final static int LAUNCHES_UNTIL_PROMPT = 12;
+	private final static int DAYS_UNTIL_PROMPT = 12;
+	private final static int LAUNCHES_UNTIL_PROMPT = 20;
 
 	public static void app_launched(Context mContext) {
 		SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);
@@ -95,4 +95,3 @@ public class AppRater {
 		dialog.show();        
 	}
 }
-// see http://androidsnippets.com/prompt-engaged-users-to-rate-your-app-in-the-android-market-appirater

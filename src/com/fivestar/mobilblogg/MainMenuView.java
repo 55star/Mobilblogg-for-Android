@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -148,7 +147,7 @@ public class MainMenuView extends Activity {
 			app.setUserName("");
 			app.setLoggedInStatus(false);
 
-			/* goto splashscreen and exit */
+			/* goto splashview and exit */
 			Intent quitIntent = new Intent(this, SplashView.class);
 			quitIntent.putExtra("func", "quit");
 			startActivity(quitIntent);

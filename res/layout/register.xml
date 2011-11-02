@@ -19,20 +19,15 @@
 		android:singleLine="true" android:hint="@string/password"
 		android:layout_marginTop="15dip" />
 
-	<EditText android:id="@+id/repeatpassword"
-		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:inputType="textPassword" android:singleLine="true"
-		android:hint="@string/repeatpassword" android:layout_marginTop="5dip" />
-
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="Det hemliga ordet används när du ska blogga"
 		android:textColor="@color/colorlightgray" android:textSize="14dip"
 		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
 		android:layout_gravity="left" />
+
 	<EditText android:id="@+id/secret" android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:inputType="textPassword"
 		android:singleLine="true" android:hint="@string/secretWord" />
-
 
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="E-posten kommer enbart användas till ..."

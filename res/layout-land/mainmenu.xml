@@ -1,39 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/RelativeLayout01"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/colorwhite" android:gravity="center_horizontal"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:padding="15dip" android:background="@color/colorwhite">
+	android:orientation="vertical">
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/LinearLayout01" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:background="@color/colorwhite"
-		android:orientation="horizontal" android:gravity="center_horizontal">
+	<ImageView android:src="@drawable/mobilblogglogo"
+		android:layout_height="wrap_content" android:focusable="false"
+		android:layout_width="fill_parent" android:layout_gravity="center|top"
+		android:layout_centerHorizontal="true" android:layout_marginBottom="10dip"
+		android:layout_marginTop="20dip" />
 
-		<Button android:id="@+id/Button01" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/ic_menu_blog"
-			android:text="@string/mainMenuMyBlogg" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_marginRight="5dip" />
+	<LinearLayout android:orientation="horizontal"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:gravity="center_horizontal" android:layout_centerHorizontal="true">
 
-		<Button android:id="@+id/Button02" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/ic_menu_friends"
-			android:text="@string/mainMenuMyStartPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_marginRight="5dip" />
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/Button01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:gravity="left"
+			android:orientation="vertical" android:layout_marginRight="10dip">
 
-		<Button android:id="@+id/Button05" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/ic_menu_home"
-			android:text="@string/mainMenuFirstPage" android:onClick="@string/mainMenuButtonHandler"
-			android:layout_marginRight="5dip" />
+			<ImageButton android:id="@+id/myblogg"
+				android:layout_height="wrap_content" android:layout_width="110dip"
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_blog"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
 
-		<Button android:id="@+id/Button03" android:layout_height="wrap_content"
-			android:layout_width="105dip" android:drawableTop="@drawable/ic_menu_camera"
-			android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler" />
+			<TextView android:id="@+id/mypagetext" android:textSize="14dip"
+				android:text="@string/mainMenuMyBlogg" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
+				android:textColor="@color/colordarkgray" android:gravity="center" />
+		</LinearLayout>
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/Button02" android:layout_width="wrap_content"
+			android:gravity="right" android:layout_height="wrap_content"
+			android:orientation="vertical" android:layout_marginRight="10dip">
+
+			<ImageButton android:id="@+id/startpage"
+				android:layout_height="wrap_content" android:layout_width="110dip"
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_friends"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
+
+			<TextView android:id="@+id/startpagetext" android:textSize="14dip"
+				android:text="@string/mainMenuMyStartPage" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
+				android:textColor="@color/colordarkgray" android:gravity="center" />
+		</LinearLayout>
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/Button05" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:layout_below="@+id/Button01" android:layout_marginRight="10dip"
+			android:gravity="left">
+
+			<ImageButton android:id="@+id/firstpage"
+				android:layout_height="wrap_content" android:layout_width="110dip"
+				android:onClick="@string/mainMenuButtonHandler" android:src="@drawable/ic_menu_home"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
+
+			<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
+				android:text="@string/mainMenuFirstPage" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
+				android:textColor="@color/colordarkgray" android:gravity="center" />
+		</LinearLayout>
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/Button03" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:gravity="right">
+
+			<ImageButton android:id="@+id/blogga"
+				android:layout_height="wrap_content" android:layout_width="110dip"
+				android:text="@string/mainMenuUploadPage" android:onClick="@string/mainMenuButtonHandler"
+				android:src="@drawable/ic_menu_camera" android:layout_below="@+id/Button02"
+				android:layout_centerHorizontal="true" android:background="@drawable/styledbutton"
+				style="@style/ButtonText" />
+
+			<TextView android:id="@+id/firstpagetext" android:textSize="14dip"
+				android:text="@string/mainMenuUploadPage" android:layout_height="wrap_content"
+				android:layout_width="fill_parent" android:layout_centerHorizontal="true"
+				android:textColor="@color/colordarkgray" android:gravity="center" />
+		</LinearLayout>
 	</LinearLayout>
+	<RelativeLayout android:id="@+id/RelativeLayout04"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:gravity="center"
+		android:layout_marginTop="20dip" android:layout_marginLeft="30dip"
+		android:layout_marginRight="30dip">
 
+		<Button android:id="@+id/gotobutton" android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:text="@string/gotobuttontext"
+			android:onClick="@string/mainMenuButtonHandler" android:background="@drawable/styledbutton"
+			style="@style/ButtonText" android:layout_alignParentRight="true" />
 
-	<Button android:id="@+id/Button04" android:layout_height="wrap_content"
-		android:layout_below="@+id/LinearLayout01" android:layout_width="105dip"
-		android:drawableTop="@drawable/ic_menu_logout" android:text="@string/mainMenuLogout"
-		android:onClick="@string/mainMenuButtonHandler"
-		android:layout_centerHorizontal="true" android:layout_marginTop="40dip" />
-
-</RelativeLayout>
+		<EditText android:id="@+id/gotoblog" android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:inputType="text"
+			android:lines="1" android:hint="@string/gotobloghint"
+			android:layout_toLeftOf="@+id/gotobutton" />
+	</RelativeLayout>
+</LinearLayout>

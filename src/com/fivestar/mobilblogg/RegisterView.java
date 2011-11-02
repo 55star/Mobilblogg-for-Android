@@ -1,20 +1,15 @@
 package com.fivestar.mobilblogg;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,7 +20,6 @@ public class RegisterView extends Activity {
 	final Activity activity = this;
 	private EditText userName;
 	private EditText passWord;
-	private EditText repeatPassWord;
 	private EditText secretWord;
 	private EditText email;
 
@@ -46,7 +40,6 @@ public class RegisterView extends Activity {
 
 		userName = (EditText) findViewById(R.id.username);
 		passWord = (EditText) findViewById(R.id.password);
-		repeatPassWord = (EditText) findViewById(R.id.repeatpassword);
 		secretWord = (EditText) findViewById(R.id.secret);
 		email = (EditText) findViewById(R.id.email);
 
@@ -65,7 +58,7 @@ public class RegisterView extends Activity {
 	public void registerClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.register:
-			Utils.log(TAG, "Register");
+			Utils.log(TAG, "Do the actual registration");
 			Toast.makeText(this, getString(R.string.notdone), Toast.LENGTH_SHORT).show();
 		}
 	}

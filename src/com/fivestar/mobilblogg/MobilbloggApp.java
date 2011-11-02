@@ -1,7 +1,5 @@
 package com.fivestar.mobilblogg;
 
-import java.util.List;
-
 import android.app.Application;
 
 public class MobilbloggApp extends Application {

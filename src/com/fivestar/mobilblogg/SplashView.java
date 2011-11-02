@@ -59,7 +59,7 @@ public class SplashView extends Activity {
 		app = ((MobilbloggApp)getApplicationContext());
 		app.startServices();		
 
-		version = (TextView)findViewById(R.id.TextView02);
+		version = (TextView)findViewById(R.id.versionstring);
 		userNameInput = (EditText) findViewById(R.id.EditText01);
 		passWordInput = (EditText) findViewById(R.id.EditText02);
 		rememberMe = (CheckBox) findViewById(R.id.check01);
@@ -101,13 +101,6 @@ public class SplashView extends Activity {
 			passWord = Utils.getCredentialsPassword(cntx);
 			doRemoteLogin(userName, passWord);
 			dialog.show();
-		} else {
-			
-			/*************************/
-			/* REMOVE BEFORE PUBLISH */
-			/*************************/
-			
-	//		AppRater.showRateDialog(this, null);
 		}
 	}
 
@@ -132,7 +125,7 @@ public class SplashView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			if(dialog.isShowing()) {
+			if(dialog.isShowing()) { 
 				dialog.dismiss();
 			}
 

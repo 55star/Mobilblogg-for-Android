@@ -56,7 +56,8 @@ public class AsyncImageLoader {
 		try {
 			inputStream = new URL(url).openStream();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			Utils.log(TAG,"file not found:" + url);
+			return null;
 		}
 		return Drawable.createFromStream(inputStream, "src");
 	}

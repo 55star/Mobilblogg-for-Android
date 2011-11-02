@@ -23,7 +23,7 @@
 	<string name="reload">Ladda om</string>
 	<string name="no_network">Nätverksfel. Kontrollera att nätverkstrafik är påslagen.</string>
 	<string name="loadmore">Ladda fler</string>
-	<string name="notdone">Inte riktigt färdigt än...</string>
+	<string name="notdone">Inte färdigt. Registrera dig på webben.</string>
 
 	<string name="ok">OK</string>
 	<string name="abort">Avbryt</string>
