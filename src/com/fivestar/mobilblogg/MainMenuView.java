@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -33,6 +34,7 @@ public class MainMenuView extends Activity {
 	Activity activity;
 	View mView;
 	EditText blog;
+	ProgressDialog dialog;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -46,6 +48,12 @@ public class MainMenuView extends Activity {
 		activity = this;
 		blog = (EditText) findViewById(R.id.gotoblog);
 		AppRater.app_launched(this);
+
+		dialog = new ProgressDialog(MainMenuView.this);
+		dialog.setMessage(getString(R.string.loading));
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(false);
+
 	}
 
 	public void mainMenuClickHandler(View view) {
@@ -61,7 +69,7 @@ public class MainMenuView extends Activity {
 			spIntent.putExtra("list", app.bc.FRIENDPAGE);
 			startActivityForResult(spIntent, 0);
 			break;
-			
+
 		case R.id.myblogg:
 			Intent mbIntent = new Intent(view.getContext(), GalleryView.class);
 			mbIntent.putExtra("username", app.getUserName());
@@ -87,15 +95,19 @@ public class MainMenuView extends Activity {
 			app.filePath = filePath;
 			promptCameraOrGallery();
 			break;
-			
+
 		case R.id.gotobutton:
 			mView = view;
 			String userName = blog.getText().toString();
-			checkUserName(userName);
+			if(userName.length() > 0) {
+				dialog.show();
+				mView = view;
+				checkUserName(userName);
+			}
 			break;
 		}
 	}
-	
+
 	private void checkUserName(String userName) {
 		final String user = userName;
 		Thread mThread = new Thread() {
@@ -103,11 +115,12 @@ public class MainMenuView extends Activity {
 				try {
 					if(app.com.foundUser(user)) {
 						checkUserCallback.sendEmptyMessage(0);	
+					} else {
+						checkUserCallback.sendEmptyMessage(1);
 					}
 				} catch (CommunicatorException c) {
 					checkUserCallback.sendEmptyMessage(0);
 				}
-				checkUserCallback.sendEmptyMessage(1);
 			}
 		};
 		mThread.start();
@@ -115,7 +128,9 @@ public class MainMenuView extends Activity {
 
 	private Handler checkUserCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what <= 0) {
+			dialog.dismiss();
+			Utils.log(TAG, "MESSAGE ID: " + msg.what);
+			if (msg.what == 0) {
 				Intent mbIntent = new Intent(mView.getContext(), GalleryView.class);
 				mbIntent.putExtra("username", blog.getText().toString());
 				mbIntent.putExtra("list", app.bc.BLOGGPAGE);
@@ -133,7 +148,7 @@ public class MainMenuView extends Activity {
 			}
 		}
 	};
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.option_menu, menu);
