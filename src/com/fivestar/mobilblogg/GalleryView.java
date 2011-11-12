@@ -53,6 +53,8 @@ public class GalleryView extends Activity {
 				userName = getIntent().getStringExtra("username");
 				if(userName != null) {
 					this.setTitle(userName +"'s " + getString(R.string.moblog));
+					Utils.log(TAG, "Add usr: "+userName);
+					Utils.addVisitUser(app, userName);
 				}				
 			}
 		}
@@ -82,7 +84,7 @@ public class GalleryView extends Activity {
 					app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
 //					c.printStackTrace();
-					Utils.log(TAG, c.getMessage());
+//					Utils.log(TAG, c.getMessage());
 					uiCallback.sendEmptyMessage(-1);				
 				}
 				uiCallback.sendEmptyMessage(0);

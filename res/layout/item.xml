@@ -1,33 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/LinearLayout01" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:orientation="horizontal"
-	android:background="@color/colorwhite" android:layout_margin="5dip">
-
-	<ImageView android:id="@+id/avatar" android:layout_width="80dip"
-		android:layout_height="80dip" android:src="@drawable/stub"
-		android:scaleType="fitXY" android:onClick="commentClickHandler"/>
-	<LinearLayout android:id="@+id/LinearLayout02"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:orientation="vertical" android:background="@color/colorwhite">
-
-		<LinearLayout android:id="@+id/LinearLayout03"
-			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:orientation="horizontal" android:background="@color/colorwhite"
-			android:layout_margin="5dip">
-
-			<TextView android:id="@+id/username" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:textSize="14dip" android:textColor="@color/colorblack"
-				android:text="user" android:textStyle="bold" android:layout_marginRight="3dip"/>
-			<TextView android:id="@+id/date" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:textSize="14dip"
-				android:textColor="@color/colorblack" android:text="date" />
-		</LinearLayout>
-		<TextView android:id="@+id/comment" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_gravity="top|left"
-			android:textSize="16dip" android:textColor="@color/colorblack"
-			android:text="kommentar" android:layout_marginLeft="5dip" android:layout_marginRight="5dip"/>
-	</LinearLayout>
-
-</LinearLayout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dp"
+    android:textSize="18dip"
+    android:textColor="@color/textcolor">
+</TextView>

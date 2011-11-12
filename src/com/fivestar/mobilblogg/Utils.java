@@ -25,7 +25,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
 
 public class Utils {
-	final String TAG = "Utils.java";
+	final static String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
 	private static int LOGLEVEL = 42;
 
@@ -77,7 +77,6 @@ public class Utils {
 		sha1hash = md.digest();
 		return convertToHex(sha1hash);
 	}
-	
 
 	public static String createSalt() {
 		char data[] = new char[18];
@@ -156,8 +155,8 @@ public class Utils {
 			return null;
 		}
 	}
-	
-	
+
+
 	public static void saveSecretWord(Context c, String secretWord) {
 		Editor e = getPrefs(c).edit();
 		e.putString("secret", secretWord);
@@ -173,6 +172,36 @@ public class Utils {
 		}
 	}
 
+	public static void addVisitUser(Context context, String userName) {
+		SharedPreferences sp = getPrefs(context);
+		Editor e = getPrefs(context).edit();
+
+		if(sp.contains("visitedUsers")) {
+			String list = sp.getString("visitedUsers", "");
+			if(list.indexOf(userName) == -1) {
+				String append = list + "," + userName;
+				Utils.log(TAG,"Ny lista: " + append);
+				e.putString("visitedUsers", append);
+				e.commit();
+			}
+		} else {
+			e.putString("visitedUsers",userName);
+			e.commit();
+		}
+	}
+
+	public static String[] getVisitUser(Context context) {
+		SharedPreferences sp = getPrefs(context);
+		if(sp.contains("visitedUsers")) {
+			Utils.log(TAG,"Returns: " + sp.getString("visitedUsers", ""));
+			String[] list = sp.getString("visitedUsers", "").split(",");
+			Utils.log(TAG, "Returns " + list.length + " users");
+			return list;
+		} else {
+			Utils.log(TAG,"Returnerar null :(");
+			return null;
+		}
+	}
 
 	public static void removeSavedCredentials(Context c) {
 		Editor e = getPrefs(c).edit();

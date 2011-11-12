@@ -25,7 +25,6 @@ public class AsyncImageLoader {
 			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
 			Drawable drawable = softReference.get();
 			if (drawable != null) {
-				Utils.log(TAG, "Return drawable from cache");
 				return drawable;
 			}
 		}
@@ -39,9 +38,7 @@ public class AsyncImageLoader {
 			@Override
 			public void run() {
 				Drawable drawable = loadImageFromUrl(imageUrl);
-				Utils.log(TAG, "Load from web: "+imageUrl);
 				if(drawable != null) {
-					Utils.log(TAG, "Add drawable to cache");
 					imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 					Message message = uiCallback.obtainMessage(0, drawable);
 					uiCallback.sendMessage(message);
@@ -56,7 +53,6 @@ public class AsyncImageLoader {
 		try {
 			inputStream = new URL(url).openStream();
 		} catch (IOException e) {
-			Utils.log(TAG,"file not found:" + url);
 			return null;
 		}
 		return Drawable.createFromStream(inputStream, "src");

@@ -100,9 +100,9 @@
 			android:onClick="@string/mainMenuButtonHandler" android:background="@drawable/styledbutton"
 			style="@style/ButtonText" android:layout_alignParentRight="true" />
 
-		<EditText android:id="@+id/gotoblog" android:layout_height="wrap_content"
-			android:layout_width="fill_parent" android:inputType="text"
-			android:lines="1" android:hint="@string/gotobloghint"
+		<AutoCompleteTextView android:id="@+id/gotoblog"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:inputType="text" android:lines="1" android:hint="@string/gotobloghint"
 			android:layout_toLeftOf="@+id/gotobutton" />
 	</RelativeLayout>
 </LinearLayout>

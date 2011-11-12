@@ -18,11 +18,15 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,8 +37,9 @@ public class MainMenuView extends Activity {
 	private MobilbloggApp app;
 	Activity activity;
 	View mView;
-	EditText blog;
 	ProgressDialog dialog;
+	AutoCompleteTextView blog;
+	ArrayAdapter<String> mAdapter;
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -46,14 +51,46 @@ public class MainMenuView extends Activity {
 		setContentView(R.layout.mainmenu);
 		app = ((MobilbloggApp)getApplicationContext());
 		activity = this;
-		blog = (EditText) findViewById(R.id.gotoblog);
+		blog = (AutoCompleteTextView) findViewById(R.id.gotoblog);
 		AppRater.app_launched(this);
 
 		dialog = new ProgressDialog(MainMenuView.this);
 		dialog.setMessage(getString(R.string.loading));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
+	}
 
+	public void onResume() {
+		super.onResume();
+		Utils.log(TAG, "Update listadapter");
+		mAdapter = new ArrayAdapter<String>(this, R.layout.item);
+		mAdapter.setNotifyOnChange(true);
+		blog.setThreshold(1);
+		blog.addTextChangedListener(textChecker);
+		blog.setAdapter(mAdapter);
+	}
+
+	final TextWatcher textChecker = new TextWatcher() {
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			mAdapter.clear();
+			fillAutoFillList();
+		}
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+
+		}     
+	};
+
+	private void fillAutoFillList() {
+		String list[] = Utils.getVisitUser(app);
+		Utils.log(TAG,"Fill up list");
+		if(list != null && list.length > 0) {
+			for(int i=0; i<list.length; i++) {
+				mAdapter.add(list[i]);
+			}
+		}
 	}
 
 	public void mainMenuClickHandler(View view) {

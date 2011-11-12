@@ -97,7 +97,7 @@ public class PostView extends Activity {
 		userName = pi.user;
 
 		dialog.show();
-		
+
 		imgid = pi.imgid;
 		if(pi.img != null && pi.img.length() > 0) {
 			Drawable cachedImage = app.asyncImageLoader.loadDrawable(pi.img, new ImageCallback() {
@@ -135,7 +135,7 @@ public class PostView extends Activity {
 
 	private Handler uiCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what >= 0) {	
+			if (msg.what == 0) {	
 				List<CommentInfo> commentList = app.bc.getComments(imgid);
 				if(commentList != null) {
 					for(int i=0; i<commentList.size(); i++) {
@@ -160,22 +160,22 @@ public class PostView extends Activity {
 						}
 					}
 				}
-				Utils.log(TAG, "Scroll to top");
-				scroll.scrollTo(0, 0);
 				if(dialog.isShowing()) {
 					dialog.dismiss();
 				}
 			} else {
 				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
-	            alertbox.setMessage(getText(R.string.no_network));
-	 
-	            alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface arg0, int arg1) {
-	                    // the button was clicked
-	                }
-	            });
-	            alertbox.show();
+				alertbox.setMessage(getText(R.string.no_network));
+
+				alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						// the button was clicked
+					}
+				});
+				alertbox.show();
 			}
+			Utils.log(TAG, "Scroll to top, is that enough?");
+			scroll.scrollTo(0, 0);
 		}
 	};
 
@@ -220,23 +220,23 @@ public class PostView extends Activity {
 		case (R.id.avatar):
 		case (R.id.username):
 			Intent bIntent = new Intent(view.getContext(), GalleryView.class);
-			bIntent.putExtra("username", userName);
-			bIntent.putExtra("list", app.bc.BLOGGPAGE);
-			startActivityForResult(bIntent, 0);
-			break;
+		bIntent.putExtra("username", userName);
+		bIntent.putExtra("list", app.bc.BLOGGPAGE);
+		startActivityForResult(bIntent, 0);
+		break;
 		case (R.id.commentButton):
 			dialog.show();
-			Thread cThread = new Thread() {
-				public void run() {
-					String commentText = comment.getText().toString();
-					if(commentText.length() > 0) {
-						app.com.postComment(imgid, commentText);
-					}
-					postCommentCallback.sendEmptyMessage(0);
+		Thread cThread = new Thread() {
+			public void run() {
+				String commentText = comment.getText().toString();
+				if(commentText.length() > 0) {
+					app.com.postComment(imgid, commentText);
 				}
-			};
-			cThread.start();
-			break;
+				postCommentCallback.sendEmptyMessage(0);
+			}
+		};
+		cThread.start();
+		break;
 		}
 	}
 
