@@ -23,7 +23,6 @@
 	<string name="reload">Ladda om</string>
 	<string name="no_network">Nätverksfel. Kontrollera att nätverkstrafik är påslagen.</string>
 	<string name="loadmore">Ladda fler</string>
-	<string name="notdone">Inte färdigt. Registrera dig på webben.</string>
 
 	<string name="ok">OK</string>
 	<string name="abort">Avbryt</string>
@@ -38,7 +37,11 @@
 	<string name="gotobuttontext">Gå till</string>
 	<string name="gotobloghint">Blogg</string>
 	<string name="blognamenotfound">Det finns ingen blogg med det namnet</string>
-
+	<string name="novalidemail">Email-adressen är ogiltig.</string>
+	<string name="fillallfields">Fyll i alla fält.</string>
+	<string name="badpassword">Att ha samma lösenord som användarnamn är ingen bra idé, alls!</string>
+	<string name="passwordlength">Minst 4 tecken i lösenordet.</string>
+	
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
 		bilder tagna med mobiltelefonkamera på en egen blogg. Samtidigt kan du
 		hänga med i vår sköna community.
@@ -62,7 +65,7 @@
 	<string name="register">Starta en mobilblogg</string>
 	<string name="repeatpassword">Bekräfta lösenordet</string>
 	<string name="email">E-postadress</string>
-	<string name="usernameinuse">Användarnamnet är redan upptaget. Välj ett annat.</string>
+	<string name="usernameinuse">Användarnamnet är upptaget. Välj ett annat.</string>
 	<string name="enjoy">Om du tycker om</string>
 	<string name="please_rate">, vänligen betygsätt den på Market. Tack!</string>
 	<string name="rate">Betygsätt</string>

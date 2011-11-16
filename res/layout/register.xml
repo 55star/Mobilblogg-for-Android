@@ -26,8 +26,8 @@
 		android:layout_gravity="left" />
 
 	<EditText android:id="@+id/secret" android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:inputType="textPassword"
-		android:singleLine="true" android:hint="@string/secretWord" />
+		android:layout_width="fill_parent" android:singleLine="true"
+		android:hint="@string/secretWord" />
 
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="E-posten kommer enbart användas till ..."
@@ -35,8 +35,8 @@
 		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
 		android:layout_gravity="left" />
 	<EditText android:id="@+id/email" android:layout_height="wrap_content"
-		android:layout_width="fill_parent" android:inputType="textPassword"
-		android:singleLine="true" android:hint="@string/email" />
+		android:layout_width="fill_parent" android:singleLine="true"
+		android:hint="@string/email" />
 
 	<Button android:id="@+id/register" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/register"

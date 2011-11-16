@@ -216,13 +216,21 @@ public class Communicator extends Thread {
 
 		salt = Utils.createSalt();
 		try {
-			hashedPassword = Utils.SHA1(salt+passWord);
+			hashedPassword = Utils.SHA1(salt + passWord);
 		} catch (Exception e) {
 			return 0;
 		}
 
 		HttpPost postMethod = new HttpPost(url);
 		try {
+			Utils.log(TAG, "Register:");
+			Utils.log(TAG, "template " + api);
+			Utils.log(TAG, "usr " + userName);
+			Utils.log(TAG, "psw " + hashedPassword);
+			Utils.log(TAG, "sal " + salt);
+			Utils.log(TAG, "sec " + secret);
+			Utils.log(TAG, "email " + email);
+			
 			List<NameValuePair> uri = new ArrayList<NameValuePair>(2);  
 			uri.add(new BasicNameValuePair("template", api));  
 			uri.add(new BasicNameValuePair("func", "register"));  
@@ -230,6 +238,7 @@ public class Communicator extends Thread {
 			uri.add(new BasicNameValuePair("passhash", hashedPassword));  
 			uri.add(new BasicNameValuePair("salt", salt));  
 			uri.add(new BasicNameValuePair("secret", secret));  
+			uri.add(new BasicNameValuePair("email", email));  
 			postMethod.setEntity(new UrlEncodedFormEntity(uri));  
 			jsonresponse = getRequestResponse(postMethod, null);
 		} catch (CommunicatorException ce) {  

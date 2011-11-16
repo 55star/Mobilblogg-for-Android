@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 public class ComposeView extends Activity implements AdapterView.OnItemSelectedListener {
 
-	private static final String TAG = "Upload";
+	private static final String TAG = "ComposeView";
 	private EditText captionText;
 	private EditText bodyText;
 	private EditText tagsText;
@@ -133,6 +133,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				String resp = null;
 				try {
 					resp = app.com.doUpload(app.getUserName(), secret, caption, body, showfor, tags, filePath);
+					Utils.log(TAG, "Upload response: " + resp);
 				} catch (Throwable e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -191,7 +192,7 @@ public class ComposeView extends Activity implements AdapterView.OnItemSelectedL
 				CheckBox cb = (CheckBox)promptDialogView.findViewById(R.id.remember_secret);
 				EditText et = (EditText)promptDialogView.findViewById(R.id.editText_prompt);
 
-				Utils.log(TAG, "SW: "+secretWord + "REM: "+rememberSecretWord);
+				Utils.log(TAG, "SW: "+secretWord + " REM: "+rememberSecretWord);
 
 				secretWord = et.getText().toString();
 				rememberSecretWord = cb.isChecked();

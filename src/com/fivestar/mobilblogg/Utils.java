@@ -27,7 +27,7 @@ import android.util.Log;
 public class Utils {
 	final static String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
-	private static int LOGLEVEL = 42;
+	private static int LOGLEVEL = -1;
 
 	public static void log(String tag, String mess) {
 		if (LOGLEVEL > 1) {
@@ -156,7 +156,6 @@ public class Utils {
 		}
 	}
 
-
 	public static void saveSecretWord(Context c, String secretWord) {
 		Editor e = getPrefs(c).edit();
 		e.putString("secret", secretWord);
@@ -205,7 +204,9 @@ public class Utils {
 
 	public static void removeSavedCredentials(Context c) {
 		Editor e = getPrefs(c).edit();
-		e.clear();
+		
+		e.remove("mb_cred_usr");
+		e.remove("mb_cred_pwd");
 		e.commit();
 	}
 

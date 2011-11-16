@@ -35,7 +35,11 @@
 	<string name="gotobutton">Goto</string>
 	<string name="gotobloghint">Blog</string>
 	<string name="blognamenotfound">No blog with that name found</string>
-
+	<string name="novalidemail">Invalid email address.</string>
+	<string name="fillallfields">Please fill in all fields.</string>
+	<string name="badpassword">To have a password that matches your username is a very bad idea!"</string>
+	<string name="passwordlength">At least 4 characters long passwords please.</string>
+	
 	<string name="mobilbloggintro">Moblogging is an easy way to publish images and
 		videos taken with camera phone on the Internet.
 	</string>
