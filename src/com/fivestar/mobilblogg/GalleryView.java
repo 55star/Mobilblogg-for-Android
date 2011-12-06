@@ -14,10 +14,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class GalleryView extends Activity {
 	final String TAG = "GalleryView";
@@ -43,7 +47,7 @@ public class GalleryView extends Activity {
 
 		app = ((MobilbloggApp)getApplicationContext());
 		listNum = getIntent().getIntExtra("list", -1);
-		
+
 		if(listNum == app.bc.FIRSTPAGE) {
 			this.setTitle(getString(R.string.mainMenuFirstPage));
 		} else {
@@ -80,14 +84,13 @@ public class GalleryView extends Activity {
 	private void loadBloggPosts() {
 		Thread mThread = new Thread() {
 			public void run() {
+				int numPosts = 0; 
 				try {
-					app.com.loadBloggs(app, listNum, userName);
+					numPosts = app.com.loadBloggs(app, listNum, userName);
 				} catch (CommunicatorException c) {
-//					c.printStackTrace();
-//					Utils.log(TAG, c.getMessage());
 					uiCallback.sendEmptyMessage(-1);				
 				}
-				uiCallback.sendEmptyMessage(0);
+				uiCallback.sendEmptyMessage(numPosts);
 			}
 		};
 		mThread.start();
@@ -99,25 +102,27 @@ public class GalleryView extends Activity {
 				dialog.dismiss();
 			}
 			if(msg.what == -1) {
-				Utils.log(TAG, "Kass teckning!!");
-				
+				Utils.log(TAG, "DŒligt teckning!!");
+
 				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
-	            alertbox.setMessage(getText(R.string.no_network));
-	 
-	            alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface arg0, int arg1) {
-	                    // the button was clicked
-	                }
-	            });
-	            alertbox.show();
-				
-				
-//				Toast.makeText(activity, "NŠtverksfel, fšr dŒlig teckning?", Toast.LENGTH_LONG).show();
-				// Flasha en dialog "Kass teckning, vill du fšrsška igen?". OK/NOK
-				// OK: restart
-				// NOK: -> mainmenu
+				alertbox.setMessage(getText(R.string.no_network));
+
+				alertbox.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						// the button was clicked, nothing much todo
+					}
+				});
+				alertbox.show();
 			} else {
-				fillList(app, app.bc.getList(listNum, userName));
+				if (msg.what == -2) {
+					Toast.makeText(activity, R.string.noposts, Toast.LENGTH_SHORT).show();
+				} else { 
+					if (msg.what == 0) {
+						Toast.makeText(activity, R.string.nomoreposts, Toast.LENGTH_SHORT).show();
+					} else {
+						fillList(app, app.bc.getList(listNum, userName));
+					}
+				}
 			}
 		}
 	};
@@ -137,7 +142,7 @@ public class GalleryView extends Activity {
 				pvIntent.putExtra("username", userName);
 				startActivity(pvIntent);
 			}
-			
+
 		});
 		imggrid.setSelection(selectedIndex);
 	}
@@ -149,7 +154,29 @@ public class GalleryView extends Activity {
 			loadBloggPosts();
 		}
 	}
-	
+
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.reload_option_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.reload:
+			Utils.log(TAG,"clear gallery: username:"+userName);
+			app.bc.clear(listNum, userName);
+			Utils.log(TAG,"Reload gallery");
+			dialog.show();
+			loadBloggPosts();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+
 
 	@Override
 	public void onDestroy() {

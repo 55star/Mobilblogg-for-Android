@@ -116,6 +116,31 @@ public class BloggContainer {
 		return s;
 	}
 
+	public void clear(int listNum, String username) {
+		switch (listNum) {
+		case FIRSTPAGE: 
+			Utils.log(TAG,"Clear firstpage");
+			firstPageList.clear();
+			break;
+		case FRIENDPAGE: 
+			Utils.log(TAG,"Clear friendpage");
+			friendPageList.clear();
+			break;
+		case BLOGGPAGE: 
+			Utils.log(TAG,"Clear blogg");
+			if(username != null && userBloggs.containsKey(username)) {
+				userBloggs.get(username).clear();
+				userPage.remove(username);
+				userPage.put(username, 1);
+			} else {
+				return;
+			}
+			break;
+		}
+		page[listNum] = 1;
+	}
+
+
 	public void increasePage(int listNum, String username) {
 		if(listNum == BLOGGPAGE) {
 			if(username == null) {
@@ -157,14 +182,14 @@ public class BloggContainer {
 			cl.clear();
 		}
 	}
-	
+
 	public int numComments(String imgId) {
 		if(imgidComment.containsKey(imgId)) {
 			return imgidComment.get(imgId).size();
 		}
 		return 0;
 	}
-	
+
 
 	public int getPage(int listNum, String username) {
 		if(listNum == BLOGGPAGE) {

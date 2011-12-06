@@ -35,8 +35,7 @@ public class MainMenuView extends Activity {
 	final String TAG = "MainMenuView";
 	private MobilbloggApp app;
 	Activity activity;
-	View mView;
-	ProgressDialog dialog;
+	ProgressDialog mDialog;
 	AutoCompleteTextView blog;
 	ArrayAdapter<String> mAdapter;
 
@@ -53,10 +52,10 @@ public class MainMenuView extends Activity {
 		blog = (AutoCompleteTextView) findViewById(R.id.gotoblog);
 		AppRater.app_launched(this);
 
-		dialog = new ProgressDialog(MainMenuView.this);
-		dialog.setMessage(getString(R.string.loading));
-		dialog.setIndeterminate(true);
-		dialog.setCancelable(false);
+		mDialog = new ProgressDialog(MainMenuView.this);
+		mDialog.setMessage(getString(R.string.loading));
+		mDialog.setIndeterminate(true);
+		mDialog.setCancelable(false);
 	}
 
 	public void onResume() {
@@ -73,18 +72,18 @@ public class MainMenuView extends Activity {
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			mAdapter.clear();
-			fillAutoFillList();
+			if(mAdapter != null) {
+				mAdapter.clear();
+				fillAutoFillList();
+			}
 		}
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub
-
 		}     
 	};
 
 	private void fillAutoFillList() {
 		String list[] = Utils.getVisitUser(app);
-		Utils.log(TAG,"Fill up list");
 		if(list != null && list.length > 0) {
 			for(int i=0; i<list.length; i++) {
 				mAdapter.add(list[i]);
@@ -95,19 +94,19 @@ public class MainMenuView extends Activity {
 	public void mainMenuClickHandler(View view) {
 		switch(view.getId()) {
 		case R.id.firstpage:
-			Intent fpIntent = new Intent(view.getContext(), GalleryView.class);
+			Intent fpIntent = new Intent(activity, GalleryView.class);
 			fpIntent.putExtra("list", app.bc.FIRSTPAGE);
 			startActivityForResult(fpIntent, 0);
 			break;
 
 		case R.id.startpage:
-			Intent spIntent = new Intent(view.getContext(), GalleryView.class);
+			Intent spIntent = new Intent(activity, GalleryView.class);
 			spIntent.putExtra("list", app.bc.FRIENDPAGE);
 			startActivityForResult(spIntent, 0);
 			break;
 
 		case R.id.myblogg:
-			Intent mbIntent = new Intent(view.getContext(), GalleryView.class);
+			Intent mbIntent = new Intent(activity, GalleryView.class);
 			mbIntent.putExtra("username", app.getUserName());
 			mbIntent.putExtra("list", app.bc.BLOGGPAGE);
 			startActivityForResult(mbIntent, 0);
@@ -133,11 +132,9 @@ public class MainMenuView extends Activity {
 			break;
 
 		case R.id.gotobutton:
-			mView = view;
 			String userName = blog.getText().toString();
 			if(userName.length() > 0) {
-				dialog.show();
-				mView = view;
+				mDialog.show();
 				checkUserName(userName);
 			}
 			break;
@@ -146,6 +143,7 @@ public class MainMenuView extends Activity {
 
 	private void checkUserName(String userName) {
 		final String user = userName;
+		Utils.log(TAG, "Check username");
 		Thread mThread = new Thread() {
 			public void run() {
 				try {
@@ -164,13 +162,15 @@ public class MainMenuView extends Activity {
 
 	private Handler checkUserCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			dialog.dismiss();
-			Utils.log(TAG, "MESSAGE ID: " + msg.what);
+			Utils.log(TAG, "Username check done!");
+			if (mDialog.isShowing()) {
+				mDialog.dismiss();
+			}
 			if (msg.what == 0) {
-				Intent mbIntent = new Intent(mView.getContext(), GalleryView.class);
+				Intent mbIntent = new Intent(activity, GalleryView.class);
 				mbIntent.putExtra("username", blog.getText().toString());
 				mbIntent.putExtra("list", app.bc.BLOGGPAGE);
-				startActivityForResult(mbIntent, 0);
+				startActivity(mbIntent);
 			} else {
 				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
 				alertbox.setMessage(getText(R.string.blognamenotfound));
@@ -187,7 +187,7 @@ public class MainMenuView extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.option_menu, menu);
+		inflater.inflate(R.menu.logout_option_menu, menu);
 		return true;
 	}
 
@@ -199,7 +199,7 @@ public class MainMenuView extends Activity {
 			app.setLoggedInStatus(false);
 
 			/* goto splashview and exit */
-			Intent quitIntent = new Intent(this, SplashView.class);
+			Intent quitIntent = new Intent(activity, SplashView.class);
 			quitIntent.putExtra("func", "quit");
 			startActivity(quitIntent);
 			finish();

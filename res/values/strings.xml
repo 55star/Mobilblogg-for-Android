@@ -21,7 +21,7 @@
 	<string name="camera">Kamera</string>
 	<string name="gallery">Galleriet</string>
 	<string name="reload">Ladda om</string>
-	<string name="no_network">Nätverksfel. Kontrollera att nätverkstrafik är påslagen.</string>
+	<string name="no_network">Hittar ingen Internetanslutning</string>
 	<string name="loadmore">Ladda fler</string>
 
 	<string name="ok">OK</string>
@@ -41,6 +41,8 @@
 	<string name="fillallfields">Fyll i alla fält.</string>
 	<string name="badpassword">Att ha samma lösenord som användarnamn är ingen bra idé, alls!</string>
 	<string name="passwordlength">Minst 4 tecken i lösenordet.</string>
+	<string name="nomoreposts">Inga fler inlägg</string>
+	<string name="noposts">Inga inlägg</string>
 	
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
 		bilder tagna med mobiltelefonkamera på en egen blogg. Samtidigt kan du

@@ -81,19 +81,23 @@ public class SplashView extends Activity {
 				}
 			});
 			alertbox.show();			
-			//			Toast.makeText(activity, getText(R.string.no_network), Toast.LENGTH_LONG).show();
 		}
 
-		PackageManager manager = this.getPackageManager();
+
+		String versionName = null;
 		PackageInfo info;
 		try {
-			info = manager.getPackageInfo(this.getPackageName(), 0);
-			// nullpointer here, why?			
-			version.setText("Version: " + info.versionName);
+			info = getPackageManager().getPackageInfo(getPackageName(), 0);
+			versionName = info.versionName;
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Utils.log(TAG, "NameNotFoundException @ getPackageManager().getPackageInfo");
 		}
+		if (versionName != null) {
+			version.setText(versionName);
+		}
+		
 		if(Utils.getCredentialsUsername(cntx) != null && 
 				Utils.getCredentialsPassword(cntx) != null) {
 			Utils.log(TAG, "Found credentials!");

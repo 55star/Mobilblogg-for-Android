@@ -23,7 +23,7 @@
 	<string name="postuploaded">Post sent successfully</string>
 	<string name="blogfailure">Failure, wrong secret word?</string>
 	<string name="reload">Reload</string>
-	<string name="no_network">No network found</string>
+	<string name="no_network">No Internet connection found</string>
 	<string name="loadmore">Load more</string>
 	<string name="notdone">Not implemented yet...</string>
 
@@ -39,6 +39,8 @@
 	<string name="fillallfields">Please fill in all fields.</string>
 	<string name="badpassword">To have a password that matches your username is a very bad idea!"</string>
 	<string name="passwordlength">At least 4 characters long passwords please.</string>
+	<string name="nomoreposts">No more posts</string>
+	<string name="noposts">No posts</string>
 	
 	<string name="mobilbloggintro">Moblogging is an easy way to publish images and
 		videos taken with camera phone on the Internet.

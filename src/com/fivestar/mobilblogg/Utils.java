@@ -27,7 +27,7 @@ import android.util.Log;
 public class Utils {
 	final static String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
-	private static int LOGLEVEL = -1;
+	private static int LOGLEVEL = 0;
 
 	public static void log(String tag, String mess) {
 		if (LOGLEVEL > 1) {
@@ -191,13 +191,13 @@ public class Utils {
 
 	public static String[] getVisitUser(Context context) {
 		SharedPreferences sp = getPrefs(context);
-		if(sp.contains("visitedUsers")) {
+		if(sp != null && sp.contains("visitedUsers")) {
 			Utils.log(TAG,"Returns: " + sp.getString("visitedUsers", ""));
 			String[] list = sp.getString("visitedUsers", "").split(",");
 			Utils.log(TAG, "Returns " + list.length + " users");
 			return list;
 		} else {
-			Utils.log(TAG,"Returnerar null :(");
+			Utils.log(TAG,"Inga tidigare besškta bloggar");
 			return null;
 		}
 	}

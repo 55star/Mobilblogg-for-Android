@@ -260,7 +260,11 @@ public class Communicator extends Thread {
 	}
 
 
-	public void loadBloggs(MobilbloggApp app, int listNum, String username) throws CommunicatorException {
+	/*
+	 * Load Blog Posts
+	 * Returns number of posts collected
+	 */
+	public int loadBloggs(MobilbloggApp app, int listNum, String username) throws CommunicatorException {
 		String[] funcs = {"listBlogg","listStartpage","listFirstpage"};
 		String jsonresponse = "";
 		String url = "";
@@ -284,6 +288,13 @@ public class Communicator extends Thread {
 			try {
 				JSONArray json = new JSONArray(jsonresponse);
 				int len = json.length();
+				if (len == 0) {
+					if(app.bc.size(listNum, username) == 0) {
+						// Inga inlägg alls
+						return -2;
+					}
+					return 0;
+				}
 				for(int i=0; i<len; i++) {
 					try {
 						PostInfo pi = new PostInfo();
@@ -311,12 +322,14 @@ public class Communicator extends Thread {
 						throw new CommunicatorException(j.getMessage());
 					}
 				}
+				return len;
 			} catch (JSONException j) {
 				Utils.log(TAG, "JSON parsing failure: "+jsonresponse);
 				Utils.log(TAG, "Fångade Jsonexception, skickar comexc.");
 				throw new CommunicatorException(j.getMessage());
 			}
-		} 		
+		}
+		return 0;
 	}
 
 	public String postComment(String imgid, String comment) {
