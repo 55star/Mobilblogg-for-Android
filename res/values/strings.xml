@@ -43,10 +43,11 @@
 	<string name="passwordlength">Minst 4 tecken i lösenordet.</string>
 	<string name="nomoreposts">Inga fler inlägg</string>
 	<string name="noposts">Inga inlägg</string>
+	<string name="registertext">Fyll i uppgifterna nedan för att starta en mobilblogg</string>
+	<string name="secretwordtext">Det hemliga ordet används som identifiering vid bloggning</string>
 	
 	<string name="mobilbloggintro">Mobilbloggning är ett enkelt sätt att publicera
-		bilder tagna med mobiltelefonkamera på en egen blogg. Samtidigt kan du
-		hänga med i vår sköna community.
+		bilder tagna med mobiltelefonkamera på en mobilblogg.
 	</string>
 	<string name="remember_me">Kom ihåg mig</string>
 	<string name="remember">Kom ihåg</string>
@@ -64,12 +65,12 @@
 	<string name="loading">Laddar...</string>
 	<string name="loading_images">Laddar fler bilder</string>
 	<string name="empty">Tom</string>
-	<string name="register">Starta en mobilblogg</string>
+	<string name="register">Starta mobilblogg</string>
 	<string name="repeatpassword">Bekräfta lösenordet</string>
 	<string name="email">E-postadress</string>
 	<string name="usernameinuse">Användarnamnet är upptaget. Välj ett annat.</string>
 	<string name="enjoy">Om du tycker om</string>
-	<string name="please_rate">, vänligen betygsätt den på Market. Tack!</string>
+	<string name="please_rate">kan du väl betygsätta den på Market?</string>
 	<string name="rate">Betygsätt</string>
 	<string name="later">Påminn mig senare</string>
 	<string name="no">Nej tack</string>	

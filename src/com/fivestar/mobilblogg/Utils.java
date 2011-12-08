@@ -27,7 +27,7 @@ import android.util.Log;
 public class Utils {
 	final static String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
-	private static int LOGLEVEL = 0;
+	private static int LOGLEVEL = 7;
 
 	public static void log(String tag, String mess) {
 		if (LOGLEVEL > 1) {
@@ -207,6 +207,7 @@ public class Utils {
 		
 		e.remove("mb_cred_usr");
 		e.remove("mb_cred_pwd");
+		e.remove("secret");
 		e.commit();
 	}
 

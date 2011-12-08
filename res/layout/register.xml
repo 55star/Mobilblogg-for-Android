@@ -6,9 +6,9 @@
 
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Text som beskriver registeringsflödet bla bla bla"
+		android:text="@string/registertext"
 		android:textColor="@color/textcolor" android:textSize="16dip"
-		android:layout_marginBottom="15dip" android:layout_gravity="center" />
+		android:layout_marginBottom="10dip" android:layout_gravity="center" />
 
 	<EditText android:id="@+id/username" android:layout_height="wrap_content"
 		android:singleLine="true" android:layout_width="fill_parent"
@@ -17,30 +17,25 @@
 	<EditText android:id="@+id/password" android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:inputType="textPassword"
 		android:singleLine="true" android:hint="@string/password"
-		android:layout_marginTop="15dip" />
+		android:layout_marginTop="10dip" />
 
 	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="Det hemliga ordet används när du ska blogga"
+		android:layout_height="wrap_content" android:text="@string/secretwordtext"
 		android:textColor="@color/colorlightgray" android:textSize="14dip"
 		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
 		android:layout_gravity="left" />
 
 	<EditText android:id="@+id/secret" android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:singleLine="true"
-		android:hint="@string/secretWord" />
+		android:hint="@string/secretWord" android:layout_marginBottom="10dip" />
 
-	<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="E-posten kommer enbart användas till ..."
-		android:textColor="@color/colorlightgray" android:textSize="14dip"
-		android:layout_marginTop="10dip" android:layout_marginBottom="2dip"
-		android:layout_gravity="left" />
 	<EditText android:id="@+id/email" android:layout_height="wrap_content"
 		android:layout_width="fill_parent" android:singleLine="true"
-		android:hint="@string/email" />
+		android:hint="@string/email" android:layout_marginBottom="10dip" />
 
 	<Button android:id="@+id/register" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/register"
 		android:onClick="registerClickHandler" android:background="@drawable/styledbutton"
-		style="@style/ButtonText" android:layout_marginTop="15dip"
+		style="@style/ButtonText" android:layout_marginTop="10dip"
 		android:layout_gravity="center" />
 </LinearLayout>

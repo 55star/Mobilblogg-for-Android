@@ -28,7 +28,7 @@
 	<string name="notdone">Not implemented yet...</string>
 
 	<string name="all">Show for anyone</string>
-	<string name="blog">All, but not on firstpage</string>
+	<string name="blog">All, but not on first page</string>
 	<string name="members">Members</string>
 	<string name="friends">Friends</string>
 	<string name="me">Me</string>
@@ -41,6 +41,8 @@
 	<string name="passwordlength">At least 4 characters long passwords please.</string>
 	<string name="nomoreposts">No more posts</string>
 	<string name="noposts">No posts</string>
+	<string name="registertext">Fill the form below to start a moblog</string>
+	<string name="secretwordtext">The secret word is used when you post to your moblog.</string>	
 	
 	<string name="mobilbloggintro">Moblogging is an easy way to publish images and
 		videos taken with camera phone on the Internet.

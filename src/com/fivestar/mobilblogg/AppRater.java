@@ -15,8 +15,8 @@ public class AppRater {
 	private final static String APP_TITLE = "Mobilblogg";
 	private final static String APP_PNAME = "com.fivestar.mobilblogg";
 
-	private final static int DAYS_UNTIL_PROMPT = 12;
-	private final static int LAUNCHES_UNTIL_PROMPT = 20;
+	private final static int DAYS_UNTIL_PROMPT = 8;
+	private final static int LAUNCHES_UNTIL_PROMPT = 12;
 
 	public static void app_launched(Context mContext) {
 		SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);
@@ -54,9 +54,8 @@ public class AppRater {
 		ll.setOrientation(LinearLayout.VERTICAL);
 
 		TextView tv = new TextView(mContext);
-		tv.setText(mContext.getText(R.string.enjoy) + " " + APP_TITLE + mContext.getText(R.string.please_rate));
-		tv.setWidth(240);
-		tv.setPadding(4, 0, 4, 8);
+		tv.setText(mContext.getText(R.string.enjoy) + " " + APP_TITLE +  " " + mContext.getText(R.string.please_rate));
+		tv.setPadding(15, 0, 15, 15);
 		ll.addView(tv);
 
 		Button b1 = new Button(mContext);
