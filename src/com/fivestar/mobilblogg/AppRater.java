@@ -16,7 +16,7 @@ public class AppRater {
 	private final static String APP_PNAME = "com.fivestar.mobilblogg";
 
 	private final static int DAYS_UNTIL_PROMPT = 8;
-	private final static int LAUNCHES_UNTIL_PROMPT = 12;
+	private final static int LAUNCHES_UNTIL_PROMPT = 14;
 
 	public static void app_launched(Context mContext) {
 		SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);

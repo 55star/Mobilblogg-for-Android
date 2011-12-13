@@ -27,7 +27,7 @@ import android.util.Log;
 public class Utils {
 	final static String TAG = "Utils.java";
 	final static String SHAREDPREFFILE = "mb_cred";
-	private static int LOGLEVEL = 7;
+	private static int LOGLEVEL = -1;
 
 	public static void log(String tag, String mess) {
 		if (LOGLEVEL > 1) {
