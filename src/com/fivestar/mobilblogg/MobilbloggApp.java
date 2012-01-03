@@ -53,9 +53,9 @@ public class MobilbloggApp extends Application {
 	}
 	
 	public void startServices() {
+		initBloggContainer();
 		startImageLoader();
 		startHttpEngine();
-		initBloggContainer();
 	}
 	
 	private void initBloggContainer() {

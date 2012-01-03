@@ -191,6 +191,9 @@ public class PostView extends Activity {
 					Utils.log(TAG, "No network?");
 					uiCallback.sendEmptyMessage(-1);
 				}
+				if(jsonresponse == null) {
+					uiCallback.sendEmptyMessage(-1);
+				}
 				try {
 					json = new JSONArray(jsonresponse);
 					Utils.log(TAG, "json resp: "+jsonresponse);

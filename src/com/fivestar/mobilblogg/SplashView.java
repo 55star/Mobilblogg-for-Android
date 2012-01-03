@@ -84,18 +84,18 @@ public class SplashView extends Activity {
 		}
 
 
-		String versionName = null;
+		String versionNumber = null;
 		PackageInfo info;
 		try {
 			info = getPackageManager().getPackageInfo(getPackageName(), 0);
-			versionName = info.versionName;
+			versionNumber = info.versionName;
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Utils.log(TAG, "NameNotFoundException @ getPackageManager().getPackageInfo");
 		}
-		if (versionName != null) {
-			version.setText(versionName);
+		if (versionNumber != null) {
+			version.setText(getText(R.string.version) + " " + versionNumber);
 		}
 		
 		if(Utils.getCredentialsUsername(cntx) != null && 

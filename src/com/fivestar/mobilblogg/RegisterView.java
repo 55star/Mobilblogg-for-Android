@@ -146,14 +146,22 @@ public class RegisterView extends Activity {
 		final String user = userName;
 		Thread mThread = new Thread() {
 			public void run() {
-				try {
-					if(app.com.foundUser(user)) {
-						checkUserCallback.sendEmptyMessage(0);					
+
+				// Only allow alpha numeric characters in a username
+				if(!user.equals(user.replaceAll("[^A-Za-z0-9_]", ""))) {
+					Utils.log(TAG, user + " not equal to "+ user.replaceAll("[^A-Za-z0-9_]", ""));
+					checkUserCallback.sendEmptyMessage(-1);
+				} else {
+					try {
+						if(app.com.foundUser(user)) {
+							checkUserCallback.sendEmptyMessage(-1);
+						} else {
+							checkUserCallback.sendEmptyMessage(0);
+						}
+					} catch (CommunicatorException c) {
+						checkUserCallback.sendEmptyMessage(-1);
 					}
-				} catch (CommunicatorException c) {
-					checkUserCallback.sendEmptyMessage(0);
 				}
-				checkUserCallback.sendEmptyMessage(1);					
 			}
 		};
 		mThread.start();
@@ -161,7 +169,7 @@ public class RegisterView extends Activity {
 
 	private Handler checkUserCallback = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what <= 0) {
+			if (msg.what < 0) {
 				AlertDialog.Builder alertbox = new AlertDialog.Builder(mContext);
 				alertbox.setMessage(getText(R.string.usernameinuse));
 

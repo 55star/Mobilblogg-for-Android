@@ -23,6 +23,7 @@
 	<string name="reload">Ladda om</string>
 	<string name="no_network">Hittar ingen Internetanslutning</string>
 	<string name="loadmore">Ladda fler</string>
+	<string name="version">Version:</string>
 
 	<string name="ok">OK</string>
 	<string name="abort">Avbryt</string>
@@ -68,7 +69,7 @@
 	<string name="register">Starta mobilblogg</string>
 	<string name="repeatpassword">Bekräfta lösenordet</string>
 	<string name="email">E-postadress</string>
-	<string name="usernameinuse">Användarnamnet är upptaget. Välj ett annat.</string>
+	<string name="usernameinuse">Användarnamnet är upptaget eller ogiltigt. Bara bokstäver a till z och siffror är tillåtna.</string>
 	<string name="enjoy">Om du tycker om</string>
 	<string name="please_rate">kan du väl betygsätta den på Market?</string>
 	<string name="rate">Betygsätt</string>

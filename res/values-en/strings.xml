@@ -26,6 +26,7 @@
 	<string name="no_network">No Internet connection found</string>
 	<string name="loadmore">Load more</string>
 	<string name="notdone">Not implemented yet...</string>
+	<string name="version">Version:</string>
 
 	<string name="all">Show for anyone</string>
 	<string name="blog">All, but not on first page</string>
@@ -68,7 +69,7 @@
 	<string name="register">Start a moblog</string>
 	<string name="repeatpassword">Confirm password</string>
 	<string name="email">Email address</string>	
-	<string name="usernameinuse">The username is already in use. Please choose another.</string>
+	<string name="usernameinuse">Username already in use or invalid. Only characters a to z and numbers are allowed.</string>
 	<string name="enjoy">If you enjoy using</string>
 	<string name="please_rate">, please take a moment to rate it. Thanks for your support!</string>
 	<string name="rate">Rate</string>

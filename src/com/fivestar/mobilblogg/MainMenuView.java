@@ -32,12 +32,15 @@ import android.widget.Toast;
 public class MainMenuView extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1336;
 	private static final int GALLERY_PIC_REQUEST = 1337;
+	private final int BLOGGPAGE  = 0;
+	private final int FRIENDPAGE = 1;
+	private final int FIRSTPAGE  = 2;
 	final String TAG = "MainMenuView";
 	private MobilbloggApp app;
 	Activity activity;
 	ProgressDialog mDialog;
 	AutoCompleteTextView blog;
-	ArrayAdapter<String> mAdapter;
+	ArrayAdapter<String> mAdapter;	
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -63,7 +66,7 @@ public class MainMenuView extends Activity {
 		Utils.log(TAG, "Update listadapter");
 		mAdapter = new ArrayAdapter<String>(this, R.layout.item);
 		mAdapter.setNotifyOnChange(true);
-		blog.setThreshold(1);
+		blog.setThreshold(2);
 		blog.addTextChangedListener(textChecker);
 		blog.setAdapter(mAdapter);
 	}
@@ -95,20 +98,20 @@ public class MainMenuView extends Activity {
 		switch(view.getId()) {
 		case R.id.firstpage:
 			Intent fpIntent = new Intent(activity, GalleryView.class);
-			fpIntent.putExtra("list", app.bc.FIRSTPAGE);
+			fpIntent.putExtra("list", FIRSTPAGE);
 			startActivityForResult(fpIntent, 0);
 			break;
 
 		case R.id.startpage:
 			Intent spIntent = new Intent(activity, GalleryView.class);
-			spIntent.putExtra("list", app.bc.FRIENDPAGE);
+			spIntent.putExtra("list", FRIENDPAGE);
 			startActivityForResult(spIntent, 0);
 			break;
 
 		case R.id.myblogg:
 			Intent mbIntent = new Intent(activity, GalleryView.class);
 			mbIntent.putExtra("username", app.getUserName());
-			mbIntent.putExtra("list", app.bc.BLOGGPAGE);
+			mbIntent.putExtra("list", BLOGGPAGE);
 			startActivityForResult(mbIntent, 0);
 			break;
 
@@ -146,14 +149,20 @@ public class MainMenuView extends Activity {
 		Utils.log(TAG, "Check username");
 		Thread mThread = new Thread() {
 			public void run() {
-				try {
-					if(app.com.foundUser(user)) {
-						checkUserCallback.sendEmptyMessage(0);	
-					} else {
-						checkUserCallback.sendEmptyMessage(1);
+				// Only allow alpha numeric characters in a username
+				if(!user.equals(user.replaceAll("[^A-Za-z0-9_]", ""))) {
+					Utils.log(TAG, user + " not equal to "+ user.replaceAll("[^A-Za-z0-9_]", ""));
+					checkUserCallback.sendEmptyMessage(-1);
+				} else {
+					try {
+						if(app.com.foundUser(user)) {
+							checkUserCallback.sendEmptyMessage(0);
+						} else {
+							checkUserCallback.sendEmptyMessage(-1);
+						}
+					} catch (CommunicatorException c) {
+						checkUserCallback.sendEmptyMessage(-1);
 					}
-				} catch (CommunicatorException c) {
-					checkUserCallback.sendEmptyMessage(0);
 				}
 			}
 		};
@@ -169,7 +178,7 @@ public class MainMenuView extends Activity {
 			if (msg.what == 0) {
 				Intent mbIntent = new Intent(activity, GalleryView.class);
 				mbIntent.putExtra("username", blog.getText().toString());
-				mbIntent.putExtra("list", app.bc.BLOGGPAGE);
+				mbIntent.putExtra("list", BLOGGPAGE);
 				startActivity(mbIntent);
 			} else {
 				AlertDialog.Builder alertbox = new AlertDialog.Builder(activity);
